@@ -124,6 +124,11 @@ const Sessions = () => {
           </CardContent>
         </Card>
       </div>
+
+      <ScheduleSessionModal
+        open={scheduleModalOpen}
+        onOpenChange={setScheduleModalOpen}
+      />
     </Layout>
   );
 };
