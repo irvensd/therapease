@@ -343,15 +343,29 @@ const Clients = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                alert(
+                                  `Viewing details for ${client.name}. In a full app, this would open a detailed client profile.`,
+                                );
+                              }}
+                            >
                               <Eye className="mr-2 h-4 w-4" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                alert(
+                                  `Editing ${client.name}. In a full app, this would open an edit form.`,
+                                );
+                              }}
+                            >
                               <Edit className="mr-2 h-4 w-4" />
                               Edit Client
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => navigate("/sessions")}
+                            >
                               <Calendar className="mr-2 h-4 w-4" />
                               Schedule Session
                             </DropdownMenuItem>
