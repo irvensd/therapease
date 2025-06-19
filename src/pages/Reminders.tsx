@@ -227,6 +227,11 @@ const Reminders = () => {
           </CardContent>
         </Card>
       </div>
+
+      <AddReminderModal
+        open={addReminderModalOpen}
+        onOpenChange={setAddReminderModalOpen}
+      />
     </Layout>
   );
 };
