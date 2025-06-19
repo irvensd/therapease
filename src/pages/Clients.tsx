@@ -389,6 +389,11 @@ const Clients = () => {
           </CardContent>
         </Card>
       </div>
+
+      <NewClientModal
+        open={newClientModalOpen}
+        onOpenChange={setNewClientModalOpen}
+      />
     </Layout>
   );
 };
