@@ -19,7 +19,7 @@ const Invoices = () => {
               Track billing, payments, and financial reporting
             </p>
           </div>
-          <Button>
+          <Button onClick={() => setCreateInvoiceModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Create Invoice
           </Button>
