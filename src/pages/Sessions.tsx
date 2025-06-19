@@ -38,7 +38,15 @@ const Sessions = () => {
               <p className="text-muted-foreground mb-4">
                 View and manage your sessions in a calendar format
               </p>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  alert(
+                    "Calendar view coming soon! This will integrate with popular calendar apps like Google Calendar and Outlook.",
+                  );
+                }}
+              >
                 Open Calendar
               </Button>
             </CardContent>
