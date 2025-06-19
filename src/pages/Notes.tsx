@@ -36,7 +36,11 @@ const Notes = () => {
               <p className="text-muted-foreground mb-4">
                 Create structured notes with templates and tags
               </p>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setNewNoteModalOpen(true)}
+              >
                 Create Note
               </Button>
             </CardContent>
@@ -53,7 +57,15 @@ const Notes = () => {
               <p className="text-muted-foreground mb-4">
                 Quickly find notes by client, date, or content
               </p>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  alert(
+                    "Advanced search coming soon! You'll be able to search by client name, date range, keywords, and treatment goals.",
+                  );
+                }}
+              >
                 Search Notes
               </Button>
             </CardContent>
@@ -70,7 +82,15 @@ const Notes = () => {
               <p className="text-muted-foreground mb-4">
                 Secure storage for completed treatment notes
               </p>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  alert(
+                    "Secure archive coming soon! All notes will be encrypted and stored with full HIPAA compliance for long-term retention.",
+                  );
+                }}
+              >
                 View Archive
               </Button>
             </CardContent>
