@@ -82,13 +82,29 @@ const Sessions = () => {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start">
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => setScheduleModalOpen(true)}
+              >
                 Schedule New Session
               </Button>
-              <Button variant="outline" className="w-full justify-start">
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => navigate("/")}
+              >
                 View Today's Sessions
               </Button>
-              <Button variant="outline" className="w-full justify-start">
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => {
+                  alert(
+                    "Session templates coming soon! This will allow you to create reusable session formats and notes templates.",
+                  );
+                }}
+              >
                 Session Templates
               </Button>
             </CardContent>
