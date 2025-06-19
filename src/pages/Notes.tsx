@@ -127,6 +127,11 @@ const Notes = () => {
           </CardContent>
         </Card>
       </div>
+
+      <NewNoteModal
+        open={newNoteModalOpen}
+        onOpenChange={setNewNoteModalOpen}
+      />
     </Layout>
   );
 };
