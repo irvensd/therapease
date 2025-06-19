@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +15,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { NewClientModal } from "@/components/modals/NewClientModal";
+import { AddReminderModal } from "@/components/modals/AddReminderModal";
 
 const Dashboard = () => {
   return (
