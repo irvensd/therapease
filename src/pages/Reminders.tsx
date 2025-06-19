@@ -53,7 +53,7 @@ const Reminders = () => {
               Stay on top of important tasks and deadlines
             </p>
           </div>
-          <Button>
+          <Button onClick={() => setAddReminderModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Add Reminder
           </Button>
