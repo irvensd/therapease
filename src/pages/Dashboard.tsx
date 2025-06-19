@@ -159,7 +159,11 @@ const Dashboard = () => {
                   </Badge>
                 </div>
               ))}
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => navigate("/sessions")}
+              >
                 <Calendar className="mr-2 h-4 w-4" />
                 View Full Schedule
               </Button>
