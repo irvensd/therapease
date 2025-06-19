@@ -152,7 +152,15 @@ const Invoices = () => {
                   </div>
                 </div>
               ))}
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  alert(
+                    "Invoice management dashboard coming soon! You'll be able to view, edit, send, and track all invoices.",
+                  );
+                }}
+              >
                 <Receipt className="mr-2 h-4 w-4" />
                 View All Invoices
               </Button>
