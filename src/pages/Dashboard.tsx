@@ -230,7 +230,11 @@ const Dashboard = () => {
                   <AlertCircle className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 </div>
               ))}
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setAddReminderModalOpen(true)}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Reminder
               </Button>
