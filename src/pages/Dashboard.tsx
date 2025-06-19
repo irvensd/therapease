@@ -323,6 +323,15 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
+
+      <NewClientModal
+        open={newClientModalOpen}
+        onOpenChange={setNewClientModalOpen}
+      />
+      <AddReminderModal
+        open={addReminderModalOpen}
+        onOpenChange={setAddReminderModalOpen}
+      />
     </Layout>
   );
 };
