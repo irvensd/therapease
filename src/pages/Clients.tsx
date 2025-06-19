@@ -136,7 +136,7 @@ const Clients = () => {
               Manage your client information and track their progress
             </p>
           </div>
-          <Button>
+          <Button onClick={() => setNewClientModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Add New Client
           </Button>
