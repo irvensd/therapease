@@ -63,7 +63,15 @@ const Sessions = () => {
               <p className="text-muted-foreground mb-4">
                 Track session duration and billing time
               </p>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  alert(
+                    "Time tracking reports coming soon! This will show session duration analytics and billing time summaries.",
+                  );
+                }}
+              >
                 View Reports
               </Button>
             </CardContent>
