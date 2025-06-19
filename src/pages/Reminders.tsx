@@ -110,45 +110,37 @@ const Reminders = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {[
-                {
-                  title: "Follow up with Emma Thompson",
-                  description: "Session notes completion overdue",
-                  time: "2 hours ago",
-                  priority: "high",
-                },
-                {
-                  title: "Insurance authorization",
-                  description: "Michael Chen - renewal needed",
-                  time: "1 day ago",
-                  priority: "high",
-                },
-                {
-                  title: "Treatment plan review",
-                  description: "Sarah Johnson - quarterly review",
-                  time: "3 days ago",
-                  priority: "high",
-                },
-              ].map((reminder, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-3 p-3 rounded-lg bg-destructive/5 border border-destructive/20"
-                >
-                  <AlertCircle className="h-5 w-5 text-destructive mt-0.5" />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm">{reminder.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {reminder.description}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {reminder.time}
-                    </p>
+              {reminders
+                .filter((r) => !r.completed)
+                .map((reminder) => (
+                  <div
+                    key={reminder.id}
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-destructive/5 border border-destructive/20"
+                  >
+                    <AlertCircle className="h-5 w-5 text-destructive mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm">{reminder.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {reminder.description}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {reminder.time}
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        completeReminder(reminder.id);
+                        alert(
+                          `Reminder "${reminder.title}" marked as complete!`,
+                        );
+                      }}
+                    >
+                      Complete
+                    </Button>
                   </div>
-                  <Button size="sm" variant="outline">
-                    Complete
-                  </Button>
-                </div>
-              ))}
+                ))}
             </CardContent>
           </Card>
 
