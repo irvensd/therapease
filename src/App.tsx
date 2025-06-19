@@ -9,6 +9,7 @@ import Sessions from "./pages/Sessions";
 import Notes from "./pages/Notes";
 import Reminders from "./pages/Reminders";
 import Invoices from "./pages/Invoices";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
