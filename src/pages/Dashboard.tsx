@@ -19,6 +19,10 @@ import { NewClientModal } from "@/components/modals/NewClientModal";
 import { AddReminderModal } from "@/components/modals/AddReminderModal";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [newClientModalOpen, setNewClientModalOpen] = useState(false);
+  const [addReminderModalOpen, setAddReminderModalOpen] = useState(false);
+
   return (
     <Layout>
       <div className="p-6 space-y-6">
