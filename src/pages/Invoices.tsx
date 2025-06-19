@@ -1,10 +1,14 @@
+import { useState } from "react";
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Receipt, Plus, DollarSign, TrendingUp, Download } from "lucide-react";
+import { CreateInvoiceModal } from "@/components/modals/CreateInvoiceModal";
 
 const Invoices = () => {
+  const [createInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
+
   return (
     <Layout>
       <div className="p-6 space-y-6">
