@@ -98,8 +98,10 @@ const clients = [
 ];
 
 const Clients = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [newClientModalOpen, setNewClientModalOpen] = useState(false);
 
   const filteredClients = clients.filter((client) => {
     const matchesSearch = client.name
