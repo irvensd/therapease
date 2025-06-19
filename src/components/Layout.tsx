@@ -161,9 +161,7 @@ export default function Layout({ children }: LayoutProps) {
               <Menu className="h-5 w-5" />
             </Button>
 
-            <div className="hidden lg:block">
-              {/* Breadcrumb or page title can go here */}
-            </div>
+            <div className="hidden lg:block" />
 
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm">
