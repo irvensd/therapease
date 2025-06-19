@@ -1,10 +1,48 @@
+import { useState } from "react";
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Plus, AlertCircle, Clock, CheckCircle } from "lucide-react";
+import { AddReminderModal } from "@/components/modals/AddReminderModal";
 
 const Reminders = () => {
+  const [addReminderModalOpen, setAddReminderModalOpen] = useState(false);
+  const [reminders, setReminders] = useState([
+    {
+      id: 1,
+      title: "Follow up with Emma Thompson",
+      description: "Session notes completion overdue",
+      time: "2 hours ago",
+      priority: "high",
+      completed: false,
+    },
+    {
+      id: 2,
+      title: "Insurance authorization",
+      description: "Michael Chen - renewal needed",
+      time: "1 day ago",
+      priority: "high",
+      completed: false,
+    },
+    {
+      id: 3,
+      title: "Treatment plan review",
+      description: "Sarah Johnson - quarterly review",
+      time: "3 days ago",
+      priority: "high",
+      completed: false,
+    },
+  ]);
+
+  const completeReminder = (id: number) => {
+    setReminders((prev) =>
+      prev.map((reminder) =>
+        reminder.id === id ? { ...reminder, completed: true } : reminder,
+      ),
+    );
+  };
+
   return (
     <Layout>
       <div className="p-6 space-y-6">
