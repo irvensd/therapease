@@ -237,7 +237,28 @@ const Clients = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button variant="outline">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    // Export functionality - in a real app, this would generate CSV/PDF
+                    const csvContent = filteredClients
+                      .map(
+                        (client) =>
+                          `${client.name},${client.email},${client.phone},${client.status},${client.insurance}`,
+                      )
+                      .join("\n");
+                    const header = "Name,Email,Phone,Status,Insurance\n";
+                    const blob = new Blob([header + csvContent], {
+                      type: "text/csv",
+                    });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "clients-export.csv";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                  }}
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Export
                 </Button>
