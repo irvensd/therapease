@@ -20,7 +20,7 @@ const Sessions = () => {
               Schedule, track, and manage your therapy sessions
             </p>
           </div>
-          <Button>
+          <Button onClick={() => setScheduleModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Schedule Session
           </Button>
