@@ -250,19 +250,35 @@ const Dashboard = () => {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full justify-start" variant="outline">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                onClick={() => setNewClientModalOpen(true)}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 New Client
               </Button>
-              <Button className="w-full justify-start" variant="outline">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                onClick={() => navigate("/sessions")}
+              >
                 <Calendar className="mr-2 h-4 w-4" />
                 Schedule Session
               </Button>
-              <Button className="w-full justify-start" variant="outline">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                onClick={() => navigate("/invoices")}
+              >
                 <DollarSign className="mr-2 h-4 w-4" />
                 Create Invoice
               </Button>
-              <Button className="w-full justify-start" variant="outline">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                onClick={() => navigate("/clients")}
+              >
                 <Users className="mr-2 h-4 w-4" />
                 View All Clients
                 <ArrowRight className="ml-auto h-4 w-4" />
