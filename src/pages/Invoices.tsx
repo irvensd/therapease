@@ -195,11 +195,44 @@ const Invoices = () => {
               </div>
 
               <div className="pt-4 space-y-2">
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    // Generate sample financial report
+                    const reportData = `Financial Report - ${new Date().toLocaleDateString()}
+
+Total Revenue (YTD): $124,500
+Outstanding Payments: $3,240
+Collection Rate: 94%
+Average Payment Time: 12 days
+
+Monthly Breakdown:
+January: $12,450
+December: $11,200
+November: $10,800`;
+
+                    const blob = new Blob([reportData], { type: "text/plain" });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "financial-report.txt";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                  }}
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Export Report
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    alert(
+                      "Payment settings coming soon! Configure payment methods, late fees, and automated reminders.",
+                    );
+                  }}
+                >
                   <DollarSign className="mr-2 h-4 w-4" />
                   Payment Settings
                 </Button>
