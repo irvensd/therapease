@@ -1,9 +1,15 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Plus, Clock } from "lucide-react";
+import { ScheduleSessionModal } from "@/components/modals/ScheduleSessionModal";
 
 const Sessions = () => {
+  const navigate = useNavigate();
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+
   return (
     <Layout>
       <div className="p-6 space-y-6">
