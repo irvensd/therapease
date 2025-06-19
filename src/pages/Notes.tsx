@@ -18,7 +18,7 @@ const Notes = () => {
               Create, manage, and organize your therapy session notes
             </p>
           </div>
-          <Button>
+          <Button onClick={() => setNewNoteModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             New Note
           </Button>
