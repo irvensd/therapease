@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Users,
   Calendar,
@@ -15,6 +16,7 @@ import {
   ArrowRight,
   Zap,
   FileText,
+  Loader2,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
@@ -25,10 +27,194 @@ import { TherapistWellness } from "@/components/TherapistWellness";
 import { QuickActions } from "@/components/QuickActions";
 import { ClinicalAssessments } from "@/components/ClinicalAssessments";
 
+// Types for better type safety
+interface DashboardStats {
+  activeClients: number;
+  weeklySessionsScheduled: number;
+  monthlyRevenue: number;
+  completionRate: number;
+}
+
+interface TodaySession {
+  id: string;
+  time: string;
+  client: string;
+  type: string;
+  status: "confirmed" | "pending";
+}
+
+interface ActiveReminder {
+  id: string;
+  title: string;
+  description: string;
+  priority: "high" | "medium" | "low";
+  time: string;
+}
+
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [newClientModalOpen, setNewClientModalOpen] = useState(false);
   const [addReminderModalOpen, setAddReminderModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Mock user data - in real app would come from auth context
+  const userName = "Dr. Wilson";
+
+  // Mock dashboard data - in real app would be fetched from API
+  const [dashboardData] = useState({
+    stats: {
+      activeClients: 48,
+      weeklySessionsScheduled: 28,
+      monthlyRevenue: 12450,
+      completionRate: 94,
+    } as DashboardStats,
+    todaySessions: [
+      {
+        id: "1",
+        time: "9:00 AM",
+        client: "Emma Thompson",
+        type: "Individual Therapy",
+        status: "confirmed" as const,
+      },
+      {
+        id: "2",
+        time: "10:30 AM",
+        client: "Michael Chen",
+        type: "Couples Therapy",
+        status: "confirmed" as const,
+      },
+      {
+        id: "3",
+        time: "2:00 PM",
+        client: "Sarah Johnson",
+        type: "Individual Therapy",
+        status: "pending" as const,
+      },
+      {
+        id: "4",
+        time: "3:30 PM",
+        client: "David Wilson",
+        type: "Family Therapy",
+        status: "confirmed" as const,
+      },
+    ] as TodaySession[],
+    reminders: [
+      {
+        id: "1",
+        title: "Follow up with Emma Thompson",
+        description: "Session notes completion overdue",
+        priority: "high" as const,
+        time: "2 hours ago",
+      },
+      {
+        id: "2",
+        title: "Insurance authorization",
+        description: "Michael Chen - renewal needed",
+        priority: "high" as const,
+        time: "1 day ago",
+      },
+      {
+        id: "3",
+        title: "Treatment plan review",
+        description: "Sarah Johnson - quarterly review",
+        priority: "medium" as const,
+        time: "3 days ago",
+      },
+      {
+        id: "4",
+        title: "Appointment confirmation",
+        description: "David Wilson - next week",
+        priority: "low" as const,
+        time: "5 days ago",
+      },
+    ] as ActiveReminder[],
+  });
+
+  // Simulate loading data on mount
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setIsLoading(false);
+      } catch (err) {
+        setError("Failed to load dashboard data. Please refresh the page.");
+        setIsLoading(false);
+      }
+    };
+
+    loadDashboardData();
+  }, []);
+
+  // Improved navigation with error handling
+  const handleNavigation = useCallback(
+    (path: string, actionName: string) => {
+      try {
+        navigate(path);
+        toast({
+          title: "Navigation",
+          description: `Navigating to ${actionName}...`,
+        });
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: "Navigation Error",
+          description: "Failed to navigate. Please try again.",
+        });
+      }
+    },
+    [navigate, toast],
+  );
+
+  // Modal handlers with toast feedback
+  const handleNewClientModalOpen = useCallback(() => {
+    setNewClientModalOpen(true);
+  }, []);
+
+  const handleNewClientModalClose = useCallback(() => {
+    setNewClientModalOpen(false);
+  }, []);
+
+  const handleAddReminderModalOpen = useCallback(() => {
+    setAddReminderModalOpen(true);
+  }, []);
+
+  const handleAddReminderModalClose = useCallback(() => {
+    setAddReminderModalOpen(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="text-muted-foreground">Loading dashboard...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-destructive">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Refresh Page
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
