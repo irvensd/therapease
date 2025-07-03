@@ -182,30 +182,124 @@ export function TherapistWellness({
   ];
 
   if (mode === "alert") {
+    const [dismissedAlerts, setDismissedAlerts] = useState<string[]>([]);
+
+    const activeAlerts = wellnessAlerts.filter(
+      (alert) => !dismissedAlerts.includes(alert.id),
+    );
+
+    const dismissAlert = (alertId: string) => {
+      setDismissedAlerts((prev) => [...prev, alertId]);
+    };
+
+    const handleAction = (alert: WellnessAlert) => {
+      if (alert.action === "Take Break") {
+        // Simulate break taken
+        alert(
+          "Great! Taking breaks is essential for your wellbeing. Your 15-minute break timer has started. The app will remind you when it's time to return.",
+        );
+        dismissAlert(alert.id);
+      } else if (alert.action === "Review Boundaries") {
+        alert(
+          "Boundary Review: Consider setting up an auto-response for after-hours messages: 'Thank you for your message. I will respond during business hours (9 AM - 6 PM). For emergencies, please contact 911 or the crisis hotline at 988.'",
+        );
+        dismissAlert(alert.id);
+      } else {
+        dismissAlert(alert.id);
+      }
+    };
+
+    if (activeAlerts.length === 0) {
+      return null;
+    }
+
     return (
       <div className="fixed top-20 right-6 z-40 w-80">
-        {wellnessAlerts.slice(0, 1).map((alert) => (
+        {activeAlerts.slice(0, 1).map((alert) => (
           <Card
             key={alert.id}
-            className="border-l-4 border-l-yellow-500 shadow-lg"
+            className={cn(
+              "border-l-4 shadow-lg animate-in slide-in-from-right-2",
+              alert.type === "break"
+                ? "border-l-blue-500"
+                : alert.type === "boundary"
+                  ? "border-l-yellow-500"
+                  : alert.type === "burnout"
+                    ? "border-l-red-500"
+                    : "border-l-green-500",
+            )}
           >
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-full bg-yellow-100">
-                  <Clock className="h-4 w-4 text-yellow-600" />
+                <div
+                  className={cn(
+                    "p-2 rounded-full",
+                    alert.type === "break"
+                      ? "bg-blue-100"
+                      : alert.type === "boundary"
+                        ? "bg-yellow-100"
+                        : alert.type === "burnout"
+                          ? "bg-red-100"
+                          : "bg-green-100",
+                  )}
+                >
+                  {alert.type === "break" ? (
+                    <Coffee
+                      className={cn(
+                        "h-4 w-4",
+                        alert.type === "break"
+                          ? "text-blue-600"
+                          : alert.type === "boundary"
+                            ? "text-yellow-600"
+                            : alert.type === "burnout"
+                              ? "text-red-600"
+                              : "text-green-600",
+                      )}
+                    />
+                  ) : alert.type === "celebration" ? (
+                    <Smile className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <Clock
+                      className={cn(
+                        "h-4 w-4",
+                        alert.type === "boundary"
+                          ? "text-yellow-600"
+                          : "text-red-600",
+                      )}
+                    />
+                  )}
                 </div>
                 <div className="flex-1">
                   <h4 className="font-medium text-sm">{alert.title}</h4>
                   <p className="text-xs text-muted-foreground mt-1">
                     {alert.message}
                   </p>
-                  {alert.action && (
-                    <Button size="sm" className="mt-2" variant="outline">
-                      {alert.action}
+                  <div className="flex gap-2 mt-3">
+                    {alert.action && (
+                      <Button
+                        size="sm"
+                        className="h-7 text-xs"
+                        onClick={() => handleAction(alert)}
+                      >
+                        {alert.action}
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-7 text-xs"
+                      onClick={() => dismissAlert(alert.id)}
+                    >
+                      Dismiss
                     </Button>
-                  )}
+                  </div>
                 </div>
-                <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-6 w-6 p-0"
+                  onClick={() => dismissAlert(alert.id)}
+                >
                   ×
                 </Button>
               </div>
