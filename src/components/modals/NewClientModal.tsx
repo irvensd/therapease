@@ -28,6 +28,9 @@ interface NewClientModalProps {
 }
 
 export function NewClientModal({ open, onOpenChange }: NewClientModalProps) {
+  const { toast } = useToast();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,6 +39,89 @@ export function NewClientModal({ open, onOpenChange }: NewClientModalProps) {
     diagnosis: "",
     notes: "",
   });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  const validateField = (field: string, value: string) => {
+    switch (field) {
+      case "name":
+        if (!value.trim()) return "Client name is required";
+        if (value.trim().length < 2)
+          return "Name must be at least 2 characters";
+        break;
+      case "email":
+        if (!value.trim()) return "Email is required";
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value))
+          return "Please enter a valid email address";
+        break;
+      case "phone":
+        if (!value.trim()) return "Phone number is required";
+        const phoneRegex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
+        if (!phoneRegex.test(value)) return "Phone format: (555) 123-4567";
+        break;
+    }
+    return "";
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    // Format phone number automatically
+    if (field === "phone") {
+      const digitsOnly = value.replace(/\D/g, "");
+      if (digitsOnly.length <= 10) {
+        const formatted = digitsOnly.replace(
+          /(\d{3})(\d{3})(\d{4})/,
+          "($1) $2-$3",
+        );
+        value = formatted;
+      }
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const handleFieldBlur = (field: string) => {
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
+    const error = validateField(
+      field,
+      formData[field as keyof typeof formData],
+    );
+    setErrors((prev) => ({ ...prev, [field]: error }));
+  };
+
+  const isStepValid = (step: number) => {
+    switch (step) {
+      case 1:
+        return (
+          formData.name &&
+          formData.email &&
+          formData.phone &&
+          !errors.name &&
+          !errors.email &&
+          !errors.phone
+        );
+      case 2:
+        return formData.insurance;
+      default:
+        return true;
+    }
+  };
+
+  const getFormProgress = () => {
+    const totalFields = 6;
+    const filledFields = Object.values(formData).filter((value) =>
+      value.trim(),
+    ).length;
+    return (filledFields / totalFields) * 100;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
