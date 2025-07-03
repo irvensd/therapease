@@ -230,6 +230,257 @@ const Notes = () => {
     loadNotes();
   }, [toast]);
 
+  // Computed values
+  const filteredNotes = notes.filter((note) => {
+    const matchesSearch =
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+    const matchesType = typeFilter === "all" || note.type === typeFilter;
+    const matchesStatus =
+      statusFilter === "all" || note.status === statusFilter;
+    const matchesClient =
+      clientFilter === "all" || note.clientName === clientFilter;
+    const matchesStarred = !showStarredOnly || note.isStarred;
+
+    return (
+      matchesSearch &&
+      matchesType &&
+      matchesStatus &&
+      matchesClient &&
+      matchesStarred
+    );
+  });
+
+  const notesStats: NotesStats = {
+    totalNotes: notes.length,
+    draftNotes: notes.filter((n) => n.status === "Draft").length,
+    completedNotes: notes.filter((n) => n.status === "Complete").length,
+    starredNotes: notes.filter((n) => n.isStarred).length,
+    todaysNotes: notes.filter((n) => {
+      const today = new Date().toISOString().split("T")[0];
+      return n.sessionDate === today;
+    }).length,
+    averageWordCount:
+      notes.length > 0
+        ? Math.round(
+            notes.reduce((sum, n) => sum + n.wordCount, 0) / notes.length,
+          )
+        : 0,
+  };
+
+  const uniqueClients = Array.from(
+    new Set(notes.map((n) => n.clientName)),
+  ).sort();
+
+  // Utility functions
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Complete":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "Draft":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
+      case "Reviewed":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+      case "Archived":
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "SOAP":
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300";
+      case "DAP":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+      case "BIRP":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "Progress":
+        return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
+      case "Assessment":
+        return "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300";
+      case "Treatment Plan":
+        return "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  // Action handlers with proper error handling
+  const handleToggleStar = useCallback(
+    (noteId: number) => {
+      setNotes((prev) =>
+        prev.map((note) =>
+          note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
+        ),
+      );
+
+      const note = notes.find((n) => n.id === noteId);
+      if (note) {
+        toast({
+          title: note.isStarred ? "Removed from Starred" : "Added to Starred",
+          description: `"${note.title}" ${note.isStarred ? "removed from" : "added to"} starred notes.`,
+        });
+      }
+    },
+    [notes, toast],
+  );
+
+  const handleDeleteNote = useCallback(
+    (note: Note) => {
+      showModal({
+        type: "destructive",
+        title: "Delete Note",
+        message: `Are you sure you want to delete "${note.title}"? This action cannot be undone.`,
+        confirmLabel: "Delete Note",
+        cancelLabel: "Cancel",
+        showCancel: true,
+        onConfirm: () => {
+          setNotes((prev) => prev.filter((n) => n.id !== note.id));
+          toast({
+            title: "Note Deleted",
+            description: `"${note.title}" has been permanently deleted.`,
+          });
+        },
+      });
+    },
+    [showModal, toast],
+  );
+
+  const handleArchiveNote = useCallback(
+    (note: Note) => {
+      setNotes((prev) =>
+        prev.map((n) =>
+          n.id === note.id ? { ...n, status: "Archived" as const } : n,
+        ),
+      );
+
+      toast({
+        title: "Note Archived",
+        description: `"${note.title}" has been moved to the archive.`,
+      });
+    },
+    [toast],
+  );
+
+  const handleViewNote = useCallback(
+    (note: Note) => {
+      showModal({
+        type: "info",
+        title: note.title,
+        message: `Client: ${note.clientName}\nDate: ${new Date(note.sessionDate).toLocaleDateString()}\nType: ${note.type}\nStatus: ${note.status}\nDuration: ${note.sessionDuration} minutes\nWord Count: ${note.wordCount}\n\nContent Preview:\n${note.content.substring(0, 300)}${note.content.length > 300 ? "..." : ""}`,
+        confirmLabel: "Close",
+      });
+    },
+    [showModal],
+  );
+
+  const handleExportNotes = useCallback(() => {
+    try {
+      const csvContent = filteredNotes
+        .map(
+          (note) =>
+            `"${note.title}","${note.clientName}","${note.sessionDate}","${note.type}","${note.status}","${note.wordCount}","${note.sessionDuration}","${note.tags.join("; ")}"`,
+        )
+        .join("\n");
+      const header =
+        "Title,Client,Session Date,Type,Status,Word Count,Duration (min),Tags\n";
+      const blob = new Blob([header + csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `therapy-notes-export-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Export Successful",
+        description: `Exported ${filteredNotes.length} notes to CSV file.`,
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "Failed to export notes data. Please try again.",
+      });
+    }
+  }, [filteredNotes, toast]);
+
+  const handleSearchNotes = useCallback(() => {
+    showModal({
+      type: "info",
+      title: "Advanced Search Features",
+      message:
+        "Advanced search includes:\n• Full-text search across note content\n• Client name and tag filtering\n• Date range selection\n• Treatment goal keywords\n• Session type filtering\n• Status and priority sorting\n• Confidentiality level filtering",
+      confirmLabel: "Great!",
+      onConfirm: () => {
+        toast({
+          title: "Search Enhanced",
+          description:
+            "Use the search box above to find notes by content, client, or tags.",
+        });
+      },
+    });
+  }, [showModal, toast]);
+
+  const handleVoiceToText = useCallback(() => {
+    showModal({
+      type: "info",
+      title: "Voice-to-Text Integration",
+      message:
+        "Voice-to-text features coming soon:\n• Real-time dictation during sessions\n• Automatic punctuation and formatting\n• Medical terminology recognition\n• HIPAA-compliant voice processing\n• Integration with session templates\n• Hands-free note creation",
+      confirmLabel: "Excited for this!",
+      onConfirm: () => {
+        toast({
+          title: "Feature In Development",
+          description:
+            "Voice-to-text functionality will be available in the next major update.",
+        });
+      },
+    });
+  }, [showModal, toast]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="text-muted-foreground">Loading notes...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-destructive">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Refresh Page
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="p-6 space-y-6">
