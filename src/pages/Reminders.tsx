@@ -133,17 +133,22 @@ const Reminders = () => {
                       size="sm"
                       variant="outline"
                       onClick={() => {
-                        completeReminder(reminder.id);
-                        // Show success message with action taken
                         const completionMessage = reminder.title.includes(
                           "Emma",
                         )
-                          ? "✅ Session notes for Emma Thompson completed and filed securely."
+                          ? "Session notes for Emma Thompson have been completed and filed securely in her client record."
                           : reminder.title.includes("Insurance")
-                            ? "✅ Insurance authorization reminder completed. Michael Chen's renewal has been processed."
-                            : "✅ Treatment plan review scheduled for Sarah Johnson next week.";
+                            ? "Insurance authorization reminder completed. Michael Chen's renewal has been processed and documentation updated."
+                            : "Treatment plan review has been scheduled for Sarah Johnson next week. Calendar updated with appointment details.";
 
-                        alert(completionMessage);
+                        showModal({
+                          type: "success",
+                          title: "Task Completed Successfully! ✅",
+                          message: completionMessage,
+                          confirmLabel: "Great!",
+                          autoClose: 5000,
+                          onConfirm: () => completeReminder(reminder.id),
+                        });
                       }}
                     >
                       Complete
