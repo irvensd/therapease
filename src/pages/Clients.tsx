@@ -398,6 +398,11 @@ const Clients = () => {
         open={newClientModalOpen}
         onOpenChange={setNewClientModalOpen}
       />
+      <ClientDetailModal
+        open={clientDetailModalOpen}
+        onOpenChange={setClientDetailModalOpen}
+        client={selectedClient}
+      />
     </Layout>
   );
 };
