@@ -251,16 +251,25 @@ export function ProgressChart({
             const isLast = index === data.length - 1;
 
             return (
-              <div key={index} className="flex flex-col items-center">
-                {/* Data point */}
+              <div key={index} className="flex flex-col items-center relative">
+                {/* Data point with hover effect */}
                 <div
-                  className="relative mb-2"
+                  className="relative mb-2 cursor-pointer"
                   style={{ height: `${Math.max(height, 10)}%` }}
+                  onMouseEnter={() => setHoveredPoint(index)}
+                  onMouseLeave={() => setHoveredPoint(null)}
+                  onClick={() =>
+                    setSelectedPoint(selectedPoint === index ? null : index)
+                  }
                 >
                   <div
                     className={cn(
-                      "absolute bottom-0 w-3 h-3 rounded-full border-2 border-white shadow-lg",
+                      "absolute bottom-0 rounded-full border-2 border-white shadow-lg transition-all duration-200",
                       isLast ? "animate-pulse" : "",
+                      hoveredPoint === index ? "w-4 h-4 scale-110" : "w-3 h-3",
+                      selectedPoint === index
+                        ? "ring-2 ring-primary ring-offset-2"
+                        : "",
                     )}
                     style={{
                       backgroundColor: metricInfo.color,
@@ -268,12 +277,27 @@ export function ProgressChart({
                     }}
                   />
                   <div
-                    className="w-1 bg-gradient-to-t from-muted to-transparent"
+                    className="w-1 bg-gradient-to-t from-muted to-transparent transition-all duration-200"
                     style={{
                       height: `${height}%`,
                       backgroundColor: `${metricInfo.color}20`,
+                      width: hoveredPoint === index ? "6px" : "4px",
+                      marginLeft: hoveredPoint === index ? "-1px" : "0",
                     }}
                   />
+
+                  {/* Hover tooltip */}
+                  {hoveredPoint === index && (
+                    <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-2 px-3 rounded shadow-lg whitespace-nowrap z-10 animate-in fade-in-0 duration-200">
+                      <div className="font-medium">
+                        {point.value} {metricInfo.name}
+                      </div>
+                      <div className="text-gray-300">
+                        {new Date(point.date).toLocaleDateString()}
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Date label */}
