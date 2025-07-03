@@ -371,14 +371,43 @@ const Notes = () => {
 
   const handleViewNote = useCallback(
     (note: Note) => {
-      showModal({
-        type: "info",
-        title: note.title,
-        message: `Client: ${note.clientName}\nDate: ${new Date(note.sessionDate).toLocaleDateString()}\nType: ${note.type}\nStatus: ${note.status}\nDuration: ${note.sessionDuration} minutes\nWord Count: ${note.wordCount}\n\nContent Preview:\n${note.content.substring(0, 300)}${note.content.length > 300 ? "..." : ""}`,
-        confirmLabel: "Close",
-      });
+      try {
+        const formattedDate = new Date(note.sessionDate).toLocaleDateString();
+        const contentPreview = note.content
+          ? note.content.length > 250
+            ? note.content.substring(0, 250) + "..."
+            : note.content
+          : "No content available";
+
+        const modalMessage = [
+          `Client: ${note.clientName}`,
+          `Date: ${formattedDate}`,
+          `Type: ${note.type}`,
+          `Status: ${note.status}`,
+          `Duration: ${note.sessionDuration} minutes`,
+          `Word Count: ${note.wordCount}`,
+          `Tags: ${note.tags.join(", ") || "None"}`,
+          "",
+          "Content Preview:",
+          contentPreview,
+        ].join("\n");
+
+        showModal({
+          type: "info",
+          title: `Note Details: ${note.title}`,
+          message: modalMessage,
+          confirmLabel: "Close",
+        });
+      } catch (error) {
+        console.error("Error viewing note:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to display note details. Please try again.",
+        });
+      }
     },
-    [showModal],
+    [showModal, toast],
   );
 
   const handleExportNotes = useCallback(() => {
