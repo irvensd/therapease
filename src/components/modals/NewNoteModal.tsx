@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 
 interface NewNoteModalProps {
   open: boolean;
