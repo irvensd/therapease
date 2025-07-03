@@ -43,11 +43,7 @@ const Sessions = () => {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => {
-                  alert(
-                    "Calendar view coming soon! This will integrate with popular calendar apps like Google Calendar and Outlook.",
-                  );
-                }}
+                onClick={() => setCalendarModalOpen(true)}
               >
                 Open Calendar
               </Button>
