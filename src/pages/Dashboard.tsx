@@ -18,6 +18,10 @@ import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
 import { AddReminderModal } from "@/components/modals/AddReminderModal";
 import { AIAssistant } from "@/components/AIAssistant";
+import { ProgressChart } from "@/components/ProgressChart";
+import { TherapistWellness } from "@/components/TherapistWellness";
+import { QuickActions } from "@/components/QuickActions";
+import { ClinicalAssessments } from "@/components/ClinicalAssessments";
 
 const Dashboard = () => {
   const navigate = useNavigate();
