@@ -683,6 +683,7 @@ const Clients = () => {
         onOpenChange={setClientDetailModalOpen}
         client={selectedClient}
       />
+      <ModalComponent />
     </Layout>
   );
 };
