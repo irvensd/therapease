@@ -296,6 +296,10 @@ export function ClientDetailModal({
             </div>
           </TabsContent>
 
+          <TabsContent value="progress" className="space-y-4">
+            <ProgressChart mode="client" clientName={client.name} />
+          </TabsContent>
+
           <TabsContent value="ai-insights" className="space-y-4">
             <AIAssistant mode="client" clientData={client} />
 
