@@ -127,6 +127,10 @@ const Sessions = () => {
         open={scheduleModalOpen}
         onOpenChange={setScheduleModalOpen}
       />
+      <SessionCalendarModal
+        open={calendarModalOpen}
+        onOpenChange={setCalendarModalOpen}
+      />
     </Layout>
   );
 };
