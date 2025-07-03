@@ -181,30 +181,71 @@ export function AIAssistant({
   const generateAIResponse = (input: string): string => {
     const lowerInput = input.toLowerCase();
 
-    if (lowerInput.includes("note") || lowerInput.includes("documentation")) {
-      return "I can help you with session notes! For efficient documentation, I recommend using the SOAP format: Subjective (client's report), Objective (your observations), Assessment (clinical evaluation), and Plan (next steps). Would you like me to help structure a note for a specific client?";
+    // Greeting responses
+    if (
+      lowerInput.includes("hello") ||
+      lowerInput.includes("hi") ||
+      lowerInput.includes("hey")
+    ) {
+      return "Hello! I'm your AI Clinical Assistant. I'm here to help with documentation, treatment planning, risk assessment, and practice management. What would you like to work on today?";
     }
 
+    // Note documentation
+    if (lowerInput.includes("note") || lowerInput.includes("documentation")) {
+      return "I can help you with professional session notes! I support multiple formats:\n\n• **SOAP Notes** - Most comprehensive (Subjective, Objective, Assessment, Plan)\n• **DAP Notes** - Concise format (Data, Assessment, Plan)\n• **BIRP Notes** - Behavior-focused (Behavior, Intervention, Response, Plan)\n\nI can also auto-generate notes based on your session details. Which format would you prefer, or would you like me to generate a note for a specific client?";
+    }
+
+    // Treatment planning
     if (
       lowerInput.includes("treatment") ||
-      lowerInput.includes("intervention")
+      lowerInput.includes("intervention") ||
+      lowerInput.includes("therapy")
     ) {
-      return "Based on current evidence-based practices, I can suggest treatment approaches. What presenting concerns are you addressing? For anxiety, CBT with exposure therapy shows strong efficacy (Cohen's d = 1.2). For depression, combination of CBT and behavioral activation is highly effective.";
+      return "I can provide evidence-based treatment recommendations! Here are some proven approaches:\n\n**For Anxiety Disorders:**\n• CBT with exposure therapy (Cohen's d = 1.2)\n• Mindfulness-based interventions\n• Progressive muscle relaxation\n\n**For Depression:**\n• CBT + Behavioral Activation (highly effective)\n• Interpersonal Therapy (IPT)\n• Mindfulness-Based Cognitive Therapy\n\nWhat specific presenting concerns are you addressing? I can provide targeted recommendations.";
     }
 
+    // Risk assessment
     if (
       lowerInput.includes("risk") ||
       lowerInput.includes("safety") ||
-      lowerInput.includes("crisis")
+      lowerInput.includes("crisis") ||
+      lowerInput.includes("suicide")
     ) {
-      return "Safety assessment is crucial. Key indicators to monitor: expressed hopelessness, social withdrawal, sleep disturbances, and substance use changes. I recommend using standardized tools like Columbia Suicide Severity Rating Scale. Would you like me to guide you through a risk assessment protocol?";
+      return "⚠️ **Safety Assessment Protocol:**\n\n**Immediate Risk Factors:**\n• Expressed hopelessness or worthlessness\n• Social withdrawal and isolation\n• Sleep disturbances (insomnia/hypersomnia)\n• Substance use changes\n• Giving away possessions\n\n**Assessment Tools:**\n• Columbia Suicide Severity Rating Scale\n• Beck Scale for Suicide Ideation\n• SAD PERSONS Scale\n\n**Crisis Resources:** 988 Suicide & Crisis Lifeline\n\nWould you like me to guide you through a formal risk assessment, or do you need immediate crisis consultation?";
     }
 
-    if (lowerInput.includes("schedule") || lowerInput.includes("appointment")) {
-      return "For optimal scheduling, consider: client's peak engagement times, therapy frequency (weekly for acute cases, bi-weekly for maintenance), and session spacing for homework completion. Your current 94% completion rate suggests good scheduling practices!";
+    // Assessment tools
+    if (
+      lowerInput.includes("assessment") ||
+      lowerInput.includes("phq") ||
+      lowerInput.includes("gad") ||
+      lowerInput.includes("test")
+    ) {
+      return "I can help with clinical assessments! Available tools:\n\n• **PHQ-9** - Depression screening (0-27 scale)\n• **GAD-7** - Anxiety assessment (0-21 scale)\n• **PCL-5** - PTSD symptoms (0-80 scale)\n• **DASS-21** - Depression, Anxiety, Stress\n\nI can administer these assessments, score them automatically, and track progress over time. Which assessment would you like to use, or would you like to review recent results?";
     }
 
-    return "I'm here to assist with clinical decisions, documentation, treatment planning, and practice management. Feel free to ask about specific clients, evidence-based interventions, risk assessment, or administrative tasks. How can I help you provide the best care today?";
+    // Scheduling and practice management
+    if (
+      lowerInput.includes("schedule") ||
+      lowerInput.includes("appointment") ||
+      lowerInput.includes("time")
+    ) {
+      return "**Scheduling Optimization Tips:**\n\n• **Peak Performance Times:** Most clients engage better 9-11 AM\n• **Session Frequency:** Weekly for acute cases, bi-weekly for maintenance\n• **Buffer Time:** 15 minutes between sessions for notes\n• **No-Show Prevention:** Automated reminders 24hrs + 2hrs before\n\nYour current 94% completion rate is excellent! Would you like me to analyze your schedule for optimization opportunities?";
+    }
+
+    // Specific client questions
+    if (lowerInput.includes("emma") || lowerInput.includes("client")) {
+      return "I can provide client-specific insights! For Emma Thompson:\n\n• **Progress:** 67% improvement in PHQ-9 scores\n• **Optimal Times:** Best engagement in morning slots\n• **Next Steps:** Consider PHQ-9 reassessment\n• **Treatment:** CBT with exposure therapy showing excellent results\n\nWould you like detailed progress charts, session prep, or treatment recommendations for Emma or another client?";
+    }
+
+    // General helpful response
+    const responses = [
+      "I'm here to support your clinical practice! I can help with:\n\n• **Documentation** - Generate SOAP, DAP, BIRP notes\n• **Treatment Planning** - Evidence-based recommendations\n• **Risk Assessment** - Safety protocols and crisis resources\n• **Progress Tracking** - Visual charts and outcome measures\n• **Practice Management** - Scheduling and workflow optimization\n\nWhat specific area would you like assistance with?",
+
+      "As your AI Clinical Assistant, I can provide:\n\n• **Real-time clinical insights** based on current research\n• **Automated documentation** that saves you time\n• **Risk monitoring** and safety alerts\n• **Treatment outcome predictions** using evidence-based data\n• **Practice analytics** to optimize your workflow\n\nHow can I help you provide exceptional care today?",
+    ];
+
+    return responses[Math.floor(Math.random() * responses.length)];
   };
 
   const getPriorityColor = (priority: string) => {
