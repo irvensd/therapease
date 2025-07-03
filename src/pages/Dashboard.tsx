@@ -314,8 +314,10 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Weekly Progress */}
-          <Card className="therapease-card lg:col-span-2">
+        </div>
+
+        {/* Weekly Progress - Full Width */}
+        <Card className="therapease-card">
             <CardHeader>
               <CardTitle>Weekly Progress</CardTitle>
             </CardHeader>
