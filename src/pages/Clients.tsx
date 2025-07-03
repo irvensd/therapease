@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
 import { ClientDetailModal } from "@/components/modals/ClientDetailModal";
+import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Table,
   TableBody,
@@ -32,7 +34,31 @@ import {
   Mail,
   Filter,
   Download,
+  Loader2,
+  AlertCircle,
+  Users,
 } from "lucide-react";
+
+// Types for better type safety
+interface Client {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  status: "Active" | "Inactive" | "Pending";
+  lastSession: string | null;
+  nextSession: string | null;
+  sessionsCount: number;
+  diagnosis: string;
+  insurance: string;
+}
+
+interface ClientStats {
+  total: number;
+  active: number;
+  newThisMonth: number;
+  averageSessions: number;
+}
 
 // Mock client data
 const clients = [
