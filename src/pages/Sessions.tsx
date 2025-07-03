@@ -177,6 +177,202 @@ const Sessions = () => {
     loadSessions();
   }, [toast]);
 
+  // Computed values
+  const filteredSessions = sessions.filter((session) => {
+    if (statusFilter === "all") return true;
+    return session.status.toLowerCase() === statusFilter;
+  });
+
+  const sessionStats: SessionStats = {
+    totalSessions: sessions.length,
+    completedSessions: sessions.filter((s) => s.status === "Completed").length,
+    upcomingSessions: sessions.filter((s) => s.status === "Scheduled").length,
+    completionRate:
+      sessions.length > 0
+        ? Math.round(
+            (sessions.filter((s) => s.status === "Completed").length /
+              sessions.length) *
+              100,
+          )
+        : 0,
+    totalHours:
+      Math.round((sessions.reduce((sum, s) => sum + s.duration, 0) / 60) * 10) /
+      10,
+  };
+
+  // Utility functions
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Scheduled":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+      case "Completed":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "Cancelled":
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+      case "No-Show":
+        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "Scheduled":
+        return <Clock className="h-3 w-3" />;
+      case "Completed":
+        return <CheckCircle className="h-3 w-3" />;
+      case "Cancelled":
+        return <XCircle className="h-3 w-3" />;
+      case "No-Show":
+        return <AlertCircle className="h-3 w-3" />;
+      default:
+        return <Clock className="h-3 w-3" />;
+    }
+  };
+
+  const getFormatIcon = (format: string) => {
+    switch (format) {
+      case "Video Call":
+        return <Video className="h-3 w-3" />;
+      case "Phone Call":
+        return <Phone className="h-3 w-3" />;
+      case "In-Person":
+        return <MapPin className="h-3 w-3" />;
+      default:
+        return <MapPin className="h-3 w-3" />;
+    }
+  };
+
+  // Action handlers with proper error handling
+  const handleNavigation = useCallback(
+    (path: string, actionName: string) => {
+      try {
+        navigate(path);
+        toast({
+          title: "Navigation",
+          description: `Navigating to ${actionName}...`,
+        });
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: "Navigation Error",
+          description: "Failed to navigate. Please try again.",
+        });
+      }
+    },
+    [navigate, toast],
+  );
+
+  const handleViewReports = useCallback(() => {
+    showModal({
+      type: "info",
+      title: "Time Tracking Reports",
+      message:
+        "Time tracking reports will show detailed analytics including session duration summaries, billing time analysis, productivity metrics, and client engagement patterns. This feature provides valuable insights for practice management and billing optimization.",
+      confirmLabel: "Got it",
+      onConfirm: () => {
+        toast({
+          title: "Feature Coming Soon",
+          description:
+            "Time tracking reports will be available in the next update.",
+        });
+      },
+    });
+  }, [showModal, toast]);
+
+  const handleSessionTemplates = useCallback(() => {
+    showModal({
+      type: "info",
+      title: "Session Templates",
+      message:
+        "Session templates will allow you to create reusable session formats, pre-defined note structures, treatment plan templates, and standardized assessment forms. This will streamline your workflow and ensure consistency across sessions.",
+      confirmLabel: "Sounds great",
+      onConfirm: () => {
+        toast({
+          title: "Feature In Development",
+          description:
+            "Session templates are being developed and will be available soon.",
+        });
+      },
+    });
+  }, [showModal, toast]);
+
+  const handleSessionAction = useCallback(
+    (session: Session, action: string) => {
+      switch (action) {
+        case "view":
+          showModal({
+            type: "info",
+            title: `Session Details - ${session.clientName}`,
+            message: `Date: ${new Date(session.date).toLocaleDateString()}\nTime: ${session.time}\nDuration: ${session.duration} minutes\nType: ${session.type}\nFormat: ${session.format}\nStatus: ${session.status}\n${session.notes ? `Notes: ${session.notes}` : ""}`,
+            confirmLabel: "Close",
+          });
+          break;
+        case "edit":
+          toast({
+            title: "Edit Session",
+            description: `Edit functionality for ${session.clientName}'s session would be implemented here.`,
+          });
+          break;
+        case "complete":
+          setSessions((prev) =>
+            prev.map((s) =>
+              s.id === session.id ? { ...s, status: "Completed" as const } : s,
+            ),
+          );
+          toast({
+            title: "Session Completed",
+            description: `Marked ${session.clientName}'s session as completed.`,
+          });
+          break;
+        case "cancel":
+          setSessions((prev) =>
+            prev.map((s) =>
+              s.id === session.id ? { ...s, status: "Cancelled" as const } : s,
+            ),
+          );
+          toast({
+            title: "Session Cancelled",
+            description: `Cancelled ${session.clientName}'s session.`,
+          });
+          break;
+      }
+    },
+    [showModal, toast],
+  );
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="text-muted-foreground">Loading sessions...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-destructive">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Refresh Page
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="p-6 space-y-6">
