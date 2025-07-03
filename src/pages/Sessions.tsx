@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Plus, Clock } from "lucide-react";
 import { ScheduleSessionModal } from "@/components/modals/ScheduleSessionModal";
+import { SessionCalendarModal } from "@/components/modals/SessionCalendarModal";
 
 const Sessions = () => {
   const navigate = useNavigate();
