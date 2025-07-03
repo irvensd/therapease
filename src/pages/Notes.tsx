@@ -230,52 +230,63 @@ const Notes = () => {
     loadNotes();
   }, [toast]);
 
-  // Computed values
-  const filteredNotes = notes.filter((note) => {
-    const matchesSearch =
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase()),
+  // Computed values with useMemo to prevent infinite renders
+  const filteredNotes = useMemo(() => {
+    return notes.filter((note) => {
+      const matchesSearch =
+        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.tags.some((tag) =>
+          tag.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+
+      const matchesType = typeFilter === "all" || note.type === typeFilter;
+      const matchesStatus =
+        statusFilter === "all" || note.status === statusFilter;
+      const matchesClient =
+        clientFilter === "all" || note.clientName === clientFilter;
+      const matchesStarred = !showStarredOnly || note.isStarred;
+
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesStatus &&
+        matchesClient &&
+        matchesStarred
       );
+    });
+  }, [
+    notes,
+    searchTerm,
+    typeFilter,
+    statusFilter,
+    clientFilter,
+    showStarredOnly,
+  ]);
 
-    const matchesType = typeFilter === "all" || note.type === typeFilter;
-    const matchesStatus =
-      statusFilter === "all" || note.status === statusFilter;
-    const matchesClient =
-      clientFilter === "all" || note.clientName === clientFilter;
-    const matchesStarred = !showStarredOnly || note.isStarred;
+  const notesStats: NotesStats = useMemo(() => {
+    return {
+      totalNotes: notes.length,
+      draftNotes: notes.filter((n) => n.status === "Draft").length,
+      completedNotes: notes.filter((n) => n.status === "Complete").length,
+      starredNotes: notes.filter((n) => n.isStarred).length,
+      todaysNotes: notes.filter((n) => {
+        const today = new Date().toISOString().split("T")[0];
+        return n.sessionDate === today;
+      }).length,
+      averageWordCount:
+        notes.length > 0
+          ? Math.round(
+              notes.reduce((sum, n) => sum + n.wordCount, 0) / notes.length,
+            )
+          : 0,
+    };
+  }, [notes]);
 
-    return (
-      matchesSearch &&
-      matchesType &&
-      matchesStatus &&
-      matchesClient &&
-      matchesStarred
-    );
-  });
-
-  const notesStats: NotesStats = {
-    totalNotes: notes.length,
-    draftNotes: notes.filter((n) => n.status === "Draft").length,
-    completedNotes: notes.filter((n) => n.status === "Complete").length,
-    starredNotes: notes.filter((n) => n.isStarred).length,
-    todaysNotes: notes.filter((n) => {
-      const today = new Date().toISOString().split("T")[0];
-      return n.sessionDate === today;
-    }).length,
-    averageWordCount:
-      notes.length > 0
-        ? Math.round(
-            notes.reduce((sum, n) => sum + n.wordCount, 0) / notes.length,
-          )
-        : 0,
-  };
-
-  const uniqueClients = Array.from(
-    new Set(notes.map((n) => n.clientName)),
-  ).sort();
+  const uniqueClients = useMemo(() => {
+    return Array.from(new Set(notes.map((n) => n.clientName))).sort();
+  }, [notes]);
 
   // Utility functions
   const getStatusColor = (status: string) => {
@@ -455,7 +466,7 @@ const Notes = () => {
       type: "info",
       title: "Advanced Search Features",
       message:
-        "Advanced search includes:\n• Full-text search across note content\n�� Client name and tag filtering\n• Date range selection\n• Treatment goal keywords\n• Session type filtering\n• Status and priority sorting\n• Confidentiality level filtering",
+        "Advanced search includes:\n• Full-text search across note content\n• Client name and tag filtering\n• Date range selection\n• Treatment goal keywords\n• Session type filtering\n• Status and priority sorting\n• Confidentiality level filtering",
       confirmLabel: "Great!",
       onConfirm: () => {
         toast({
@@ -489,7 +500,7 @@ const Notes = () => {
       showModal({
         type: "info",
         title: "Edit Note",
-        message: `Edit functionality for "${note.title}" would open a comprehensive note editor with:\n• Rich text formatting\n• Template selection\n• Auto-save functionality\n�� Spell check for clinical terms\n• Client linking\n• Tag management\n\nThis feature is being developed with full HIPAA compliance.`,
+        message: `Edit functionality for "${note.title}" would open a comprehensive note editor with:\n• Rich text formatting\n• Template selection\n• Auto-save functionality\n• Spell check for clinical terms\n• Client linking\n• Tag management\n\nThis feature is being developed with full HIPAA compliance.`,
         confirmLabel: "Got it",
         onConfirm: () => {
           toast({
