@@ -67,9 +67,24 @@ export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
       setIsGeneratingNote(false);
 
       // Show success message
-      alert(
-        `✨ AI Assistant generated a professional ${formData.noteType?.toUpperCase() || "progress"} note for ${formData.client === "emma" ? "Emma Thompson" : "the selected client"}. Review and edit as needed before saving.`,
-      );
+      const clientName =
+        formData.client === "emma"
+          ? "Emma Thompson"
+          : formData.client === "michael"
+            ? "Michael Chen"
+            : formData.client === "sarah"
+              ? "Sarah Johnson"
+              : formData.client === "david"
+                ? "David Wilson"
+                : "the selected client";
+
+      showModal({
+        type: "success",
+        title: "AI Note Generated Successfully! ✨",
+        message: `Your AI Assistant has generated a professional ${formData.noteType?.toUpperCase() || "progress"} note for ${clientName}. The note follows clinical best practices and includes all required sections. Please review and edit as needed before saving.`,
+        confirmLabel: "Perfect, let me review it",
+        autoClose: 6000,
+      });
     }, 2000);
   };
 
