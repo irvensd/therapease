@@ -350,9 +350,8 @@ const Clients = () => {
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem
                               onClick={() => {
-                                alert(
-                                  `Viewing details for ${client.name}. In a full app, this would open a detailed client profile.`,
-                                );
+                                setSelectedClient(client);
+                                setClientDetailModalOpen(true);
                               }}
                             >
                               <Eye className="mr-2 h-4 w-4" />
