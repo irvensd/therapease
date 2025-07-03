@@ -315,21 +315,26 @@ const Notes = () => {
   // Action handlers with proper error handling
   const handleToggleStar = useCallback(
     (noteId: number) => {
-      setNotes((prev) =>
-        prev.map((note) =>
+      setNotes((prev) => {
+        const updatedNotes = prev.map((note) =>
           note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
-        ),
-      );
+        );
 
-      const note = notes.find((n) => n.id === noteId);
-      if (note) {
-        toast({
-          title: note.isStarred ? "Removed from Starred" : "Added to Starred",
-          description: `"${note.title}" ${note.isStarred ? "removed from" : "added to"} starred notes.`,
-        });
-      }
+        // Find the updated note for toast message
+        const updatedNote = updatedNotes.find((n) => n.id === noteId);
+        if (updatedNote) {
+          toast({
+            title: updatedNote.isStarred
+              ? "Added to Starred"
+              : "Removed from Starred",
+            description: `"${updatedNote.title}" ${updatedNote.isStarred ? "added to" : "removed from"} starred notes.`,
+          });
+        }
+
+        return updatedNotes;
+      });
     },
-    [notes, toast],
+    [toast],
   );
 
   const handleDeleteNote = useCallback(
