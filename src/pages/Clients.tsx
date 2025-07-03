@@ -60,79 +60,108 @@ interface ClientStats {
   averageSessions: number;
 }
 
-// Mock client data
-const clients = [
-  {
-    id: 1,
-    name: "Emma Thompson",
-    email: "emma.t@email.com",
-    phone: "(555) 123-4567",
-    status: "Active",
-    lastSession: "2024-01-15",
-    nextSession: "2024-01-22",
-    sessionsCount: 12,
-    diagnosis: "Anxiety Disorder",
-    insurance: "Blue Cross",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    email: "m.chen@email.com",
-    phone: "(555) 234-5678",
-    status: "Active",
-    lastSession: "2024-01-14",
-    nextSession: "2024-01-21",
-    sessionsCount: 8,
-    diagnosis: "Depression",
-    insurance: "Aetna",
-  },
-  {
-    id: 3,
-    name: "Sarah Johnson",
-    email: "sarah.j@email.com",
-    phone: "(555) 345-6789",
-    status: "Inactive",
-    lastSession: "2023-12-20",
-    nextSession: null,
-    sessionsCount: 15,
-    diagnosis: "PTSD",
-    insurance: "United Healthcare",
-  },
-  {
-    id: 4,
-    name: "David Wilson",
-    email: "d.wilson@email.com",
-    phone: "(555) 456-7890",
-    status: "Active",
-    lastSession: "2024-01-16",
-    nextSession: "2024-01-23",
-    sessionsCount: 6,
-    diagnosis: "Couples Therapy",
-    insurance: "Cigna",
-  },
-  {
-    id: 5,
-    name: "Lisa Rodriguez",
-    email: "lisa.r@email.com",
-    phone: "(555) 567-8901",
-    status: "Pending",
-    lastSession: null,
-    nextSession: "2024-01-24",
-    sessionsCount: 0,
-    diagnosis: "Initial Assessment",
-    insurance: "Medicare",
-  },
-];
-
 const Clients = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { showModal, ModalComponent } = useConfirmationModal();
+
+  // State management
+  const [clients, setClients] = useState<Client[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const [newClientModalOpen, setNewClientModalOpen] = useState(false);
   const [clientDetailModalOpen, setClientDetailModalOpen] = useState(false);
-  const [selectedClient, setSelectedClient] = useState<
-    (typeof clients)[0] | null
-  >(null);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+
+  // Mock client data - in real app would be fetched from API
+  const mockClients: Client[] = [
+    {
+      id: 1,
+      name: "Emma Thompson",
+      email: "emma.t@email.com",
+      phone: "(555) 123-4567",
+      status: "Active",
+      lastSession: "2024-01-15",
+      nextSession: "2024-01-22",
+      sessionsCount: 12,
+      diagnosis: "Anxiety Disorder",
+      insurance: "Blue Cross",
+    },
+    {
+      id: 2,
+      name: "Michael Chen",
+      email: "m.chen@email.com",
+      phone: "(555) 234-5678",
+      status: "Active",
+      lastSession: "2024-01-14",
+      nextSession: "2024-01-21",
+      sessionsCount: 8,
+      diagnosis: "Depression",
+      insurance: "Aetna",
+    },
+    {
+      id: 3,
+      name: "Sarah Johnson",
+      email: "sarah.j@email.com",
+      phone: "(555) 345-6789",
+      status: "Inactive",
+      lastSession: "2023-12-20",
+      nextSession: null,
+      sessionsCount: 15,
+      diagnosis: "PTSD",
+      insurance: "United Healthcare",
+    },
+    {
+      id: 4,
+      name: "David Wilson",
+      email: "d.wilson@email.com",
+      phone: "(555) 456-7890",
+      status: "Active",
+      lastSession: "2024-01-16",
+      nextSession: "2024-01-23",
+      sessionsCount: 6,
+      diagnosis: "Couples Therapy",
+      insurance: "Cigna",
+    },
+    {
+      id: 5,
+      name: "Lisa Rodriguez",
+      email: "lisa.r@email.com",
+      phone: "(555) 567-8901",
+      status: "Pending",
+      lastSession: null,
+      nextSession: "2024-01-24",
+      sessionsCount: 0,
+      diagnosis: "Initial Assessment",
+      insurance: "Medicare",
+    },
+  ];
+
+  // Load clients data on mount
+  useEffect(() => {
+    const loadClients = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        setClients(mockClients);
+      } catch (err) {
+        setError("Failed to load client data. Please try again.");
+        toast({
+          variant: "destructive",
+          title: "Error Loading Clients",
+          description: "There was a problem loading client data.",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadClients();
+  }, [toast]);
 
   const filteredClients = clients.filter((client) => {
     const matchesSearch = client.name
