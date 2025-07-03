@@ -493,20 +493,39 @@ export function ClinicalAssessments({
               )}
 
               {isCompleting && selectedAssessment === "phq9" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-medium">PHQ-9 Assessment</h3>
-                    <Badge variant="outline">
-                      {currentQuestionIndex + 1} of {phq9Questions.length}
-                    </Badge>
-                  </div>
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-lg">
+                        PHQ-9 Depression Assessment
+                      </h3>
+                      <Badge variant="outline" className="px-3 py-1">
+                        Question {currentQuestionIndex + 1} of{" "}
+                        {phq9Questions.length}
+                      </Badge>
+                    </div>
 
-                  <Progress
-                    value={
-                      ((currentQuestionIndex + 1) / phq9Questions.length) * 100
-                    }
-                    className="h-2"
-                  />
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm text-muted-foreground">
+                        <span>Progress</span>
+                        <span>
+                          {Math.round(
+                            ((currentQuestionIndex + 1) /
+                              phq9Questions.length) *
+                              100,
+                          )}
+                          % complete
+                        </span>
+                      </div>
+                      <Progress
+                        value={
+                          ((currentQuestionIndex + 1) / phq9Questions.length) *
+                          100
+                        }
+                        className="h-3"
+                      />
+                    </div>
+                  </div>
 
                   <Card>
                     <CardContent className="p-6">
