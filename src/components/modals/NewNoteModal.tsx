@@ -39,6 +39,89 @@ export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
   const [aiAssistanceEnabled, setAiAssistanceEnabled] = useState(true);
   const [isGeneratingNote, setIsGeneratingNote] = useState(false);
 
+  const generateAINote = async () => {
+    if (!formData.client || !formData.sessionType) {
+      alert("Please select a client and session type first.");
+      return;
+    }
+
+    setIsGeneratingNote(true);
+
+    // Simulate AI note generation
+    setTimeout(() => {
+      const aiGeneratedContent = generateNoteContent(
+        formData.client,
+        formData.sessionType,
+        formData.noteType,
+      );
+
+      setFormData((prev) => ({
+        ...prev,
+        content: aiGeneratedContent.content,
+        goals: aiGeneratedContent.goals,
+        followUp: aiGeneratedContent.followUp,
+      }));
+
+      setIsGeneratingNote(false);
+    }, 2000);
+  };
+
+  const generateNoteContent = (
+    client: string,
+    sessionType: string,
+    noteType: string,
+  ) => {
+    const clientName =
+      client === "emma"
+        ? "Emma Thompson"
+        : client === "michael"
+          ? "Michael Chen"
+          : client === "sarah"
+            ? "Sarah Johnson"
+            : client === "david"
+              ? "David Wilson"
+              : "the client";
+
+    if (noteType === "soap") {
+      return {
+        content: `SUBJECTIVE: ${clientName} reported feeling anxious about upcoming work presentations. Client states anxiety level at 6/10, down from 8/10 last week. Reports using breathing techniques learned in previous session with moderate success. Sleep has improved slightly - averaging 6 hours per night versus 4-5 hours previously.
+
+OBJECTIVE: Client appeared alert and engaged throughout session. Maintained good eye contact. Speech was clear and goal-directed. No signs of psychomotor agitation observed today. Client demonstrated breathing technique correctly when prompted.
+
+ASSESSMENT: Client is showing gradual improvement in anxiety management skills. Continued progress toward treatment goals of reducing anxiety symptoms and improving coping strategies. No immediate safety concerns noted.
+
+PLAN: Continue weekly individual therapy sessions. Review and practice additional CBT techniques for anxiety management. Assign homework: daily breathing exercises and thought record completion. Schedule follow-up in one week.`,
+        goals:
+          "1. Reduce anxiety symptoms from 8/10 to 4/10 within 6 weeks\n2. Implement daily coping strategies\n3. Improve sleep quality to 7+ hours nightly",
+        followUp:
+          "• Practice breathing exercises 2x daily\n• Complete thought record worksheet\n• Schedule relaxation time before presentations\n• Continue anxiety tracking journal",
+      };
+    }
+
+    if (noteType === "dap") {
+      return {
+        content: `DATA: ${clientName} attended 60-minute ${sessionType.toLowerCase()} session. Client reported anxiety level 6/10 (improved from 8/10). Discussed work-related stress and presentation anxiety. Client demonstrated learned breathing techniques.
+
+ASSESSMENT: Client shows continued progress in anxiety management. Improvement noted in sleep patterns and use of coping skills. Engaged well in session and motivated for treatment.
+
+PLAN: Continue weekly therapy. Practice CBT techniques, complete homework assignments, follow up on anxiety tracking.`,
+        goals:
+          "Reduce anxiety symptoms and improve work-related stress management",
+        followUp:
+          "Breathing exercises daily, thought record completion, anxiety tracking",
+      };
+    }
+
+    // Default progress note
+    return {
+      content: `${clientName} attended ${formData.duration}-minute ${sessionType.toLowerCase()} session. Session focused on anxiety management and coping skill development. Client reported decreased anxiety levels and improved sleep. Discussed strategies for managing work-related stress. Client demonstrated good understanding of therapeutic concepts and appeared motivated for continued treatment.`,
+      goals:
+        "Continue progress toward anxiety reduction and improved coping skills",
+      followUp:
+        "Practice assigned coping strategies and complete homework exercises",
+    };
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("New note data:", formData);
