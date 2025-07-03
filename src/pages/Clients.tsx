@@ -163,15 +163,32 @@ const Clients = () => {
     loadClients();
   }, [toast]);
 
+  // Computed values
   const filteredClients = clients.filter((client) => {
-    const matchesSearch = client.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.diagnosis.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "All" || client.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
+  const clientStats: ClientStats = {
+    total: clients.length,
+    active: clients.filter((c) => c.status === "Active").length,
+    newThisMonth: clients.filter((c) => c.status === "Pending").length,
+    averageSessions:
+      clients.length > 0
+        ? Math.round(
+            (clients.reduce((sum, c) => sum + c.sessionsCount, 0) /
+              clients.length) *
+              10,
+          ) / 10
+        : 0,
+  };
+
+  // Utility functions
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Active":
@@ -184,6 +201,109 @@ const Clients = () => {
         return "bg-gray-100 text-gray-800";
     }
   };
+
+  // Action handlers with proper error handling
+  const handleNavigation = useCallback(
+    (path: string, actionName: string) => {
+      try {
+        navigate(path);
+        toast({
+          title: "Navigation",
+          description: `Navigating to ${actionName}...`,
+        });
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: "Navigation Error",
+          description: "Failed to navigate. Please try again.",
+        });
+      }
+    },
+    [navigate, toast],
+  );
+
+  const handleEditClient = useCallback(
+    (client: Client) => {
+      showModal({
+        type: "info",
+        title: "Edit Client",
+        message: `Editing ${client.name}. In a full app, this would open an edit form with pre-filled data.`,
+        confirmLabel: "Got it",
+        onConfirm: () => {
+          toast({
+            title: "Edit Mode",
+            description: `Edit functionality for ${client.name} would be implemented here.`,
+          });
+        },
+      });
+    },
+    [showModal, toast],
+  );
+
+  const handleExportClients = useCallback(() => {
+    try {
+      const csvContent = filteredClients
+        .map(
+          (client) =>
+            `"${client.name}","${client.email}","${client.phone}","${client.status}","${client.insurance}","${client.diagnosis}","${client.sessionsCount}"`,
+        )
+        .join("\n");
+      const header = "Name,Email,Phone,Status,Insurance,Diagnosis,Sessions\n";
+      const blob = new Blob([header + csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `clients-export-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Export Successful",
+        description: `Exported ${filteredClients.length} clients to CSV file.`,
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "Failed to export client data. Please try again.",
+      });
+    }
+  }, [filteredClients, toast]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="text-muted-foreground">Loading clients...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-destructive">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Refresh Page
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
