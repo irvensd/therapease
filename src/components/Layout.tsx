@@ -182,6 +182,9 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Floating AI Assistant - available throughout the app */}
         <AIAssistant isFloating={true} />
+
+        {/* Wellness Alerts */}
+        <TherapistWellness mode="alert" />
       </div>
     </div>
   );
