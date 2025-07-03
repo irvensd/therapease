@@ -243,8 +243,11 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Recent Activity and Quick Actions */}
+        {/* AI Assistant and Quick Actions */}
         <div className="grid gap-6 lg:grid-cols-3">
+          {/* AI Assistant */}
+          <AIAssistant mode="dashboard" />
+
           {/* Quick Actions */}
           <Card className="therapease-card">
             <CardHeader>
