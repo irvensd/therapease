@@ -370,6 +370,7 @@ PLAN: Continue weekly therapy. Practice CBT techniques, complete homework assign
             <Button type="submit">Save Note</Button>
           </DialogFooter>
         </form>
+        <ModalComponent />
       </DialogContent>
     </Dialog>
   );
