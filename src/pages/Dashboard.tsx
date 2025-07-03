@@ -258,10 +258,19 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* AI Assistant and Quick Actions */}
+        {/* Wellness Monitor and Progress Overview */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <TherapistWellness mode="dashboard" />
+          <ProgressChart mode="dashboard" />
+        </div>
+
+        {/* AI Assistant, Clinical Assessments, and Weekly Progress */}
         <div className="grid gap-6 lg:grid-cols-3">
           {/* AI Assistant */}
           <AIAssistant mode="dashboard" />
+
+          {/* Clinical Assessments */}
+          <ClinicalAssessments mode="dashboard" />
 
           {/* Quick Actions */}
           <Card className="therapease-card">
