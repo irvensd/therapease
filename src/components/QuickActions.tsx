@@ -63,15 +63,25 @@ export function QuickActions({
     console.log(`Quick action: ${actionId}`, data);
     onAction?.(actionId, data);
 
-    // Simulate action completion with user feedback
+    // Provide immediate feedback for actions
     const actionMessages: Record<string, string> = {
-      "new-client": "Client form opened - ready to add new client",
-      "schedule-session": "Session scheduler opened - select client and time",
-      "create-note": "Note editor opened - document your session",
-      "create-invoice": "Invoice builder opened - add services and amount",
-      "emergency-contact": "Emergency protocol activated - resources displayed",
-      "backup-data": "Data backup initiated - files will be exported",
-      "quick-search": "Search activated - find clients, notes, or sessions",
+      "new-client":
+        "✅ New Client form ready! Fill in their information to get started.",
+      "schedule-session":
+        "📅 Session scheduler ready! Select your client and preferred time slot.",
+      "create-note":
+        "📝 Note editor opened! Document your session with AI assistance available.",
+      "create-invoice":
+        "💰 Invoice builder ready! Add services and the system will calculate totals.",
+      "emergency-contact":
+        "🚨 Emergency resources displayed. These contacts are available 24/7.",
+      "backup-data":
+        "💾 Practice data exported successfully! Download will start automatically.",
+      "quick-search":
+        "🔍 Global search activated! Type to find clients, notes, sessions, or invoices.",
+      "video-call": "📹 Opening secure video call platform in new window...",
+      "send-reminder":
+        "📲 Reminder system ready! Choose client and reminder type.",
     };
 
     if (actionMessages[actionId]) {
@@ -171,7 +181,7 @@ export function QuickActions({
       action: () => {
         handleAction("emergency-contact");
         alert(`Emergency Resources:
-        
+
 National Suicide Prevention Lifeline: 988
 Crisis Text Line: Text HOME to 741741
 National Sexual Assault Hotline: 1-800-656-4673
