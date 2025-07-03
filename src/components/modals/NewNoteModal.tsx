@@ -47,7 +47,7 @@ export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
 
     setIsGeneratingNote(true);
 
-    // Simulate AI note generation
+    // Simulate AI note generation with realistic delay
     setTimeout(() => {
       const aiGeneratedContent = generateNoteContent(
         formData.client,
@@ -63,6 +63,11 @@ export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
       }));
 
       setIsGeneratingNote(false);
+
+      // Show success message
+      alert(
+        `✨ AI Assistant generated a professional ${formData.noteType?.toUpperCase() || "progress"} note for ${formData.client === "emma" ? "Emma Thompson" : "the selected client"}. Review and edit as needed before saving.`,
+      );
     }, 2000);
   };
 
