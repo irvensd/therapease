@@ -327,54 +327,70 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions - Improved styling */}
-        <div className="bg-gradient-to-r from-primary/5 via-background to-accent/5 rounded-xl p-6 border border-border">
-          <div className="flex items-center justify-between mb-4">
+        <div
+          className="bg-gradient-to-r from-primary/5 via-background to-accent/5 rounded-xl p-4 sm:p-6 border border-border"
+          role="region"
+          aria-label="Quick actions"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
             <div>
-              <h2 className="text-xl font-semibold">Quick Actions</h2>
+              <h2 className="text-lg sm:text-xl font-semibold">
+                Quick Actions
+              </h2>
               <p className="text-sm text-muted-foreground">
                 Common tasks to streamline your workflow
               </p>
             </div>
-            <Badge variant="secondary" className="bg-primary/10 text-primary">
-              <Zap className="h-3 w-3 mr-1" />
+            <Badge
+              variant="secondary"
+              className="bg-primary/10 text-primary w-fit"
+            >
+              <Zap className="h-3 w-3 mr-1" aria-hidden="true" />
               Fast workflow
             </Badge>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <Button
-              onClick={() => setNewClientModalOpen(true)}
+              onClick={handleNewClientModalOpen}
               variant="outline"
-              className="h-16 flex-col gap-2 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 hover:text-blue-800"
+              className="h-14 sm:h-16 flex-col gap-2 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 hover:text-blue-800 transition-colors"
+              aria-label="Add new client"
             >
-              <Users className="h-5 w-5" />
+              <Users className="h-4 sm:h-5 w-4 sm:w-5" aria-hidden="true" />
               <span className="text-xs font-medium">Add Client</span>
             </Button>
 
             <Button
-              onClick={() => navigate("/sessions")}
+              onClick={() => handleNavigation("/sessions", "Sessions")}
               variant="outline"
-              className="h-16 flex-col gap-2 bg-green-50 hover:bg-green-100 border-green-200 text-green-700 hover:text-green-800"
+              className="h-14 sm:h-16 flex-col gap-2 bg-green-50 hover:bg-green-100 border-green-200 text-green-700 hover:text-green-800 transition-colors"
+              aria-label="Schedule new session"
             >
-              <Calendar className="h-5 w-5" />
+              <Calendar className="h-4 sm:h-5 w-4 sm:w-5" aria-hidden="true" />
               <span className="text-xs font-medium">Schedule Session</span>
             </Button>
 
             <Button
-              onClick={() => navigate("/notes")}
+              onClick={() => handleNavigation("/notes", "Notes")}
               variant="outline"
-              className="h-16 flex-col gap-2 bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-700 hover:text-purple-800"
+              className="h-14 sm:h-16 flex-col gap-2 bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-700 hover:text-purple-800 transition-colors"
+              aria-label="Create session note"
             >
-              <FileText className="h-5 w-5" />
+              <FileText className="h-4 sm:h-5 w-4 sm:w-5" aria-hidden="true" />
               <span className="text-xs font-medium">Create Note</span>
             </Button>
 
             <Button
-              onClick={() => navigate("/invoices")}
+              onClick={() => handleNavigation("/invoices", "Invoices")}
               variant="outline"
-              className="h-16 flex-col gap-2 bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-700 hover:text-orange-800"
+              className="h-14 sm:h-16 flex-col gap-2 bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-700 hover:text-orange-800 transition-colors"
+              aria-label="Create new invoice"
             >
-              <DollarSign className="h-5 w-5" />
+              <DollarSign
+                className="h-4 sm:h-5 w-4 sm:w-5"
+                aria-hidden="true"
+              />
               <span className="text-xs font-medium">Create Invoice</span>
             </Button>
           </div>
