@@ -10,6 +10,7 @@ import { SessionCalendarModal } from "@/components/modals/SessionCalendarModal";
 const Sessions = () => {
   const navigate = useNavigate();
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+  const [calendarModalOpen, setCalendarModalOpen] = useState(false);
 
   return (
     <Layout>
