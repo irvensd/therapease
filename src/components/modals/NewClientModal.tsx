@@ -123,24 +123,77 @@ export function NewClientModal({ open, onOpenChange }: NewClientModalProps) {
     return (filledFields / totalFields) * 100;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log("New client data:", formData);
 
-    // Reset form and close modal
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      insurance: "",
-      diagnosis: "",
-      notes: "",
+    // Validate all fields
+    const newErrors: Record<string, string> = {};
+    Object.keys(formData).forEach((field) => {
+      if (["name", "email", "phone"].includes(field)) {
+        const error = validateField(
+          field,
+          formData[field as keyof typeof formData],
+        );
+        if (error) newErrors[field] = error;
+      }
     });
-    onOpenChange(false);
 
-    // Show success message (you could use a toast here)
-    alert("Client added successfully!");
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setTouchedFields({
+        name: true,
+        email: true,
+        phone: true,
+        insurance: true,
+      });
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: "Please fix the errors before submitting.",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      console.log("New client data:", formData);
+
+      // Reset form and close modal
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        insurance: "",
+        diagnosis: "",
+        notes: "",
+      });
+      setCurrentStep(1);
+      setErrors({});
+      setTouchedFields({});
+
+      toast({
+        variant: "success",
+        title: "Client Added Successfully! 🎉",
+        description: `${formData.name} has been added to your client list and is ready for scheduling.`,
+        duration: 5000,
+      });
+
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error Adding Client",
+        description: "There was a problem adding the client. Please try again.",
+        duration: 4000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
