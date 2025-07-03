@@ -30,6 +30,27 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Utility functions for localStorage with error handling
+const getStoredItem = (key: string, defaultValue: any = null) => {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.warn(`Failed to get ${key} from localStorage:`, error);
+    return defaultValue;
+  }
+};
+
+const setStoredItem = (key: string, value: any) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    console.warn(`Failed to set ${key} in localStorage:`, error);
+    return false;
+  }
+};
+
 interface TherapistWellnessProps {
   mode?: "dashboard" | "detailed" | "alert";
 }
