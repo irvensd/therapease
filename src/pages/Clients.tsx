@@ -332,40 +332,75 @@ const Clients = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4"
+          role="region"
+          aria-label="Client statistics"
+        >
           <Card className="therapease-card">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary" aria-hidden="true" />
                 Total Clients
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">48</div>
-              <p className="text-xs text-muted-foreground">+3 this month</p>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${clientStats.total} total clients`}
+              >
+                {clientStats.total}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                +{clientStats.newThisMonth} this month
+              </p>
             </CardContent>
           </Card>
 
           <Card className="therapease-card">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <div
+                  className="w-2 h-2 bg-green-500 rounded-full"
+                  aria-hidden="true"
+                />
                 Active Clients
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">42</div>
-              <p className="text-xs text-muted-foreground">87.5% of total</p>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${clientStats.active} active clients`}
+              >
+                {clientStats.active}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {clientStats.total > 0
+                  ? Math.round((clientStats.active / clientStats.total) * 100)
+                  : 0}
+                % of total
+              </p>
             </CardContent>
           </Card>
 
           <Card className="therapease-card">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <div
+                  className="w-2 h-2 bg-yellow-500 rounded-full"
+                  aria-hidden="true"
+                />
                 New This Month
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">3</div>
-              <p className="text-xs text-muted-foreground">2 pending intake</p>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${clientStats.newThisMonth} new clients this month`}
+              >
+                {clientStats.newThisMonth}
+              </div>
+              <p className="text-xs text-muted-foreground">pending intake</p>
             </CardContent>
           </Card>
 
@@ -376,7 +411,12 @@ const Clients = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">8.4</div>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${clientStats.averageSessions} average sessions per client`}
+              >
+                {clientStats.averageSessions}
+              </div>
               <p className="text-xs text-muted-foreground">per client</p>
             </CardContent>
           </Card>
