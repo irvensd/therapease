@@ -198,112 +198,207 @@ export function NewClientModal({ open, onOpenChange }: NewClientModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-hidden">
         <DialogHeader>
-          <DialogTitle>Add New Client</DialogTitle>
-          <DialogDescription>
-            Enter the client's information to create their profile.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                className="col-span-3"
-                placeholder="Client's full name"
-                required
-              />
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle className="flex items-center gap-2">
+                Add New Client
+                <Badge variant="outline">Step {currentStep} of 3</Badge>
+              </DialogTitle>
+              <DialogDescription>
+                {currentStep === 1 && "Enter basic contact information"}
+                {currentStep === 2 && "Insurance and billing details"}
+                {currentStep === 3 && "Initial assessment and notes"}
+              </DialogDescription>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="email" className="text-right">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                className="col-span-3"
-                placeholder="client@email.com"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="phone" className="text-right">
-                Phone
-              </Label>
-              <Input
-                id="phone"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-                className="col-span-3"
-                placeholder="(555) 123-4567"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="insurance" className="text-right">
-                Insurance
-              </Label>
-              <Select
-                value={formData.insurance}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, insurance: value })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select insurance provider" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="blue-cross">
-                    Blue Cross Blue Shield
-                  </SelectItem>
-                  <SelectItem value="aetna">Aetna</SelectItem>
-                  <SelectItem value="united">United Healthcare</SelectItem>
-                  <SelectItem value="cigna">Cigna</SelectItem>
-                  <SelectItem value="medicare">Medicare</SelectItem>
-                  <SelectItem value="medicaid">Medicaid</SelectItem>
-                  <SelectItem value="self-pay">Self Pay</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="diagnosis" className="text-right">
-                Initial Notes
-              </Label>
-              <Textarea
-                id="diagnosis"
-                value={formData.notes}
-                onChange={(e) =>
-                  setFormData({ ...formData, notes: e.target.value })
-                }
-                className="col-span-3"
-                placeholder="Initial assessment or presenting concerns..."
-                rows={3}
-              />
+            <div className="text-right">
+              <div className="text-sm text-muted-foreground mb-1">
+                Form Progress
+              </div>
+              <Progress value={getFormProgress()} className="w-24 h-2" />
             </div>
           </div>
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit">Add Client</Button>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Step 1: Contact Information */}
+          {currentStep === 1 && (
+            <div className="space-y-4 animate-in fade-in-50 duration-300">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => handleFieldChange("name", e.target.value)}
+                  onBlur={() => handleFieldBlur("name")}
+                  placeholder="Enter client's full name"
+                  className={errors.name ? "border-red-500" : ""}
+                />
+                {errors.name && touchedFields.name && (
+                  <p className="text-sm text-red-600">{errors.name}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleFieldChange("email", e.target.value)}
+                  onBlur={() => handleFieldBlur("email")}
+                  placeholder="client@example.com"
+                  className={errors.email ? "border-red-500" : ""}
+                />
+                {errors.email && touchedFields.email && (
+                  <p className="text-sm text-red-600">{errors.email}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number *</Label>
+                <Input
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(e) => handleFieldChange("phone", e.target.value)}
+                  onBlur={() => handleFieldBlur("phone")}
+                  placeholder="(555) 123-4567"
+                  className={errors.phone ? "border-red-500" : ""}
+                />
+                {errors.phone && touchedFields.phone && (
+                  <p className="text-sm text-red-600">{errors.phone}</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Insurance Information */}
+          {currentStep === 2 && (
+            <div className="space-y-4 animate-in fade-in-50 duration-300">
+              <div className="space-y-2">
+                <Label htmlFor="insurance">Insurance Provider *</Label>
+                <Select
+                  value={formData.insurance}
+                  onValueChange={(value) =>
+                    handleFieldChange("insurance", value)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select insurance provider" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="blue-cross">
+                      Blue Cross Blue Shield
+                    </SelectItem>
+                    <SelectItem value="aetna">Aetna</SelectItem>
+                    <SelectItem value="united">United Healthcare</SelectItem>
+                    <SelectItem value="cigna">Cigna</SelectItem>
+                    <SelectItem value="medicare">Medicare</SelectItem>
+                    <SelectItem value="medicaid">Medicaid</SelectItem>
+                    <SelectItem value="self-pay">Self Pay</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 className="font-medium text-blue-900 mb-2">
+                  Insurance Verification
+                </h4>
+                <p className="text-sm text-blue-800">
+                  We'll automatically verify benefits and coverage details once
+                  the client is added. You'll receive a notification when
+                  verification is complete.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Initial Assessment */}
+          {currentStep === 3 && (
+            <div className="space-y-4 animate-in fade-in-50 duration-300">
+              <div className="space-y-2">
+                <Label htmlFor="diagnosis">Presenting Concerns</Label>
+                <Textarea
+                  id="diagnosis"
+                  value={formData.diagnosis}
+                  onChange={(e) =>
+                    handleFieldChange("diagnosis", e.target.value)
+                  }
+                  placeholder="Brief description of presenting concerns or referral reason..."
+                  rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="notes">Initial Notes</Label>
+                <Textarea
+                  id="notes"
+                  value={formData.notes}
+                  onChange={(e) => handleFieldChange("notes", e.target.value)}
+                  placeholder="Any additional notes about the client or initial assessment..."
+                  rows={4}
+                />
+              </div>
+
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-medium text-green-900 mb-2">Next Steps</h4>
+                <ul className="text-sm text-green-800 space-y-1">
+                  <li>• Schedule initial intake appointment</li>
+                  <li>• Send intake forms and consent documents</li>
+                  <li>• Verify insurance benefits</li>
+                  <li>• Set up treatment plan</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="flex justify-between">
+            <div className="flex gap-2">
+              {currentStep > 1 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setCurrentStep(currentStep - 1)}
+                >
+                  Previous
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+
+            <div className="flex gap-2">
+              {currentStep < 3 ? (
+                <Button
+                  type="button"
+                  onClick={() => setCurrentStep(currentStep + 1)}
+                  disabled={!isStepValid(currentStep)}
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="min-w-[120px]"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Adding...
+                    </div>
+                  ) : (
+                    "Add Client"
+                  )}
+                </Button>
+              )}
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>
