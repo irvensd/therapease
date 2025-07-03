@@ -353,42 +353,6 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Weekly Progress - Full Width */}
-        <Card className="therapease-card">
-          <CardHeader>
-            <CardTitle>Weekly Progress</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>Sessions Completed</span>
-                <span>18/25 (72%)</span>
-              </div>
-              <Progress value={72} className="h-2" />
-            </div>
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>Notes Documented</span>
-                <span>16/18 (89%)</span>
-              </div>
-              <Progress value={89} className="h-2" />
-            </div>
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>Invoices Sent</span>
-                <span>12/18 (67%)</span>
-              </div>
-              <Progress value={67} className="h-2" />
-            </div>
-            <div className="pt-4">
-              <p className="text-sm text-muted-foreground">
-                Great week! You're ahead of schedule on documentation and just
-                need to catch up on invoicing.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       <NewClientModal
