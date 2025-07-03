@@ -1,16 +1,181 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
+import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Plus, Clock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Calendar,
+  Plus,
+  Clock,
+  Users,
+  TrendingUp,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Eye,
+  Edit,
+  Loader2,
+  FileText,
+  Phone,
+  Video,
+  MapPin,
+} from "lucide-react";
 import { ScheduleSessionModal } from "@/components/modals/ScheduleSessionModal";
 import { SessionCalendarModal } from "@/components/modals/SessionCalendarModal";
 
+// Types for better type safety
+interface Session {
+  id: number;
+  clientName: string;
+  date: string;
+  time: string;
+  duration: number; // in minutes
+  type: "Individual" | "Couples" | "Family" | "Group";
+  format: "In-Person" | "Video Call" | "Phone Call";
+  status: "Scheduled" | "Completed" | "Cancelled" | "No-Show";
+  location?: string;
+  notes?: string;
+  diagnosis: string;
+}
+
+interface SessionStats {
+  totalSessions: number;
+  completedSessions: number;
+  upcomingSessions: number;
+  completionRate: number;
+  totalHours: number;
+}
+
 const Sessions = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { showModal, ModalComponent } = useConfirmationModal();
+
+  // State management
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [calendarModalOpen, setCalendarModalOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("week");
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  // Mock session data - in real app would be fetched from API
+  const mockSessions: Session[] = [
+    {
+      id: 1,
+      clientName: "Emma Thompson",
+      date: "2024-01-22",
+      time: "09:00",
+      duration: 50,
+      type: "Individual",
+      format: "In-Person",
+      status: "Scheduled",
+      location: "Office Room A",
+      diagnosis: "Anxiety Disorder",
+    },
+    {
+      id: 2,
+      clientName: "Michael Chen",
+      date: "2024-01-22",
+      time: "10:30",
+      duration: 60,
+      type: "Couples",
+      format: "Video Call",
+      status: "Scheduled",
+      diagnosis: "Relationship Issues",
+    },
+    {
+      id: 3,
+      clientName: "Sarah Johnson",
+      date: "2024-01-20",
+      time: "14:00",
+      duration: 50,
+      type: "Individual",
+      format: "In-Person",
+      status: "Completed",
+      location: "Office Room B",
+      notes: "Made progress on coping strategies",
+      diagnosis: "PTSD",
+    },
+    {
+      id: 4,
+      clientName: "David Wilson",
+      date: "2024-01-19",
+      time: "16:00",
+      duration: 75,
+      type: "Family",
+      format: "In-Person",
+      status: "Completed",
+      location: "Conference Room",
+      diagnosis: "Family Therapy",
+    },
+    {
+      id: 5,
+      clientName: "Lisa Rodriguez",
+      date: "2024-01-18",
+      time: "11:00",
+      duration: 50,
+      type: "Individual",
+      format: "Phone Call",
+      status: "No-Show",
+      diagnosis: "Depression",
+    },
+    {
+      id: 6,
+      clientName: "Robert Kim",
+      date: "2024-01-17",
+      time: "13:30",
+      duration: 50,
+      type: "Individual",
+      format: "Video Call",
+      status: "Cancelled",
+      diagnosis: "Anxiety",
+    },
+  ];
+
+  // Load sessions data on mount
+  useEffect(() => {
+    const loadSessions = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setSessions(mockSessions);
+      } catch (err) {
+        setError("Failed to load session data. Please try again.");
+        toast({
+          variant: "destructive",
+          title: "Error Loading Sessions",
+          description: "There was a problem loading session data.",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSessions();
+  }, [toast]);
 
   return (
     <Layout>
