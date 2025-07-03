@@ -58,6 +58,7 @@ export function TherapistWellness({
 }: TherapistWellnessProps) {
   const [showDetailedView, setShowDetailedView] = useState(false);
   const [wellnessJournal, setWellnessJournal] = useState("");
+  const { showModal, ModalComponent } = useConfirmationModal();
 
   // Mock wellness data based on real burnout indicators
   const wellnessMetrics: WellnessMetric[] = [
