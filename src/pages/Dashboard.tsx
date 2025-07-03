@@ -579,11 +579,11 @@ const Dashboard = () => {
 
       <NewClientModal
         open={newClientModalOpen}
-        onOpenChange={setNewClientModalOpen}
+        onOpenChange={handleNewClientModalClose}
       />
       <AddReminderModal
         open={addReminderModalOpen}
-        onOpenChange={setAddReminderModalOpen}
+        onOpenChange={handleAddReminderModalClose}
       />
     </Layout>
   );
