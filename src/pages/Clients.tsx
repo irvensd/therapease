@@ -103,6 +103,10 @@ const Clients = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [newClientModalOpen, setNewClientModalOpen] = useState(false);
+  const [clientDetailModalOpen, setClientDetailModalOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<
+    (typeof clients)[0] | null
+  >(null);
 
   const filteredClients = clients.filter((client) => {
     const matchesSearch = client.name
