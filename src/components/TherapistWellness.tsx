@@ -207,66 +207,43 @@ export function TherapistWellness({
   if (mode === "alert") {
     // Initialize dismissed alerts from localStorage
     const [dismissedAlerts, setDismissedAlerts] = useState<string[]>(() => {
-      try {
-        const stored = localStorage.getItem(
-          "therapease-dismissed-wellness-alerts",
-        );
-        return stored ? JSON.parse(stored) : [];
-      } catch {
-        return [];
-      }
+      return getStoredItem("therapease-dismissed-wellness-alerts", []);
     });
 
     // Update localStorage whenever dismissedAlerts changes
     useEffect(() => {
-      try {
-        localStorage.setItem(
-          "therapease-dismissed-wellness-alerts",
-          JSON.stringify(dismissedAlerts),
-        );
-      } catch (error) {
-        console.warn("Failed to save dismissed alerts to localStorage:", error);
-      }
+      setStoredItem("therapease-dismissed-wellness-alerts", dismissedAlerts);
     }, [dismissedAlerts]);
 
     // Clear old dismissed alerts (older than 24 hours) on component mount
     useEffect(() => {
       const clearOldDismissals = () => {
-        try {
-          const dismissalTimestamps = localStorage.getItem(
-            "therapease-alert-dismissal-times",
-          );
-          const now = Date.now();
-          const twentyFourHours = 24 * 60 * 60 * 1000;
+        const dismissalTimestamps = getStoredItem(
+          "therapease-alert-dismissal-times",
+          {},
+        );
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
 
-          if (dismissalTimestamps) {
-            const timestamps = JSON.parse(dismissalTimestamps);
-            const validAlerts: string[] = [];
-            const validTimestamps: Record<string, number> = {};
+        const validAlerts: string[] = [];
+        const validTimestamps: Record<string, number> = {};
 
-            dismissedAlerts.forEach((alertId) => {
-              const dismissTime = timestamps[alertId];
-              if (dismissTime && now - dismissTime < twentyFourHours) {
-                validAlerts.push(alertId);
-                validTimestamps[alertId] = dismissTime;
-              }
-            });
-
-            if (validAlerts.length !== dismissedAlerts.length) {
-              setDismissedAlerts(validAlerts);
-              localStorage.setItem(
-                "therapease-alert-dismissal-times",
-                JSON.stringify(validTimestamps),
-              );
-            }
+        dismissedAlerts.forEach((alertId) => {
+          const dismissTime = dismissalTimestamps[alertId];
+          if (dismissTime && now - dismissTime < twentyFourHours) {
+            validAlerts.push(alertId);
+            validTimestamps[alertId] = dismissTime;
           }
-        } catch (error) {
-          console.warn("Failed to clean up old dismissed alerts:", error);
+        });
+
+        if (validAlerts.length !== dismissedAlerts.length) {
+          setDismissedAlerts(validAlerts);
+          setStoredItem("therapease-alert-dismissal-times", validTimestamps);
         }
       };
 
       clearOldDismissals();
-    }, []);
+    }, []); // Remove dismissedAlerts dependency to avoid infinite loop
 
     const activeAlerts = wellnessAlerts.filter(
       (alert) => !dismissedAlerts.includes(alert.id),
@@ -276,19 +253,12 @@ export function TherapistWellness({
       setDismissedAlerts((prev) => {
         if (!prev.includes(alertId)) {
           // Save dismissal timestamp
-          try {
-            const dismissalTimes = localStorage.getItem(
-              "therapease-alert-dismissal-times",
-            );
-            const timestamps = dismissalTimes ? JSON.parse(dismissalTimes) : {};
-            timestamps[alertId] = Date.now();
-            localStorage.setItem(
-              "therapease-alert-dismissal-times",
-              JSON.stringify(timestamps),
-            );
-          } catch (error) {
-            console.warn("Failed to save dismissal timestamp:", error);
-          }
+          const dismissalTimes = getStoredItem(
+            "therapease-alert-dismissal-times",
+            {},
+          );
+          dismissalTimes[alertId] = Date.now();
+          setStoredItem("therapease-alert-dismissal-times", dismissalTimes);
 
           return [...prev, alertId];
         }
