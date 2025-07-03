@@ -230,16 +230,28 @@ const Dashboard = () => {
         </div>
 
         {/* Quick stats */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4"
+          role="region"
+          aria-label="Practice overview statistics"
+        >
           <Card className="therapease-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Active Clients
               </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Users
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">48</div>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${dashboardData.stats.activeClients} active clients`}
+              >
+                {dashboardData.stats.activeClients}
+              </div>
               <p className="text-xs text-muted-foreground">
                 +3 from last month
               </p>
@@ -249,10 +261,18 @@ const Dashboard = () => {
           <Card className="therapease-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">This Week</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <Calendar
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">28</div>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${dashboardData.stats.weeklySessionsScheduled} sessions this week`}
+              >
+                {dashboardData.stats.weeklySessionsScheduled}
+              </div>
               <p className="text-xs text-muted-foreground">
                 sessions scheduled
               </p>
@@ -264,10 +284,18 @@ const Dashboard = () => {
               <CardTitle className="text-sm font-medium">
                 Monthly Revenue
               </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <DollarSign
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$12,450</div>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`$${dashboardData.stats.monthlyRevenue.toLocaleString()} monthly revenue`}
+              >
+                ${dashboardData.stats.monthlyRevenue.toLocaleString()}
+              </div>
               <p className="text-xs text-muted-foreground">
                 +8% from last month
               </p>
@@ -279,10 +307,18 @@ const Dashboard = () => {
               <CardTitle className="text-sm font-medium">
                 Completion Rate
               </CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">94%</div>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${dashboardData.stats.completionRate}% session completion rate`}
+              >
+                {dashboardData.stats.completionRate}%
+              </div>
               <p className="text-xs text-muted-foreground">
                 session attendance
               </p>
