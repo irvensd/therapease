@@ -483,120 +483,491 @@ const Notes = () => {
 
   return (
     <Layout>
-      <div className="p-6 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="p-4 sm:p-6 space-y-6">
+        {/* Header */}
+        <div
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          role="banner"
+        >
           <div>
-            <h1 className="text-3xl font-bold">Session Notes</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold">Session Notes</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
               Create, manage, and organize your therapy session notes
             </p>
           </div>
-          <Button onClick={() => setNewNoteModalOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            New Note
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button
+              variant="outline"
+              onClick={handleVoiceToText}
+              className="shrink-0"
+              aria-label="Voice-to-text features"
+            >
+              <Mic className="mr-2 h-4 w-4" aria-hidden="true" />
+              Voice Notes
+            </Button>
+            <Button
+              onClick={() => setNewNoteModalOpen(true)}
+              className="shrink-0"
+              aria-label="Create new note"
+            >
+              <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+              New Note
+            </Button>
+          </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Stats Cards */}
+        <div
+          className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4"
+          role="region"
+          aria-label="Notes statistics"
+        >
           <Card className="therapease-card">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5 text-primary" />
-                Digital Notes
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <FileText className="h-4 w-4 text-primary" aria-hidden="true" />
+                Total Notes
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Create structured notes with templates and tags
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${notesStats.totalNotes} total notes`}
+              >
+                {notesStats.totalNotes}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {notesStats.averageWordCount} avg words
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <CheckCircle
+                  className="h-4 w-4 text-green-600"
+                  aria-hidden="true"
+                />
+                Completed
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${notesStats.completedNotes} completed notes`}
+              >
+                {notesStats.completedNotes}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {notesStats.draftNotes} drafts pending
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Star className="h-4 w-4 text-yellow-600" aria-hidden="true" />
+                Starred
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${notesStats.starredNotes} starred notes`}
+              >
+                {notesStats.starredNotes}
+              </div>
+              <p className="text-xs text-muted-foreground">important notes</p>
+            </CardContent>
+          </Card>
+
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Calendar
+                  className="h-4 w-4 text-blue-600"
+                  aria-hidden="true"
+                />
+                Today
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${notesStats.todaysNotes} notes created today`}
+              >
+                {notesStats.todaysNotes}
+              </div>
+              <p className="text-xs text-muted-foreground">notes created</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions Cards */}
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="therapease-card">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" aria-hidden="true" />
+                Template Library
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4 text-sm">
+                HIPAA-compliant templates: SOAP, DAP, BIRP, and custom formats
               </p>
               <Button
                 variant="outline"
                 className="w-full"
                 onClick={() => setNewNoteModalOpen(true)}
+                aria-label="Create note with template"
               >
-                Create Note
+                <FileCheck className="mr-2 h-4 w-4" aria-hidden="true" />
+                Create with Template
               </Button>
             </CardContent>
           </Card>
 
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Search className="mr-2 h-5 w-5 text-primary" />
-                Search & Filter
+              <CardTitle className="flex items-center gap-2">
+                <Search className="h-5 w-5 text-primary" aria-hidden="true" />
+                Advanced Search
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Quickly find notes by client, date, or content
+              <p className="text-muted-foreground mb-4 text-sm">
+                Search by content, client, tags, date ranges, and treatment
+                goals
               </p>
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => {
-                  alert(
-                    "Advanced search coming soon! You'll be able to search by client name, date range, keywords, and treatment goals.",
-                  );
-                }}
+                onClick={handleSearchNotes}
+                aria-label="Learn about search features"
               >
-                Search Notes
+                <Search className="mr-2 h-4 w-4" aria-hidden="true" />
+                Search Features
               </Button>
             </CardContent>
           </Card>
 
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Archive className="mr-2 h-5 w-5 text-primary" />
-                Archive
+              <CardTitle className="flex items-center gap-2">
+                <Archive className="h-5 w-5 text-primary" aria-hidden="true" />
+                Secure Archive
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Secure storage for completed treatment notes
+              <p className="text-muted-foreground mb-4 text-sm">
+                Encrypted storage with HIPAA compliance for long-term retention
               </p>
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => {
-                  alert(
-                    "Secure archive coming soon! All notes will be encrypted and stored with full HIPAA compliance for long-term retention.",
-                  );
-                }}
+                onClick={() => setStatusFilter("archived")}
+                aria-label="View archived notes"
               >
+                <Lock className="mr-2 h-4 w-4" aria-hidden="true" />
                 View Archive
               </Button>
             </CardContent>
           </Card>
         </div>
 
+        {/* Search and Filters */}
         <Card className="therapease-card">
           <CardHeader>
-            <CardTitle>Features in Development</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>HIPAA-compliant note templates</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Voice-to-text integration</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Automatic client linking</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Treatment progress tracking</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Encrypted cloud backup</span>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <CardTitle>Notes Management</CardTitle>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="relative">
+                  <Search
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    placeholder="Search notes, clients, or content..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 w-full sm:w-64"
+                    aria-label="Search notes"
+                  />
+                </div>
+                <Button
+                  variant={showStarredOnly ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setShowStarredOnly(!showStarredOnly)}
+                  aria-label={
+                    showStarredOnly
+                      ? "Show all notes"
+                      : "Show starred notes only"
+                  }
+                >
+                  {showStarredOnly ? (
+                    <Star className="h-4 w-4 fill-current" />
+                  ) : (
+                    <StarOff className="h-4 w-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportNotes}
+                  disabled={filteredNotes.length === 0}
+                  aria-label={`Export ${filteredNotes.length} notes to CSV`}
+                >
+                  <Download className="mr-2 h-4 w-4" aria-hidden="true" />
+                  Export
+                </Button>
               </div>
             </div>
+            <div className="flex flex-col sm:flex-row gap-2 mt-4">
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+                <SelectTrigger className="w-full sm:w-40">
+                  <SelectValue placeholder="Note Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="SOAP">SOAP</SelectItem>
+                  <SelectItem value="DAP">DAP</SelectItem>
+                  <SelectItem value="BIRP">BIRP</SelectItem>
+                  <SelectItem value="Progress">Progress</SelectItem>
+                  <SelectItem value="Assessment">Assessment</SelectItem>
+                  <SelectItem value="Treatment Plan">Treatment Plan</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full sm:w-40">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="Draft">Draft</SelectItem>
+                  <SelectItem value="Complete">Complete</SelectItem>
+                  <SelectItem value="Reviewed">Reviewed</SelectItem>
+                  <SelectItem value="Archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={clientFilter} onValueChange={setClientFilter}>
+                <SelectTrigger className="w-full sm:w-40">
+                  <SelectValue placeholder="Client" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Clients</SelectItem>
+                  {uniqueClients.map((client) => (
+                    <SelectItem key={client} value={client}>
+                      {client}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="min-w-[200px]">
+                        Note & Client
+                      </TableHead>
+                      <TableHead className="min-w-[120px] hidden sm:table-cell">
+                        Date & Time
+                      </TableHead>
+                      <TableHead className="min-w-[100px]">
+                        Type & Status
+                      </TableHead>
+                      <TableHead className="min-w-[100px] hidden md:table-cell">
+                        Details
+                      </TableHead>
+                      <TableHead className="min-w-[150px] hidden lg:table-cell">
+                        Tags
+                      </TableHead>
+                      <TableHead className="w-[120px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredNotes.map((note) => (
+                      <TableRow
+                        key={note.id}
+                        className="hover:bg-muted/50 transition-colors"
+                      >
+                        <TableCell>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <div className="font-medium truncate max-w-[150px] sm:max-w-none">
+                                {note.title}
+                              </div>
+                              {note.isStarred && (
+                                <Star className="h-3 w-3 text-yellow-500 fill-current flex-shrink-0" />
+                              )}
+                              {note.isConfidential && (
+                                <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                              )}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {note.clientName}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {note.diagnosis}
+                            </div>
+                            {/* Mobile-only date info */}
+                            <div className="sm:hidden mt-1 text-xs text-muted-foreground">
+                              {new Date(note.sessionDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <div className="text-sm">
+                            <div className="font-medium">
+                              {new Date(note.sessionDate).toLocaleDateString()}
+                            </div>
+                            <div className="text-muted-foreground">
+                              {note.sessionDuration}min session
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="space-y-1">
+                            <Badge
+                              className={getTypeColor(note.type)}
+                              variant="outline"
+                            >
+                              {note.type}
+                            </Badge>
+                            <Badge
+                              className={getStatusColor(note.status)}
+                              variant="outline"
+                            >
+                              {note.status}
+                            </Badge>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="text-sm">
+                            <div className="font-medium">
+                              {note.wordCount} words
+                            </div>
+                            <div className="text-muted-foreground">
+                              Updated{" "}
+                              {new Date(note.updatedAt).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          <div className="flex flex-wrap gap-1">
+                            {note.tags.slice(0, 3).map((tag, index) => (
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                            {note.tags.length > 3 && (
+                              <Badge variant="secondary" className="text-xs">
+                                +{note.tags.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleToggleStar(note.id)}
+                              aria-label={
+                                note.isStarred
+                                  ? "Remove from starred"
+                                  : "Add to starred"
+                              }
+                            >
+                              {note.isStarred ? (
+                                <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                              ) : (
+                                <StarOff className="h-4 w-4" />
+                              )}
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  aria-label={`Actions for note: ${note.title}`}
+                                >
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => handleViewNote(note)}
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  View Details
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Edit className="mr-2 h-4 w-4" />
+                                  Edit Note
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleArchiveNote(note)}
+                                >
+                                  <Archive className="mr-2 h-4 w-4" />
+                                  Archive
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteNote(note)}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 className="mr-2 h-4 w-4" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            {filteredNotes.length === 0 && !isLoading && (
+              <div className="text-center py-12">
+                <FileText className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+                <p className="text-muted-foreground font-medium">
+                  No notes found
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {searchTerm ||
+                  typeFilter !== "all" ||
+                  statusFilter !== "all" ||
+                  clientFilter !== "all"
+                    ? "Try adjusting your search or filter criteria"
+                    : "Create your first session note to get started"}
+                </p>
+                {!searchTerm &&
+                  typeFilter === "all" &&
+                  statusFilter === "all" &&
+                  clientFilter === "all" && (
+                    <Button
+                      className="mt-4"
+                      onClick={() => setNewNoteModalOpen(true)}
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create First Note
+                    </Button>
+                  )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -605,6 +976,7 @@ const Notes = () => {
         open={newNoteModalOpen}
         onOpenChange={setNewNoteModalOpen}
       />
+      <ModalComponent />
     </Layout>
   );
 };
