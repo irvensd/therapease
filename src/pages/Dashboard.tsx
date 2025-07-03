@@ -102,6 +102,60 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* Quick Actions - Improved styling */}
+        <div className="bg-gradient-to-r from-primary/5 via-background to-accent/5 rounded-xl p-6 border border-border">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-semibold">Quick Actions</h2>
+              <p className="text-sm text-muted-foreground">
+                Common tasks to streamline your workflow
+              </p>
+            </div>
+            <Badge variant="secondary" className="bg-primary/10 text-primary">
+              <Zap className="h-3 w-3 mr-1" />
+              Fast workflow
+            </Badge>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Button
+              onClick={() => setNewClientModalOpen(true)}
+              variant="outline"
+              className="h-16 flex-col gap-2 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 hover:text-blue-800"
+            >
+              <Users className="h-5 w-5" />
+              <span className="text-xs font-medium">Add Client</span>
+            </Button>
+
+            <Button
+              onClick={() => navigate("/sessions")}
+              variant="outline"
+              className="h-16 flex-col gap-2 bg-green-50 hover:bg-green-100 border-green-200 text-green-700 hover:text-green-800"
+            >
+              <Calendar className="h-5 w-5" />
+              <span className="text-xs font-medium">Schedule Session</span>
+            </Button>
+
+            <Button
+              onClick={() => navigate("/notes")}
+              variant="outline"
+              className="h-16 flex-col gap-2 bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-700 hover:text-purple-800"
+            >
+              <FileText className="h-5 w-5" />
+              <span className="text-xs font-medium">Create Note</span>
+            </Button>
+
+            <Button
+              onClick={() => navigate("/invoices")}
+              variant="outline"
+              className="h-16 flex-col gap-2 bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-700 hover:text-orange-800"
+            >
+              <DollarSign className="h-5 w-5" />
+              <span className="text-xs font-medium">Create Invoice</span>
+            </Button>
+          </div>
+        </div>
+
         {/* Today's schedule and reminders */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Today's Sessions */}
