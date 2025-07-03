@@ -9,6 +9,7 @@ import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 
 const Reminders = () => {
   const [addReminderModalOpen, setAddReminderModalOpen] = useState(false);
+  const { showModal, ModalComponent } = useConfirmationModal();
   const [reminders, setReminders] = useState([
     {
       id: 1,
