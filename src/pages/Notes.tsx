@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Layout from "@/components/Layout";
 import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -455,7 +455,7 @@ const Notes = () => {
       type: "info",
       title: "Advanced Search Features",
       message:
-        "Advanced search includes:\n• Full-text search across note content\n• Client name and tag filtering\n• Date range selection\n• Treatment goal keywords\n• Session type filtering\n• Status and priority sorting\n• Confidentiality level filtering",
+        "Advanced search includes:\n• Full-text search across note content\n�� Client name and tag filtering\n• Date range selection\n• Treatment goal keywords\n• Session type filtering\n• Status and priority sorting\n• Confidentiality level filtering",
       confirmLabel: "Great!",
       onConfirm: () => {
         toast({
@@ -489,7 +489,7 @@ const Notes = () => {
       showModal({
         type: "info",
         title: "Edit Note",
-        message: `Edit functionality for "${note.title}" would open a comprehensive note editor with:\n• Rich text formatting\n• Template selection\n• Auto-save functionality\n• Spell check for clinical terms\n• Client linking\n• Tag management\n\nThis feature is being developed with full HIPAA compliance.`,
+        message: `Edit functionality for "${note.title}" would open a comprehensive note editor with:\n• Rich text formatting\n• Template selection\n• Auto-save functionality\n�� Spell check for clinical terms\n• Client linking\n• Tag management\n\nThis feature is being developed with full HIPAA compliance.`,
         confirmLabel: "Got it",
         onConfirm: () => {
           toast({
