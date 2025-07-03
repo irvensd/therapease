@@ -196,16 +196,27 @@ export function TherapistWellness({
 
     const handleAction = (wellnessAlert: WellnessAlert) => {
       if (wellnessAlert.action === "Take Break") {
-        // Simulate break taken
-        window.alert(
-          "Great! Taking breaks is essential for your wellbeing. Your 15-minute break timer has started. The app will remind you when it's time to return.",
-        );
-        dismissAlert(wellnessAlert.id);
+        showModal({
+          type: "wellness",
+          title: "Break Time Started! 🌿",
+          message:
+            "Great! Taking breaks is essential for your wellbeing. Your 15-minute break timer has started. Step away from your screen, stretch, breathe deeply, or take a short walk. The app will remind you when it's time to return.",
+          confirmLabel: "Thanks, I'm taking my break!",
+          autoClose: 8000,
+          onConfirm: () => dismissAlert(wellnessAlert.id),
+        });
       } else if (wellnessAlert.action === "Review Boundaries") {
-        window.alert(
-          "Boundary Review: Consider setting up an auto-response for after-hours messages: 'Thank you for your message. I will respond during business hours (9 AM - 6 PM). For emergencies, please contact 911 or the crisis hotline at 988.'",
-        );
-        dismissAlert(wellnessAlert.id);
+        showModal({
+          type: "info",
+          title: "Professional Boundary Guidance 🛡️",
+          message:
+            "Consider setting up an auto-response for after-hours messages: 'Thank you for your message. I will respond during business hours (9 AM - 6 PM). For emergencies, please contact 911 or the crisis hotline at 988.' This protects both your wellbeing and sets clear expectations.",
+          confirmLabel: "I'll set this up",
+          cancelLabel: "Maybe later",
+          showCancel: true,
+          onConfirm: () => dismissAlert(wellnessAlert.id),
+          onCancel: () => dismissAlert(wellnessAlert.id),
+        });
       } else {
         dismissAlert(wellnessAlert.id);
       }
