@@ -319,6 +319,7 @@ export function TherapistWellness({
             </CardContent>
           </Card>
         ))}
+        <ModalComponent />
       </div>
     );
   }
