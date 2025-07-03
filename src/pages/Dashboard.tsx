@@ -309,11 +309,8 @@ const Dashboard = () => {
           <ProgressChart mode="dashboard" />
         </div>
 
-        {/* AI Assistant, Clinical Assessments, and Weekly Progress */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* AI Assistant */}
-          <AIAssistant mode="dashboard" />
-
+        {/* Clinical Assessments and Weekly Progress */}
+        <div className="grid gap-6 lg:grid-cols-2">
           {/* Clinical Assessments */}
           <ClinicalAssessments mode="dashboard" />
 
