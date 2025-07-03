@@ -527,40 +527,60 @@ export function ClinicalAssessments({
                     </div>
                   </div>
 
-                  <Card>
-                    <CardContent className="p-6">
-                      <h4 className="font-medium mb-4">
-                        Over the last 2 weeks, how often have you been bothered
-                        by:
-                      </h4>
-                      <p className="text-lg mb-6">
-                        {phq9Questions[currentQuestionIndex]}
-                      </p>
+                  <Card className="border-2 border-primary/20">
+                    <CardContent className="p-8">
+                      <div className="space-y-6">
+                        <div className="text-center">
+                          <h4 className="font-medium text-muted-foreground mb-2">
+                            Over the last 2 weeks, how often have you been
+                            bothered by:
+                          </h4>
+                          <p className="text-xl font-medium leading-relaxed">
+                            {phq9Questions[currentQuestionIndex]}
+                          </p>
+                        </div>
 
-                      <RadioGroup
-                        value={responses[currentQuestionIndex]?.toString()}
-                        onValueChange={(value) =>
-                          setResponses({
-                            ...responses,
-                            [currentQuestionIndex]: parseInt(value),
-                          })
-                        }
-                      >
-                        {responseOptions.map((option) => (
-                          <div
-                            key={option.value}
-                            className="flex items-center space-x-2"
-                          >
-                            <RadioGroupItem
-                              value={option.value.toString()}
-                              id={option.value.toString()}
-                            />
-                            <Label htmlFor={option.value.toString()}>
-                              {option.label}
-                            </Label>
-                          </div>
-                        ))}
-                      </RadioGroup>
+                        <RadioGroup
+                          value={responses[currentQuestionIndex]?.toString()}
+                          onValueChange={(value) =>
+                            setResponses({
+                              ...responses,
+                              [currentQuestionIndex]: parseInt(value),
+                            })
+                          }
+                          className="space-y-3"
+                        >
+                          {responseOptions.map((option) => (
+                            <div
+                              key={option.value}
+                              className={cn(
+                                "flex items-center space-x-3 p-4 rounded-lg border transition-all duration-200 cursor-pointer hover:bg-muted/50",
+                                responses[currentQuestionIndex] === option.value
+                                  ? "border-primary bg-primary/5"
+                                  : "border-border",
+                              )}
+                              onClick={() =>
+                                setResponses({
+                                  ...responses,
+                                  [currentQuestionIndex]: option.value,
+                                })
+                              }
+                            >
+                              <RadioGroupItem
+                                value={option.value.toString()}
+                                id={option.value.toString()}
+                                className="text-primary"
+                              />
+                              <Label
+                                htmlFor={option.value.toString()}
+                                className="flex-1 cursor-pointer font-medium"
+                              >
+                                {option.label}
+                              </Label>
+                            </div>
+                          ))}
+                        </RadioGroup>
+                      </div>
                     </CardContent>
                   </Card>
 
