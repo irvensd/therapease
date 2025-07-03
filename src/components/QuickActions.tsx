@@ -59,6 +59,7 @@ export function QuickActions({
 }: QuickActionsProps) {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
+  const { showModal, ModalComponent } = useConfirmationModal();
 
   const handleAction = (actionId: string, data?: any) => {
     console.log(`Quick action: ${actionId}`, data);
