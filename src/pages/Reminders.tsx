@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Plus, AlertCircle, Clock, CheckCircle } from "lucide-react";
 import { AddReminderModal } from "@/components/modals/AddReminderModal";
+import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 
 const Reminders = () => {
   const [addReminderModalOpen, setAddReminderModalOpen] = useState(false);
