@@ -428,68 +428,59 @@ const Clients = () => {
             <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
               <div className="flex-1 max-w-sm">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Search
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
+                    aria-hidden="true"
+                  />
                   <Input
-                    placeholder="Search clients..."
+                    placeholder="Search clients by name, email, or diagnosis..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-9"
+                    aria-label="Search clients"
                   />
                 </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline">
-                      <Filter className="mr-2 h-4 w-4" />
+                    <Button
+                      variant="outline"
+                      aria-label={`Filter by status: currently ${statusFilter}`}
+                    >
+                      <Filter className="mr-2 h-4 w-4" aria-hidden="true" />
                       Status: {statusFilter}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => setStatusFilter("All")}>
-                      All
+                      All Statuses
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setStatusFilter("Active")}>
-                      Active
+                      Active Only
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setStatusFilter("Inactive")}
                     >
-                      Inactive
+                      Inactive Only
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setStatusFilter("Pending")}
                     >
-                      Pending
+                      Pending Only
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    // Export functionality - in a real app, this would generate CSV/PDF
-                    const csvContent = filteredClients
-                      .map(
-                        (client) =>
-                          `${client.name},${client.email},${client.phone},${client.status},${client.insurance}`,
-                      )
-                      .join("\n");
-                    const header = "Name,Email,Phone,Status,Insurance\n";
-                    const blob = new Blob([header + csvContent], {
-                      type: "text/csv",
-                    });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "clients-export.csv";
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                  }}
+                  onClick={handleExportClients}
+                  disabled={filteredClients.length === 0}
+                  aria-label={`Export ${filteredClients.length} clients to CSV`}
                 >
-                  <Download className="mr-2 h-4 w-4" />
-                  Export
+                  <Download className="mr-2 h-4 w-4" aria-hidden="true" />
+                  Export ({filteredClients.length})
                 </Button>
               </div>
             </div>
