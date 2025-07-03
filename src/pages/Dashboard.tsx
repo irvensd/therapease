@@ -31,6 +31,17 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="p-6 space-y-6">
+        {/* Quick Actions Toolbar */}
+        <QuickActions
+          mode="toolbar"
+          onAction={(action, data) => {
+            if (action === "new-client") setNewClientModalOpen(true);
+            if (action === "create-note") navigate("/notes");
+            if (action === "schedule-session") navigate("/sessions");
+            if (action === "create-invoice") navigate("/invoices");
+          }}
+        />
+
         {/* Welcome section */}
         <div className="therapease-gradient rounded-xl p-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">
