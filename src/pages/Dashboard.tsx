@@ -17,6 +17,7 @@ import {
 import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
 import { AddReminderModal } from "@/components/modals/AddReminderModal";
+import { AIAssistant } from "@/components/AIAssistant";
 
 const Dashboard = () => {
   const navigate = useNavigate();
