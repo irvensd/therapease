@@ -165,6 +165,10 @@ export default function Layout({ children }: LayoutProps) {
             <div className="hidden lg:block" />
 
             <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="hidden sm:inline">AI Assistant Active</span>
+              </div>
               <Button variant="ghost" size="sm">
                 <Bell className="h-5 w-5" />
               </Button>
