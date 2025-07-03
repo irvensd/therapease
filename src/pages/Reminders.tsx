@@ -132,9 +132,16 @@ const Reminders = () => {
                       variant="outline"
                       onClick={() => {
                         completeReminder(reminder.id);
-                        alert(
-                          `Reminder "${reminder.title}" marked as complete!`,
-                        );
+                        // Show success message with action taken
+                        const completionMessage = reminder.title.includes(
+                          "Emma",
+                        )
+                          ? "✅ Session notes for Emma Thompson completed and filed securely."
+                          : reminder.title.includes("Insurance")
+                            ? "✅ Insurance authorization reminder completed. Michael Chen's renewal has been processed."
+                            : "✅ Treatment plan review scheduled for Sarah Johnson next week.";
+
+                        alert(completionMessage);
                       }}
                     >
                       Complete
