@@ -375,37 +375,140 @@ const Sessions = () => {
 
   return (
     <Layout>
-      <div className="p-6 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="p-4 sm:p-6 space-y-6">
+        {/* Header */}
+        <div
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          role="banner"
+        >
           <div>
-            <h1 className="text-3xl font-bold">Session Management</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              Session Management
+            </h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
               Schedule, track, and manage your therapy sessions
             </p>
           </div>
-          <Button onClick={() => setScheduleModalOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
+          <Button
+            onClick={() => setScheduleModalOpen(true)}
+            className="shrink-0"
+            aria-label="Schedule new session"
+          >
+            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
             Schedule Session
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Stats Cards */}
+        <div
+          className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4"
+          role="region"
+          aria-label="Session statistics"
+        >
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-primary" aria-hidden="true" />
+                Total Sessions
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${sessionStats.totalSessions} total sessions`}
+              >
+                {sessionStats.totalSessions}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {sessionStats.totalHours}h total
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <CheckCircle
+                  className="h-4 w-4 text-green-600"
+                  aria-hidden="true"
+                />
+                Completed
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${sessionStats.completedSessions} completed sessions`}
+              >
+                {sessionStats.completedSessions}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {sessionStats.completionRate}% completion rate
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Clock className="h-4 w-4 text-blue-600" aria-hidden="true" />
+                Upcoming
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="text-xl sm:text-2xl font-bold"
+                aria-label={`${sessionStats.upcomingSessions} upcoming sessions`}
+              >
+                {sessionStats.upcomingSessions}
+              </div>
+              <p className="text-xs text-muted-foreground">this week</p>
+            </CardContent>
+          </Card>
+
+          <Card className="therapease-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <TrendingUp
+                  className="h-4 w-4 text-purple-600"
+                  aria-hidden="true"
+                />
+                Success Rate
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl sm:text-2xl font-bold">
+                {sessionStats.completionRate}%
+              </div>
+              <Progress
+                value={sessionStats.completionRate}
+                className="h-2 mt-2"
+              />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions Cards */}
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Calendar className="mr-2 h-5 w-5 text-primary" />
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-primary" aria-hidden="true" />
                 Calendar View
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
-                View and manage your sessions in a calendar format
+              <p className="text-muted-foreground mb-4 text-sm">
+                View and manage your sessions in a calendar format with
+                drag-and-drop scheduling
               </p>
               <Button
                 variant="outline"
                 className="w-full"
                 onClick={() => setCalendarModalOpen(true)}
+                aria-label="Open calendar view"
               >
+                <Calendar className="mr-2 h-4 w-4" aria-hidden="true" />
                 Open Calendar
               </Button>
             </CardContent>
@@ -413,24 +516,22 @@ const Sessions = () => {
 
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Clock className="mr-2 h-5 w-5 text-primary" />
+              <CardTitle className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-primary" aria-hidden="true" />
                 Time Tracking
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Track session duration and billing time
+              <p className="text-muted-foreground mb-4 text-sm">
+                Track session duration, billing time, and productivity analytics
               </p>
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => {
-                  alert(
-                    "Time tracking reports coming soon! This will show session duration analytics and billing time summaries.",
-                  );
-                }}
+                onClick={handleViewReports}
+                aria-label="View time tracking reports"
               >
+                <TrendingUp className="mr-2 h-4 w-4" aria-hidden="true" />
                 View Reports
               </Button>
             </CardContent>
@@ -438,48 +539,220 @@ const Sessions = () => {
 
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => setScheduleModalOpen(true)}
-              >
-                Schedule New Session
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => navigate("/")}
-              >
-                View Today's Sessions
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => {
-                  alert(
-                    "Session templates coming soon! This will allow you to create reusable session formats and notes templates.",
-                  );
-                }}
-              >
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" aria-hidden="true" />
                 Session Templates
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4 text-sm">
+                Create reusable session formats and standardized note templates
+              </p>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleSessionTemplates}
+                aria-label="Manage session templates"
+              >
+                <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
+                Manage Templates
               </Button>
             </CardContent>
           </Card>
         </div>
 
+        {/* Session List */}
         <Card className="therapease-card">
           <CardHeader>
-            <CardTitle>Coming Soon</CardTitle>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <CardTitle>Recent Sessions</CardTitle>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Select
+                  value={selectedPeriod}
+                  onValueChange={setSelectedPeriod}
+                >
+                  <SelectTrigger className="w-full sm:w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="week">This Week</SelectItem>
+                    <SelectItem value="month">This Month</SelectItem>
+                    <SelectItem value="all">All Time</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full sm:w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="scheduled">Scheduled</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
+                    <SelectItem value="no-show">No-Show</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">
-              The session management system is currently being developed. This
-              will include calendar integration, automated reminders, session
-              notes linking, and comprehensive reporting features.
-            </p>
+            <div className="rounded-md border overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="min-w-[150px]">
+                        Client & Date
+                      </TableHead>
+                      <TableHead className="min-w-[120px] hidden sm:table-cell">
+                        Time & Duration
+                      </TableHead>
+                      <TableHead className="min-w-[100px]">Status</TableHead>
+                      <TableHead className="min-w-[100px] hidden md:table-cell">
+                        Type & Format
+                      </TableHead>
+                      <TableHead className="min-w-[150px] hidden lg:table-cell">
+                        Location/Notes
+                      </TableHead>
+                      <TableHead className="w-[100px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredSessions.map((session) => (
+                      <TableRow
+                        key={session.id}
+                        className="hover:bg-muted/50 transition-colors"
+                      >
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">
+                              {session.clientName}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {new Date(session.date).toLocaleDateString()}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {session.diagnosis}
+                            </div>
+                            {/* Mobile-only time info */}
+                            <div className="sm:hidden mt-1 text-xs text-muted-foreground">
+                              {session.time} • {session.duration}min
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <div className="text-sm">
+                            <div className="font-medium">{session.time}</div>
+                            <div className="text-muted-foreground">
+                              {session.duration} minutes
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={getStatusColor(session.status)}>
+                            <span className="flex items-center gap-1">
+                              {getStatusIcon(session.status)}
+                              {session.status}
+                            </span>
+                          </Badge>
+                          {/* Mobile-only type info */}
+                          <div className="md:hidden mt-1 text-xs text-muted-foreground">
+                            {session.type} • {session.format}
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="text-sm">
+                            <div className="font-medium">{session.type}</div>
+                            <div className="flex items-center gap-1 text-muted-foreground">
+                              {getFormatIcon(session.format)}
+                              {session.format}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          <div className="text-sm">
+                            {session.location && (
+                              <div className="font-medium">
+                                {session.location}
+                              </div>
+                            )}
+                            {session.notes && (
+                              <div className="text-muted-foreground truncate max-w-[120px]">
+                                {session.notes}
+                              </div>
+                            )}
+                            {!session.location && !session.notes && (
+                              <span className="text-muted-foreground">—</span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() =>
+                                handleSessionAction(session, "view")
+                              }
+                              aria-label={`View details for ${session.clientName}'s session`}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            {session.status === "Scheduled" && (
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleSessionAction(session, "complete")
+                                  }
+                                  aria-label={`Mark ${session.clientName}'s session as completed`}
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleSessionAction(session, "cancel")
+                                  }
+                                  aria-label={`Cancel ${session.clientName}'s session`}
+                                >
+                                  <XCircle className="h-4 w-4" />
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            {filteredSessions.length === 0 && !isLoading && (
+              <div className="text-center py-12">
+                <Calendar className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+                <p className="text-muted-foreground font-medium">
+                  No sessions found
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {statusFilter !== "all"
+                    ? "Try changing the status filter to see more sessions"
+                    : "Schedule your first session to get started"}
+                </p>
+                {statusFilter === "all" && (
+                  <Button
+                    className="mt-4"
+                    onClick={() => setScheduleModalOpen(true)}
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Schedule First Session
+                  </Button>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -492,6 +765,7 @@ const Sessions = () => {
         open={calendarModalOpen}
         onOpenChange={setCalendarModalOpen}
       />
+      <ModalComponent />
     </Layout>
   );
 };
