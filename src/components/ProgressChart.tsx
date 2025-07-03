@@ -225,7 +225,10 @@ export function ProgressChart({
   const improvement = calculateImprovement();
   const metricInfo = getMetricInfo(selectedMetric);
 
-  // Simple line chart representation using CSS
+  const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
+  const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
+
+  // Enhanced interactive chart with hover effects
   const renderChart = () => {
     const data = getMetricData();
     const maxValue = Math.max(...data.map((d) => d.value));
