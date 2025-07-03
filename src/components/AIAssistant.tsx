@@ -157,21 +157,25 @@ export function AIAssistant({
       timestamp: new Date(),
     };
 
+    const currentInput = userInput;
     setChatMessages((prev) => [...prev, userMessage]);
     setUserInput("");
     setIsTyping(true);
 
-    // Simulate AI response
+    // Simulate realistic typing delay based on response length
+    const response = generateAIResponse(currentInput);
+    const typingDelay = Math.min(Math.max(response.length * 30, 1000), 4000);
+
     setTimeout(() => {
       const aiResponse: AIMessage = {
         id: (Date.now() + 1).toString(),
         type: "ai",
-        content: generateAIResponse(userInput),
+        content: response,
         timestamp: new Date(),
       };
       setChatMessages((prev) => [...prev, aiResponse]);
       setIsTyping(false);
-    }, 1500);
+    }, typingDelay);
   };
 
   const generateAIResponse = (input: string): string => {
