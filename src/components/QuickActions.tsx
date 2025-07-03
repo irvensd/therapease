@@ -33,6 +33,7 @@ import {
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 
 interface QuickActionsProps {
   mode?: "toolbar" | "floating" | "compact";
