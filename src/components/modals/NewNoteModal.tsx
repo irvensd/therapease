@@ -145,10 +145,39 @@ PLAN: Continue weekly therapy. Practice CBT techniques, complete homework assign
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create Session Note</DialogTitle>
-          <DialogDescription>
-            Document your therapy session with HIPAA-compliant notes.
-          </DialogDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle>Create Session Note</DialogTitle>
+              <DialogDescription>
+                Document your therapy session with HIPAA-compliant notes.
+              </DialogDescription>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="text-xs">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse" />
+                AI Assistant Active
+              </Badge>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={generateAINote}
+                disabled={
+                  isGeneratingNote || !formData.client || !formData.sessionType
+                }
+                className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200"
+              >
+                {isGeneratingNote ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin mr-2" />
+                    Generating...
+                  </>
+                ) : (
+                  <>✨ AI Generate Note</>
+                )}
+              </Button>
+            </div>
+          </div>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
