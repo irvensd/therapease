@@ -27,6 +27,7 @@ interface NewNoteModalProps {
 }
 
 export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
+  const { showModal, ModalComponent } = useConfirmationModal();
   const [formData, setFormData] = useState({
     client: "",
     sessionDate: "",
