@@ -317,45 +317,39 @@ const Dashboard = () => {
           {/* Clinical Assessments */}
           <ClinicalAssessments mode="dashboard" />
 
-          {/* Quick Actions */}
+          {/* Weekly Progress */}
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle>Weekly Progress</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Button
-                className="w-full justify-start"
-                variant="outline"
-                onClick={() => setNewClientModalOpen(true)}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                New Client
-              </Button>
-              <Button
-                className="w-full justify-start"
-                variant="outline"
-                onClick={() => navigate("/sessions")}
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                Schedule Session
-              </Button>
-              <Button
-                className="w-full justify-start"
-                variant="outline"
-                onClick={() => navigate("/invoices")}
-              >
-                <DollarSign className="mr-2 h-4 w-4" />
-                Create Invoice
-              </Button>
-              <Button
-                className="w-full justify-start"
-                variant="outline"
-                onClick={() => navigate("/clients")}
-              >
-                <Users className="mr-2 h-4 w-4" />
-                View All Clients
-                <ArrowRight className="ml-auto h-4 w-4" />
-              </Button>
+            <CardContent className="space-y-4">
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Sessions Completed</span>
+                  <span>18/25 (72%)</span>
+                </div>
+                <Progress value={72} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Notes Documented</span>
+                  <span>16/18 (89%)</span>
+                </div>
+                <Progress value={89} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Invoices Sent</span>
+                  <span>12/18 (67%)</span>
+                </div>
+                <Progress value={67} className="h-2" />
+              </div>
+              <div className="pt-4">
+                <p className="text-sm text-muted-foreground">
+                  Great week! You're ahead of schedule on documentation and just
+                  need to catch up on invoicing.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
