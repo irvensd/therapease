@@ -463,69 +463,65 @@ const Dashboard = () => {
           {/* Active Reminders */}
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Active Reminders
-                <Badge variant="destructive">3 urgent</Badge>
+              <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <span>Active Reminders</span>
+                <Badge variant="destructive" className="w-fit">
+                  {
+                    dashboardData.reminders.filter((r) => r.priority === "high")
+                      .length
+                  }{" "}
+                  urgent
+                </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {[
-                {
-                  title: "Follow up with Emma Thompson",
-                  description: "Session notes completion overdue",
-                  priority: "high",
-                  time: "2 hours ago",
-                },
-                {
-                  title: "Insurance authorization",
-                  description: "Michael Chen - renewal needed",
-                  priority: "high",
-                  time: "1 day ago",
-                },
-                {
-                  title: "Treatment plan review",
-                  description: "Sarah Johnson - quarterly review",
-                  priority: "medium",
-                  time: "3 days ago",
-                },
-                {
-                  title: "Appointment confirmation",
-                  description: "David Wilson - next week",
-                  priority: "low",
-                  time: "5 days ago",
-                },
-              ].map((reminder, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30"
-                >
+              {dashboardData.reminders.length > 0 ? (
+                dashboardData.reminders.map((reminder) => (
                   <div
-                    className={`flex items-center justify-center w-2 h-2 rounded-full mt-2 ${
-                      reminder.priority === "high"
-                        ? "bg-destructive"
-                        : reminder.priority === "medium"
-                          ? "bg-accent"
-                          : "bg-muted-foreground"
-                    }`}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm">{reminder.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {reminder.description}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {reminder.time}
-                    </p>
+                    key={reminder.id}
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                    role="listitem"
+                  >
+                    <div
+                      className={`flex items-center justify-center w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                        reminder.priority === "high"
+                          ? "bg-destructive"
+                          : reminder.priority === "medium"
+                            ? "bg-accent"
+                            : "bg-muted-foreground"
+                      }`}
+                      aria-label={`${reminder.priority} priority`}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm sm:text-base">
+                        {reminder.title}
+                      </p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
+                        {reminder.description}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {reminder.time}
+                      </p>
+                    </div>
+                    <AlertCircle
+                      className="h-4 w-4 text-muted-foreground flex-shrink-0"
+                      aria-hidden="true"
+                    />
                   </div>
-                  <AlertCircle className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                ))
+              ) : (
+                <div className="text-center py-6 text-muted-foreground">
+                  <AlertCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>No active reminders</p>
                 </div>
-              ))}
+              )}
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => setAddReminderModalOpen(true)}
+                onClick={handleAddReminderModalOpen}
+                aria-label="Add new reminder"
               >
-                <Plus className="mr-2 h-4 w-4" />
+                <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
                 Add Reminder
               </Button>
             </CardContent>
