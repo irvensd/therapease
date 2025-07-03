@@ -174,6 +174,9 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Page content */}
         <main className="flex-1">{children}</main>
+
+        {/* Floating AI Assistant - available throughout the app */}
+        <AIAssistant isFloating={true} />
       </div>
     </div>
   );
