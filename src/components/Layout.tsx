@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AIAssistant } from "@/components/AIAssistant";
+import { TherapistWellness } from "@/components/TherapistWellness";
 import {
   LayoutDashboard,
   Users,
