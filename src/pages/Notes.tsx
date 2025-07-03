@@ -459,7 +459,7 @@ const Notes = () => {
         description: "Failed to export notes data. Please try again.",
       });
     }
-  }, [filteredNotes, toast]);
+  }, [toast]);
 
   const handleSearchNotes = useCallback(() => {
     showModal({
