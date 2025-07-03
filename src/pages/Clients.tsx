@@ -487,122 +487,187 @@ const Clients = () => {
           </CardHeader>
 
           <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Client</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Sessions</TableHead>
-                    <TableHead>Last Session</TableHead>
-                    <TableHead>Next Session</TableHead>
-                    <TableHead>Insurance</TableHead>
-                    <TableHead className="w-[70px]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredClients.map((client) => (
-                    <TableRow key={client.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{client.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {client.diagnosis}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-1">
-                          <div className="flex items-center text-sm">
-                            <Mail className="mr-1 h-3 w-3" />
-                            {client.email}
-                          </div>
-                          <div className="flex items-center text-sm">
-                            <Phone className="mr-1 h-3 w-3" />
-                            {client.phone}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getStatusColor(client.status)}>
-                          {client.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">
-                          {client.sessionsCount}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {client.lastSession ? (
-                          <div className="text-sm">
-                            {new Date(client.lastSession).toLocaleDateString()}
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {client.nextSession ? (
-                          <div className="text-sm">
-                            {new Date(client.nextSession).toLocaleDateString()}
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">{client.insurance}</div>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setSelectedClient(client);
-                                setClientDetailModalOpen(true);
-                              }}
-                            >
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                alert(
-                                  `Editing ${client.name}. In a full app, this would open an edit form.`,
-                                );
-                              }}
-                            >
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Client
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => navigate("/sessions")}
-                            >
-                              <Calendar className="mr-2 h-4 w-4" />
-                              Schedule Session
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+            <div className="rounded-md border overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="min-w-[200px]">Client</TableHead>
+                      <TableHead className="min-w-[200px] hidden sm:table-cell">
+                        Contact
+                      </TableHead>
+                      <TableHead className="min-w-[100px]">Status</TableHead>
+                      <TableHead className="min-w-[80px] hidden md:table-cell">
+                        Sessions
+                      </TableHead>
+                      <TableHead className="min-w-[120px] hidden lg:table-cell">
+                        Last Session
+                      </TableHead>
+                      <TableHead className="min-w-[120px] hidden lg:table-cell">
+                        Next Session
+                      </TableHead>
+                      <TableHead className="min-w-[120px] hidden xl:table-cell">
+                        Insurance
+                      </TableHead>
+                      <TableHead
+                        className="w-[70px]"
+                        aria-label="Actions"
+                      ></TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredClients.map((client) => (
+                      <TableRow
+                        key={client.id}
+                        className="hover:bg-muted/50 transition-colors"
+                      >
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{client.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {client.diagnosis}
+                            </div>
+                            {/* Mobile-only contact info */}
+                            <div className="sm:hidden mt-1 space-y-1">
+                              <div className="flex items-center text-xs text-muted-foreground">
+                                <Mail
+                                  className="mr-1 h-3 w-3"
+                                  aria-hidden="true"
+                                />
+                                {client.email}
+                              </div>
+                              <div className="flex items-center text-xs text-muted-foreground">
+                                <Phone
+                                  className="mr-1 h-3 w-3"
+                                  aria-hidden="true"
+                                />
+                                {client.phone}
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <div className="space-y-1">
+                            <div className="flex items-center text-sm">
+                              <Mail
+                                className="mr-1 h-3 w-3 flex-shrink-0"
+                                aria-hidden="true"
+                              />
+                              <span className="truncate">{client.email}</span>
+                            </div>
+                            <div className="flex items-center text-sm">
+                              <Phone
+                                className="mr-1 h-3 w-3 flex-shrink-0"
+                                aria-hidden="true"
+                              />
+                              {client.phone}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={getStatusColor(client.status)}>
+                            {client.status}
+                          </Badge>
+                          {/* Mobile-only session count */}
+                          <div className="md:hidden mt-1 text-xs text-muted-foreground">
+                            {client.sessionsCount} sessions
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="font-medium">
+                            {client.sessionsCount}
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          {client.lastSession ? (
+                            <div className="text-sm">
+                              {new Date(
+                                client.lastSession,
+                              ).toLocaleDateString()}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          {client.nextSession ? (
+                            <div className="text-sm">
+                              {new Date(
+                                client.nextSession,
+                              ).toLocaleDateString()}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="hidden xl:table-cell">
+                          <div className="text-sm">{client.insurance}</div>
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                className="h-8 w-8 p-0"
+                                aria-label={`Actions for ${client.name}`}
+                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setSelectedClient(client);
+                                  setClientDetailModalOpen(true);
+                                }}
+                              >
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleEditClient(client)}
+                              >
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Client
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleNavigation("/sessions", "Sessions")
+                                }
+                              >
+                                <Calendar className="mr-2 h-4 w-4" />
+                                Schedule Session
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
 
-            {filteredClients.length === 0 && (
+            {filteredClients.length === 0 && !isLoading && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No clients found</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Try adjusting your search or filter criteria
+                <Users className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+                <p className="text-muted-foreground font-medium">
+                  No clients found
                 </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {searchTerm || statusFilter !== "All"
+                    ? "Try adjusting your search or filter criteria"
+                    : "Add your first client to get started"}
+                </p>
+                {!searchTerm && statusFilter === "All" && (
+                  <Button
+                    className="mt-4"
+                    onClick={() => setNewClientModalOpen(true)}
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add First Client
+                  </Button>
+                )}
               </div>
             )}
           </CardContent>
