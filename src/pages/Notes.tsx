@@ -930,7 +930,9 @@ const Notes = () => {
                                   <Eye className="mr-2 h-4 w-4" />
                                   View Details
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleEditNote(note)}
+                                >
                                   <Edit className="mr-2 h-4 w-4" />
                                   Edit Note
                                 </DropdownMenuItem>
