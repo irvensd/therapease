@@ -287,6 +287,11 @@ November: $10,800`;
           </CardContent>
         </Card>
       </div>
+
+      <CreateInvoiceModal
+        open={createInvoiceModalOpen}
+        onOpenChange={setCreateInvoiceModalOpen}
+      />
     </Layout>
   );
 };
