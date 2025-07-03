@@ -36,6 +36,8 @@ export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
     goals: "",
     followUp: "",
   });
+  const [aiAssistanceEnabled, setAiAssistanceEnabled] = useState(true);
+  const [isGeneratingNote, setIsGeneratingNote] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
