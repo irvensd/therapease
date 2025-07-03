@@ -307,17 +307,26 @@ const Clients = () => {
 
   return (
     <Layout>
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          role="banner"
+        >
           <div>
-            <h1 className="text-3xl font-bold">Client Management</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              Client Management
+            </h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
               Manage your client information and track their progress
             </p>
           </div>
-          <Button onClick={() => setNewClientModalOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
+          <Button
+            onClick={() => setNewClientModalOpen(true)}
+            className="shrink-0"
+            aria-label="Add new client"
+          >
+            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
             Add New Client
           </Button>
         </div>
