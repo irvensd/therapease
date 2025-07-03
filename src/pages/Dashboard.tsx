@@ -220,11 +220,11 @@ const Dashboard = () => {
     <Layout>
       <div className="p-6 space-y-6">
         {/* Welcome section */}
-        <div className="therapease-gradient rounded-xl p-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back, Dr. Wilson
+        <div className="therapease-gradient rounded-xl p-6" role="banner">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+            Welcome back, {userName}
           </h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base sm:text-lg">
             Here's what's happening in your practice today
           </p>
         </div>
