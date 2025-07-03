@@ -13,6 +13,8 @@ import {
   AlertCircle,
   Plus,
   ArrowRight,
+  Zap,
+  FileText,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
