@@ -450,6 +450,24 @@ const Notes = () => {
     });
   }, [showModal, toast]);
 
+  const handleEditNote = useCallback(
+    (note: Note) => {
+      showModal({
+        type: "info",
+        title: "Edit Note",
+        message: `Edit functionality for "${note.title}" would open a comprehensive note editor with:\n• Rich text formatting\n• Template selection\n• Auto-save functionality\n• Spell check for clinical terms\n• Client linking\n• Tag management\n\nThis feature is being developed with full HIPAA compliance.`,
+        confirmLabel: "Got it",
+        onConfirm: () => {
+          toast({
+            title: "Edit Note",
+            description: `Edit functionality for "${note.title}" will be available in the next update.`,
+          });
+        },
+      });
+    },
+    [showModal, toast],
+  );
+
   // Loading state
   if (isLoading) {
     return (
