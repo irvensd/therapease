@@ -246,6 +246,7 @@ const Reminders = () => {
         open={addReminderModalOpen}
         onOpenChange={setAddReminderModalOpen}
       />
+      <ModalComponent />
     </Layout>
   );
 };
