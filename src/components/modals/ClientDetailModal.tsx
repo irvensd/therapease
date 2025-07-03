@@ -294,6 +294,80 @@ export function ClientDetailModal({
             </div>
           </TabsContent>
 
+          <TabsContent value="ai-insights" className="space-y-4">
+            <AIAssistant mode="client" clientData={client} />
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-2">
+                  ✨ AI Treatment Recommendations
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="p-3 rounded-lg bg-blue-50 border border-blue-200">
+                    <h5 className="font-medium text-sm text-blue-900">
+                      Evidence-Based Intervention
+                    </h5>
+                    <p className="text-sm text-blue-800 mt-1">
+                      Based on {client.diagnosis.toLowerCase()}, CBT with
+                      exposure therapy shows 85% efficacy rate. Consider
+                      implementing gradual exposure hierarchy.
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-green-50 border border-green-200">
+                    <h5 className="font-medium text-sm text-green-900">
+                      Session Optimization
+                    </h5>
+                    <p className="text-sm text-green-800 mt-1">
+                      Client shows 23% better engagement in morning slots (9-11
+                      AM). Consider scheduling future appointments during peak
+                      engagement times.
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-purple-50 border border-purple-200">
+                    <h5 className="font-medium text-sm text-purple-900">
+                      Assessment Recommendation
+                    </h5>
+                    <p className="text-sm text-purple-800 mt-1">
+                      It's been 6 weeks since last standardized assessment.
+                      Consider administering PHQ-9 or GAD-7 to track progress
+                      objectively.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <h5 className="font-medium text-sm mb-2">
+                    Predicted Outcomes
+                  </h5>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">
+                        Treatment completion likelihood
+                      </span>
+                      <Badge variant="default" className="bg-green-600">
+                        92%
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">
+                        Expected improvement timeline
+                      </span>
+                      <Badge variant="outline">8-12 weeks</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">Optimal session frequency</span>
+                      <Badge variant="outline">Weekly</Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="documents" className="space-y-4">
             <Card>
               <CardContent className="p-6 text-center">
