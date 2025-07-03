@@ -401,69 +401,60 @@ const Dashboard = () => {
           {/* Today's Sessions */}
           <Card className="therapease-card">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Today's Sessions
-                <Badge variant="secondary">6 scheduled</Badge>
+              <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <span>Today's Sessions</span>
+                <Badge variant="secondary" className="w-fit">
+                  {dashboardData.todaySessions.length} scheduled
+                </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {[
-                {
-                  time: "9:00 AM",
-                  client: "Emma Thompson",
-                  type: "Individual Therapy",
-                  status: "confirmed",
-                },
-                {
-                  time: "10:30 AM",
-                  client: "Michael Chen",
-                  type: "Couples Therapy",
-                  status: "confirmed",
-                },
-                {
-                  time: "2:00 PM",
-                  client: "Sarah Johnson",
-                  type: "Individual Therapy",
-                  status: "pending",
-                },
-                {
-                  time: "3:30 PM",
-                  client: "David Wilson",
-                  type: "Family Therapy",
-                  status: "confirmed",
-                },
-              ].map((session, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 rounded-lg bg-muted/30"
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
-                      <Clock className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{session.client}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {session.time} • {session.type}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge
-                    variant={
-                      session.status === "confirmed" ? "default" : "secondary"
-                    }
-                    className="capitalize"
+              {dashboardData.todaySessions.length > 0 ? (
+                dashboardData.todaySessions.map((session) => (
+                  <div
+                    key={session.id}
+                    className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                    role="listitem"
                   >
-                    {session.status}
-                  </Badge>
+                    <div className="flex items-center space-x-3 min-w-0 flex-1">
+                      <div className="flex items-center justify-center w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-primary/10 flex-shrink-0">
+                        <Clock
+                          className="h-3 sm:h-4 w-3 sm:w-4 text-primary"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-sm sm:text-base truncate">
+                          {session.client}
+                        </p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          {session.time} • {session.type}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge
+                      variant={
+                        session.status === "confirmed" ? "default" : "secondary"
+                      }
+                      className="capitalize text-xs flex-shrink-0"
+                    >
+                      {session.status}
+                    </Badge>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6 text-muted-foreground">
+                  <Calendar className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>No sessions scheduled for today</p>
                 </div>
-              ))}
+              )}
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => navigate("/sessions")}
+                onClick={() => handleNavigation("/sessions", "Sessions")}
+                aria-label="View full schedule"
               >
-                <Calendar className="mr-2 h-4 w-4" />
+                <Calendar className="mr-2 h-4 w-4" aria-hidden="true" />
                 View Full Schedule
               </Button>
             </CardContent>
