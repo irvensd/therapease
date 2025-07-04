@@ -446,38 +446,10 @@ const Invoices = () => {
     [showModal],
   );
 
-  const handleSendInvoice = useCallback(
-    (invoice: Invoice) => {
-      if (invoice.status === "Draft") {
-        setInvoices((prev) =>
-          prev.map((i) =>
-            i.id === invoice.id ? { ...i, status: "Sent" as const } : i,
-          ),
-        );
-
-        toast({
-          title: "Invoice Sent",
-          description: `Invoice ${invoice.invoiceNumber} has been sent to ${invoice.clientName}.`,
-        });
-      } else {
-        showModal({
-          type: "info",
-          title: "Resend Invoice",
-          message: `Send a copy of invoice ${invoice.invoiceNumber} to ${invoice.clientName} (${invoice.clientEmail})?`,
-          confirmLabel: "Send Copy",
-          cancelLabel: "Cancel",
-          showCancel: true,
-          onConfirm: () => {
-            toast({
-              title: "Invoice Resent",
-              description: `A copy of invoice ${invoice.invoiceNumber} has been sent to ${invoice.clientName}.`,
-            });
-          },
-        });
-      }
-    },
-    [showModal, toast],
-  );
+  const handleSendInvoice = useCallback((invoice: Invoice) => {
+    setInvoiceToSend(invoice);
+    setSendInvoiceModalOpen(true);
+  }, []);
 
   const handleMarkAsPaid = useCallback(
     (invoice: Invoice) => {
