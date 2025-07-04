@@ -31,6 +31,9 @@ interface EditingNote {
   wordCount: number;
   isStarred: boolean;
   diagnosis: string;
+  content: string;
+  goals: string;
+  followUp: string;
 }
 
 interface NewNoteModalProps {
