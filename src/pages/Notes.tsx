@@ -267,6 +267,13 @@ const Notes = () => {
     [showModal, toast],
   );
 
+  const handleNoteModalClose = useCallback((open: boolean) => {
+    setNewNoteModalOpen(open);
+    if (!open) {
+      setEditingNote(null);
+    }
+  }, []);
+
   // Loading state
   if (isLoading) {
     return (
