@@ -171,26 +171,203 @@ const Notes = () => {
     setNotes(mockNotes);
   });
 
-  const handleViewNote = (note: SimpleNote) => {
-    toast({
-      title: "View Note",
-      description: `Viewing "${note.title}" by ${note.clientName}`,
-    });
-  };
+  // Memoized computed values to prevent infinite loops
+  const filteredNotes = useMemo(() => {
+    return notes.filter((note) => {
+      const matchesSearch =
+        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.tags.some((tag) =>
+          tag.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
 
-  const handleEditNote = (note: SimpleNote) => {
-    toast({
-      title: "Edit Note",
-      description: `Edit functionality for "${note.title}" coming soon!`,
-    });
-  };
+      const matchesType = typeFilter === "all" || note.type === typeFilter;
+      const matchesStatus =
+        statusFilter === "all" || note.status === statusFilter;
+      const matchesStarred = !showStarredOnly || note.isStarred;
 
-  const handleToggleStar = (noteId: number) => {
-    toast({
-      title: "Star Toggle",
-      description: "Star functionality working!",
+      return matchesSearch && matchesType && matchesStatus && matchesStarred;
     });
-  };
+  }, [notes, searchTerm, typeFilter, statusFilter, showStarredOnly]);
+
+  const notesStats: NotesStats = useMemo(() => {
+    return {
+      totalNotes: notes.length,
+      draftNotes: notes.filter((n) => n.status === "Draft").length,
+      completedNotes: notes.filter((n) => n.status === "Complete").length,
+      starredNotes: notes.filter((n) => n.isStarred).length,
+      todaysNotes: notes.filter((n) => {
+        const today = new Date().toISOString().split("T")[0];
+        return n.sessionDate === today;
+      }).length,
+      averageWordCount:
+        notes.length > 0
+          ? Math.round(
+              notes.reduce((sum, n) => sum + n.wordCount, 0) / notes.length,
+            )
+          : 0,
+    };
+  }, [notes]);
+
+  const uniqueClients = useMemo(() => {
+    return Array.from(new Set(notes.map((n) => n.clientName))).sort();
+  }, [notes]);
+
+  // Action handlers with no problematic dependencies
+  const handleToggleStar = useCallback(
+    (noteId: number) => {
+      setNotes((prev) => {
+        const updated = prev.map((note) =>
+          note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
+        );
+
+        const updatedNote = updated.find((n) => n.id === noteId);
+        if (updatedNote) {
+          toast({
+            title: updatedNote.isStarred
+              ? "Added to Starred"
+              : "Removed from Starred",
+            description: `"${updatedNote.title}" ${updatedNote.isStarred ? "added to" : "removed from"} starred notes.`,
+          });
+        }
+
+        return updated;
+      });
+    },
+    [toast],
+  );
+
+  const handleViewNote = useCallback(
+    (note: Note) => {
+      const formattedDate = new Date(note.sessionDate).toLocaleDateString();
+      const contentPreview =
+        note.content.length > 250
+          ? note.content.substring(0, 250) + "..."
+          : note.content;
+
+      const modalMessage = [
+        `Client: ${note.clientName}`,
+        `Date: ${formattedDate}`,
+        `Type: ${note.type}`,
+        `Status: ${note.status}`,
+        `Duration: ${note.sessionDuration} minutes`,
+        `Word Count: ${note.wordCount}`,
+        `Tags: ${note.tags.join(", ") || "None"}`,
+        "",
+        "Content Preview:",
+        contentPreview,
+      ].join("\n");
+
+      showModal({
+        type: "info",
+        title: `Note Details: ${note.title}`,
+        message: modalMessage,
+        confirmLabel: "Close",
+      });
+    },
+    [showModal],
+  );
+
+  const handleEditNote = useCallback(
+    (note: Note) => {
+      showModal({
+        type: "info",
+        title: "Edit Note",
+        message: `Edit functionality for "${note.title}" would open a comprehensive note editor with rich text formatting, template selection, auto-save, and HIPAA compliance features.`,
+        confirmLabel: "Got it",
+        onConfirm: () => {
+          toast({
+            title: "Edit Note",
+            description: `Edit functionality for "${note.title}" will be available in the next update.`,
+          });
+        },
+      });
+    },
+    [showModal, toast],
+  );
+
+  const handleDeleteNote = useCallback(
+    (note: Note) => {
+      showModal({
+        type: "destructive",
+        title: "Delete Note",
+        message: `Are you sure you want to delete "${note.title}"? This action cannot be undone.`,
+        confirmLabel: "Delete Note",
+        cancelLabel: "Cancel",
+        showCancel: true,
+        onConfirm: () => {
+          setNotes((prev) => prev.filter((n) => n.id !== note.id));
+          toast({
+            title: "Note Deleted",
+            description: `"${note.title}" has been permanently deleted.`,
+          });
+        },
+      });
+    },
+    [showModal, toast],
+  );
+
+  const handleArchiveNote = useCallback(
+    (note: Note) => {
+      setNotes((prev) =>
+        prev.map((n) =>
+          n.id === note.id ? { ...n, status: "Archived" as const } : n,
+        ),
+      );
+
+      toast({
+        title: "Note Archived",
+        description: `"${note.title}" has been moved to the archive.`,
+      });
+    },
+    [toast],
+  );
+
+  const handleExportNotes = useCallback(() => {
+    try {
+      const csvContent = filteredNotes
+        .map(
+          (note) =>
+            `"${note.title}","${note.clientName}","${note.sessionDate}","${note.type}","${note.status}","${note.wordCount}","${note.sessionDuration}","${note.tags.join("; ")}"`,
+        )
+        .join("\n");
+      const header =
+        "Title,Client,Session Date,Type,Status,Word Count,Duration (min),Tags\n";
+      const blob = new Blob([header + csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `therapy-notes-export-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Export Successful",
+        description: `Exported ${filteredNotes.length} notes to CSV file.`,
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "Failed to export notes data. Please try again.",
+      });
+    }
+  }, [toast]); // Only toast dependency - filteredNotes is used directly
+
+  const handleVoiceNotes = useCallback(() => {
+    showModal({
+      type: "info",
+      title: "Voice-to-Text Integration",
+      message:
+        "Voice-to-text features coming soon:\n• Real-time dictation during sessions\n• Medical terminology recognition\n• HIPAA-compliant voice processing\n• Integration with session templates",
+      confirmLabel: "Excited for this!",
+    });
+  }, [showModal]);
 
   const getStatusColor = (status: string) => {
     return status === "Complete"
