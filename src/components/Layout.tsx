@@ -154,10 +154,10 @@ export default function Layout({ children }: LayoutProps) {
             {/* User info */}
             <div className="mt-4 pt-4 border-t border-sidebar-border">
               <p className="text-xs text-sidebar-foreground/70">
-                Dr. Sarah Wilson
+                {user?.name || "User"}
               </p>
               <p className="text-xs text-sidebar-foreground/50">
-                Licensed Therapist
+                {user?.title || "Therapist"}
               </p>
             </div>
           </div>
