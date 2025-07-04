@@ -390,7 +390,9 @@ PLAN: Continue weekly therapy. Practice CBT techniques, complete homework assign
             >
               Cancel
             </Button>
-            <Button type="submit">Save Note</Button>
+            <Button type="submit">
+              {editingNote ? "Update Note" : "Save Note"}
+            </Button>
           </DialogFooter>
         </form>
         <ModalComponent />
