@@ -429,9 +429,11 @@ const Notes = () => {
             </CardHeader>
             <CardContent>
               <div className="text-xl sm:text-2xl font-bold">
-                {mockNotes.length}
+                {notesStats.totalNotes}
               </div>
-              <p className="text-xs text-muted-foreground">notes created</p>
+              <p className="text-xs text-muted-foreground">
+                {notesStats.averageWordCount} avg words
+              </p>
             </CardContent>
           </Card>
 
@@ -444,10 +446,10 @@ const Notes = () => {
             </CardHeader>
             <CardContent>
               <div className="text-xl sm:text-2xl font-bold">
-                {mockNotes.filter((n) => n.status === "Complete").length}
+                {notesStats.completedNotes}
               </div>
               <p className="text-xs text-muted-foreground">
-                {mockNotes.filter((n) => n.status === "Draft").length} drafts
+                {notesStats.draftNotes} drafts pending
               </p>
             </CardContent>
           </Card>
@@ -461,7 +463,7 @@ const Notes = () => {
             </CardHeader>
             <CardContent>
               <div className="text-xl sm:text-2xl font-bold">
-                {mockNotes.filter((n) => n.isStarred).length}
+                {notesStats.starredNotes}
               </div>
               <p className="text-xs text-muted-foreground">important notes</p>
             </CardContent>
@@ -471,14 +473,14 @@ const Notes = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-blue-600" />
-                Recent
+                Today
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-xl sm:text-2xl font-bold">
-                {mockNotes.length}
+                {notesStats.todaysNotes}
               </div>
-              <p className="text-xs text-muted-foreground">this week</p>
+              <p className="text-xs text-muted-foreground">notes created</p>
             </CardContent>
           </Card>
         </div>
