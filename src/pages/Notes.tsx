@@ -615,7 +615,8 @@ const Notes = () => {
 
       <NewNoteModal
         open={newNoteModalOpen}
-        onOpenChange={setNewNoteModalOpen}
+        onOpenChange={handleNoteModalClose}
+        editingNote={editingNote}
       />
       <ModalComponent />
     </Layout>
