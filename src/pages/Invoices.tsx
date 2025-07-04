@@ -451,6 +451,16 @@ const Invoices = () => {
     setSendInvoiceModalOpen(true);
   }, []);
 
+  const handleInvoiceSent = useCallback((invoiceId: number) => {
+    setInvoices((prev) =>
+      prev.map((invoice) =>
+        invoice.id === invoiceId
+          ? { ...invoice, status: "Sent" as const }
+          : invoice,
+      ),
+    );
+  }, []);
+
   const handleMarkAsPaid = useCallback(
     (invoice: Invoice) => {
       showModal({
