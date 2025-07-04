@@ -628,6 +628,15 @@ const Notes = () => {
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleNoteAction(note, "delete")}
+                              aria-label={`Delete ${note.title}`}
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
