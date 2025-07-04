@@ -399,13 +399,23 @@ const Notes = () => {
               Create, manage, and organize your therapy session notes
             </p>
           </div>
-          <Button
-            onClick={() => setNewNoteModalOpen(true)}
-            className="shrink-0"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            New Note
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button
+              variant="outline"
+              onClick={handleVoiceNotes}
+              className="shrink-0"
+            >
+              <Mic className="mr-2 h-4 w-4" />
+              Voice Notes
+            </Button>
+            <Button
+              onClick={() => setNewNoteModalOpen(true)}
+              className="shrink-0"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              New Note
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
