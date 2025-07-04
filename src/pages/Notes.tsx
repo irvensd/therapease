@@ -74,6 +74,7 @@ const Notes = () => {
   const [newNoteModalOpen, setNewNoteModalOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState("week");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   // Mock notes data - in real app would be fetched from API
   const mockNotes: Note[] = [
