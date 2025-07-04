@@ -186,9 +186,15 @@ PLAN: Continue weekly therapy. Practice CBT techniques, complete homework assign
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle>Create Session Note</DialogTitle>
+              <DialogTitle>
+                {editingNote
+                  ? `Edit Session Note: ${editingNote.title}`
+                  : "Create Session Note"}
+              </DialogTitle>
               <DialogDescription>
-                Document your therapy session with HIPAA-compliant notes.
+                {editingNote
+                  ? `Edit the session note for ${editingNote.clientName} with HIPAA-compliant documentation.`
+                  : "Document your therapy session with HIPAA-compliant notes."}
               </DialogDescription>
             </div>
             <div className="flex items-center gap-2">
