@@ -39,6 +39,7 @@ import {
   Lock,
   Archive,
   Calendar,
+  Download,
 } from "lucide-react";
 import { NewNoteModal } from "@/components/modals/NewNoteModal";
 
