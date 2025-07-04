@@ -3,7 +3,6 @@ import Layout from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/components/ui/use-toast";
 import {
   FileText,
   Plus,
@@ -17,75 +16,14 @@ import {
   CheckCircle,
   Calendar,
 } from "lucide-react";
-import { NewNoteModal } from "@/components/modals/NewNoteModal";
 
 const Notes = () => {
-  const { toast } = useToast();
-  const [newNoteModalOpen, setNewNoteModalOpen] = useState(false);
+  const [showMessage, setShowMessage] = useState("");
 
-  // Ultra-simple static data - no state, no computations
-  const sampleNotes = [
-    {
-      id: 1,
-      title: "Initial Assessment - Anxiety Treatment",
-      client: "Emma Thompson",
-      date: "Jan 22, 2024",
-      type: "SOAP",
-      status: "Complete",
-      starred: true,
-    },
-    {
-      id: 2,
-      title: "Progress Review - Week 4",
-      client: "Michael Chen",
-      date: "Jan 21, 2024",
-      type: "Progress",
-      status: "Complete",
-      starred: false,
-    },
-    {
-      id: 3,
-      title: "Crisis Intervention Session",
-      client: "Sarah Johnson",
-      date: "Jan 20, 2024",
-      type: "BIRP",
-      status: "Draft",
-      starred: true,
-    },
-  ];
-
-  // Simple handlers - no complex logic
-  const handleViewNote = (note: any) => {
-    toast({
-      title: "View Note",
-      description: `Viewing "${note.title}"`,
-    });
-  };
-
-  const handleEditNote = (note: any) => {
-    toast({
-      title: "Edit Note",
-      description: `Edit "${note.title}" - Coming soon!`,
-    });
-  };
-
-  const handleStarNote = (note: any) => {
-    toast({
-      title: note.starred ? "Unstarred" : "Starred",
-      description: `${note.title} ${note.starred ? "removed from" : "added to"} starred notes`,
-    });
-  };
-
-  const getTypeColor = (type: string) => {
-    if (type === "SOAP") return "bg-purple-100 text-purple-800";
-    if (type === "BIRP") return "bg-green-100 text-green-800";
-    if (type === "Progress") return "bg-orange-100 text-orange-800";
-    return "bg-blue-100 text-blue-800";
-  };
-
-  const getStatusColor = (status: string) => {
-    if (status === "Complete") return "bg-green-100 text-green-800";
-    return "bg-yellow-100 text-yellow-800";
+  // Extremely simple handlers that just set a message
+  const handleClick = (action: string, item: string) => {
+    setShowMessage(`${action}: ${item}`);
+    setTimeout(() => setShowMessage(""), 2000);
   };
 
   return (
@@ -99,11 +37,18 @@ const Notes = () => {
               Create, manage, and organize your therapy session notes
             </p>
           </div>
-          <Button onClick={() => setNewNoteModalOpen(true)}>
+          <Button onClick={() => handleClick("Create", "New Note")}>
             <Plus className="mr-2 h-4 w-4" />
             New Note
           </Button>
         </div>
+
+        {/* Message Display */}
+        {showMessage && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-blue-800">{showMessage}</p>
+          </div>
+        )}
 
         {/* Simple Stats */}
         <div className="grid gap-6 md:grid-cols-4">
@@ -115,7 +60,7 @@ const Notes = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">3</div>
+              <div className="text-2xl font-bold">5</div>
               <p className="text-xs text-muted-foreground">notes created</p>
             </CardContent>
           </Card>
@@ -128,7 +73,7 @@ const Notes = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">2</div>
+              <div className="text-2xl font-bold">4</div>
               <p className="text-xs text-muted-foreground">1 draft</p>
             </CardContent>
           </Card>
@@ -176,7 +121,7 @@ const Notes = () => {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => setNewNoteModalOpen(true)}
+                onClick={() => handleClick("Action", "Create Note")}
               >
                 New Note
               </Button>
@@ -197,9 +142,7 @@ const Notes = () => {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() =>
-                  toast({ title: "Search", description: "Search coming soon!" })
-                }
+                onClick={() => handleClick("Action", "Search Notes")}
               >
                 Search
               </Button>
@@ -220,12 +163,7 @@ const Notes = () => {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() =>
-                  toast({
-                    title: "Archive",
-                    description: "Archive coming soon!",
-                  })
-                }
+                onClick={() => handleClick("Action", "View Archive")}
               >
                 View Archive
               </Button>
@@ -240,75 +178,177 @@ const Notes = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {sampleNotes.map((note) => (
-                <div
-                  key={note.id}
-                  className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium truncate">{note.title}</h3>
-                      {note.starred && (
-                        <Star className="h-4 w-4 text-yellow-500 fill-current flex-shrink-0" />
-                      )}
-                      <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {note.client} • {note.date}
-                    </p>
-                    <div className="flex gap-2">
-                      <Badge
-                        className={getTypeColor(note.type)}
-                        variant="outline"
-                      >
-                        {note.type}
-                      </Badge>
-                      <Badge
-                        className={getStatusColor(note.status)}
-                        variant="outline"
-                      >
-                        {note.status}
-                      </Badge>
-                    </div>
+              {/* Note 1 */}
+              <div className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-medium truncate">
+                      Initial Assessment - Anxiety Treatment
+                    </h3>
+                    <Star className="h-4 w-4 text-yellow-500 fill-current flex-shrink-0" />
+                    <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
                   </div>
-                  <div className="flex items-center gap-1 ml-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleStarNote(note)}
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Emma Thompson • Jan 22, 2024
+                  </p>
+                  <div className="flex gap-2">
+                    <Badge
+                      className="bg-purple-100 text-purple-800"
+                      variant="outline"
                     >
-                      {note.starred ? (
-                        <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                      ) : (
-                        <StarOff className="h-4 w-4" />
-                      )}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleViewNote(note)}
+                      SOAP
+                    </Badge>
+                    <Badge
+                      className="bg-green-100 text-green-800"
+                      variant="outline"
                     >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEditNote(note)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                      Complete
+                    </Badge>
                   </div>
                 </div>
-              ))}
+                <div className="flex items-center gap-1 ml-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("Star", "Initial Assessment")}
+                  >
+                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("View", "Initial Assessment")}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("Edit", "Initial Assessment")}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Note 2 */}
+              <div className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-medium truncate">
+                      Progress Review - Week 4
+                    </h3>
+                    <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Michael Chen • Jan 21, 2024
+                  </p>
+                  <div className="flex gap-2">
+                    <Badge
+                      className="bg-orange-100 text-orange-800"
+                      variant="outline"
+                    >
+                      Progress
+                    </Badge>
+                    <Badge
+                      className="bg-green-100 text-green-800"
+                      variant="outline"
+                    >
+                      Complete
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 ml-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("Star", "Progress Review")}
+                  >
+                    <StarOff className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("View", "Progress Review")}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("Edit", "Progress Review")}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Note 3 */}
+              <div className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-medium truncate">
+                      Crisis Intervention Session
+                    </h3>
+                    <Star className="h-4 w-4 text-yellow-500 fill-current flex-shrink-0" />
+                    <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Sarah Johnson • Jan 20, 2024
+                  </p>
+                  <div className="flex gap-2">
+                    <Badge
+                      className="bg-green-100 text-green-800"
+                      variant="outline"
+                    >
+                      BIRP
+                    </Badge>
+                    <Badge
+                      className="bg-yellow-100 text-yellow-800"
+                      variant="outline"
+                    >
+                      Draft
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 ml-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("Star", "Crisis Intervention")}
+                  >
+                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("View", "Crisis Intervention")}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleClick("Edit", "Crisis Intervention")}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Button
+                onClick={() => handleClick("Create", "First Note")}
+                className="w-full sm:w-auto"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Create New Note
+              </Button>
             </div>
           </CardContent>
         </Card>
       </div>
-
-      <NewNoteModal
-        open={newNoteModalOpen}
-        onOpenChange={setNewNoteModalOpen}
-      />
     </Layout>
   );
 };
