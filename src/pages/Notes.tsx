@@ -320,7 +320,10 @@ const Notes = () => {
             </p>
           </div>
           <Button
-            onClick={() => setNewNoteModalOpen(true)}
+            onClick={() => {
+              setEditingNote(null);
+              setNewNoteModalOpen(true);
+            }}
             className="shrink-0"
             aria-label="Create new note"
           >
