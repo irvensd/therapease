@@ -21,12 +21,29 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 
+interface EditingNote {
+  id: number;
+  clientName: string;
+  title: string;
+  date: string;
+  type: string;
+  status: string;
+  wordCount: number;
+  isStarred: boolean;
+  diagnosis: string;
+}
+
 interface NewNoteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  editingNote?: EditingNote | null;
 }
 
-export function NewNoteModal({ open, onOpenChange }: NewNoteModalProps) {
+export function NewNoteModal({
+  open,
+  onOpenChange,
+  editingNote,
+}: NewNoteModalProps) {
   const { showModal, ModalComponent } = useConfirmationModal();
   const [formData, setFormData] = useState({
     client: "",
