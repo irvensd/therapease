@@ -58,6 +58,36 @@ export function NewNoteModal({
   const [aiAssistanceEnabled, setAiAssistanceEnabled] = useState(true);
   const [isGeneratingNote, setIsGeneratingNote] = useState(false);
 
+  // Update form data when editing note changes
+  useEffect(() => {
+    if (editingNote) {
+      setFormData({
+        client: editingNote.clientName,
+        sessionDate: editingNote.date,
+        sessionType: "Individual Therapy",
+        duration: "50",
+        noteType: editingNote.type.toLowerCase(),
+        content: `[Existing content for ${editingNote.title}]\n\nThis note contains the original content and can be edited as needed.`,
+        goals:
+          "Previously established treatment goals continue to be addressed.",
+        followUp:
+          "Continue with established treatment plan and follow-up actions.",
+      });
+    } else {
+      // Reset form for new note
+      setFormData({
+        client: "",
+        sessionDate: "",
+        sessionType: "",
+        duration: "",
+        noteType: "",
+        content: "",
+        goals: "",
+        followUp: "",
+      });
+    }
+  }, [editingNote]);
+
   const generateAINote = async () => {
     if (!formData.client || !formData.sessionType) {
       alert("Please select a client and session type first.");
