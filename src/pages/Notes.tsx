@@ -91,6 +91,12 @@ const Notes = () => {
       wordCount: 485,
       isStarred: true,
       diagnosis: "Generalized Anxiety Disorder",
+      content:
+        "SUBJECTIVE: Client reports increased anxiety levels over the past month, particularly related to work presentations. Experiencing difficulty sleeping (4-5 hours per night) and concentrating during meetings. States anxiety level at 8/10 on average.\n\nOBJECTIVE: Client appeared anxious but engaged throughout the session. Fidgeting observed. Speech was clear and goal-directed. No signs of psychomotor agitation.\n\nASSESSMENT: Symptoms consistent with Generalized Anxiety Disorder. Client is motivated for treatment and shows good insight into triggers.\n\nPLAN: Begin CBT techniques focusing on cognitive restructuring. Introduce breathing exercises and progressive muscle relaxation. Schedule weekly sessions.",
+      goals:
+        "1. Reduce anxiety symptoms from 8/10 to 4/10 within 8 weeks\n2. Improve sleep quality to 7+ hours per night\n3. Develop effective coping strategies for work presentations",
+      followUp:
+        "Practice breathing exercises daily\nComplete thought record worksheet\nSchedule follow-up appointment next week",
     },
     {
       id: 2,
@@ -102,6 +108,12 @@ const Notes = () => {
       wordCount: 320,
       isStarred: false,
       diagnosis: "Relationship Issues",
+      content:
+        "Client and partner attended couples session. Significant improvement noted in communication patterns since last session. Both parties are actively using 'I' statements and practicing active listening techniques learned in previous sessions. Conflict frequency has decreased from daily arguments to 2-3 times per week. Both report feeling more heard and understood.",
+      goals:
+        "Continue improving communication skills\nReduce conflict frequency to once per week or less\nIncrease quality time together",
+      followUp:
+        "Practice weekly check-ins\nImplement date night schedule\nContinue communication exercises",
     },
     {
       id: 3,
@@ -113,6 +125,12 @@ const Notes = () => {
       wordCount: 680,
       isStarred: true,
       diagnosis: "PTSD",
+      content:
+        "BEHAVIOR: Client presented in acute distress following a triggering event (car accident witness). Exhibited hypervigilance, rapid speech, and trembling. Reported flashbacks and intrusive thoughts.\n\nINTERVENTION: Implemented grounding techniques (5-4-3-2-1 method), deep breathing exercises, and progressive muscle relaxation. Reviewed safety plan and coping strategies. Provided psychoeducation about trauma responses.\n\nRESPONSE: Client was able to regulate breathing and reported decreased anxiety from 9/10 to 6/10 by session end. Demonstrated understanding of grounding techniques.\n\nPLAN: Increase session frequency temporarily. Review and update safety plan. Consider EMDR therapy options.",
+      goals:
+        "Stabilize acute symptoms\nImplement daily grounding techniques\nProcess trauma in safe therapeutic environment",
+      followUp:
+        "Daily check-in calls for one week\nSchedule session for tomorrow\nReview safety plan with support person",
     },
     {
       id: 4,
@@ -124,6 +142,12 @@ const Notes = () => {
       wordCount: 425,
       isStarred: false,
       diagnosis: "Family Dysfunction",
+      content:
+        "DATA: Family session with parents and teenage son (16). Focus on establishing boundaries and improving communication. Son participated more actively this session compared to previous sessions. Parents showed improved consistency in approach.\n\nASSESSMENT: Positive progress noted in family dynamics. Reduced conflict over household rules. Son demonstrating increased compliance with agreed-upon boundaries. Parents working more as a team.\n\nPLAN: Continue family sessions bi-weekly. Implement weekly family meetings at home. Review progress on behavioral contracts.",
+      goals:
+        "Establish clear family boundaries\nImprove parent-teen communication\nReduce family conflict episodes",
+      followUp:
+        "Implement weekly family meetings\nReview behavioral contract\nSchedule next session in two weeks",
     },
     {
       id: 5,
@@ -135,6 +159,12 @@ const Notes = () => {
       wordCount: 250,
       isStarred: false,
       diagnosis: "Major Depressive Disorder",
+      content:
+        "Treatment plan review following psychiatric consultation. Client has been on antidepressant medication for 6 weeks with some improvement in mood symptoms. PHQ-9 score decreased from 18 to 12. Sleep patterns improving. Still experiencing low motivation and energy levels.\n\nAdjusting therapy approach to include behavioral activation techniques. Adding mood tracking and activity scheduling to treatment plan.",
+      goals:
+        "Continue mood stabilization\nIncrease daily activities and social engagement\nImprove energy levels and motivation",
+      followUp:
+        "Begin mood tracking journal\nSchedule pleasant activities daily\nCoordinate with psychiatrist for medication follow-up",
     },
   ];
 
