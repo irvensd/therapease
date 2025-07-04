@@ -70,11 +70,9 @@ export function NewNoteModal({
         sessionType: "Individual Therapy",
         duration: "50",
         noteType: editingNote.type.toLowerCase(),
-        content: `[Existing content for ${editingNote.title}]\n\nThis note contains the original content and can be edited as needed.`,
-        goals:
-          "Previously established treatment goals continue to be addressed.",
-        followUp:
-          "Continue with established treatment plan and follow-up actions.",
+        content: editingNote.content,
+        goals: editingNote.goals,
+        followUp: editingNote.followUp,
       });
     } else {
       // Reset form for new note
