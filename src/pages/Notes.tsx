@@ -485,84 +485,73 @@ const Notes = () => {
           </Card>
         </div>
 
-        {/* Quick Actions Cards */}
-        <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
-          <Card className="therapease-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                Create Note
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4 text-sm">
-                Start a new session note with templates
-              </p>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => setNewNoteModalOpen(true)}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                New Note
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="therapease-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Search className="h-5 w-5 text-primary" />
-                Search Notes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4 text-sm">
-                Find notes by client, date, or content
-              </p>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() =>
-                  toast({
-                    title: "Search",
-                    description: "Search functionality coming soon!",
-                  })
-                }
-              >
-                <Search className="mr-2 h-4 w-4" />
-                Search
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="therapease-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Archive className="h-5 w-5 text-primary" />
-                Archive
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4 text-sm">
-                Secure storage for completed notes
-              </p>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() =>
-                  toast({
-                    title: "Archive",
-                    description: "Archive functionality coming soon!",
-                  })
-                }
-              >
-                <Archive className="mr-2 h-4 w-4" />
-                View Archive
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Search and Filters */}
+        <Card className="therapease-card">
+          <CardHeader>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <CardTitle>Notes Management</CardTitle>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    placeholder="Search notes, clients, or content..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 w-full sm:w-64"
+                  />
+                </div>
+                <Button
+                  variant={showStarredOnly ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setShowStarredOnly(!showStarredOnly)}
+                >
+                  {showStarredOnly ? (
+                    <Star className="h-4 w-4 fill-current" />
+                  ) : (
+                    <StarOff className="h-4 w-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportNotes}
+                  disabled={filteredNotes.length === 0}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Export
+                </Button>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 mt-4">
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+                <SelectTrigger className="w-full sm:w-40">
+                  <SelectValue placeholder="Note Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="SOAP">SOAP</SelectItem>
+                  <SelectItem value="DAP">DAP</SelectItem>
+                  <SelectItem value="BIRP">BIRP</SelectItem>
+                  <SelectItem value="Progress">Progress</SelectItem>
+                  <SelectItem value="Assessment">Assessment</SelectItem>
+                  <SelectItem value="Treatment Plan">Treatment Plan</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full sm:w-40">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="Draft">Draft</SelectItem>
+                  <SelectItem value="Complete">Complete</SelectItem>
+                  <SelectItem value="Reviewed">Reviewed</SelectItem>
+                  <SelectItem value="Archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardHeader>
+        </Card>
 
         {/* Notes List */}
         <Card className="therapease-card">
