@@ -999,6 +999,12 @@ const Invoices = () => {
         open={createInvoiceModalOpen}
         onOpenChange={handleInvoiceModalClose}
       />
+      <SendInvoiceModal
+        open={sendInvoiceModalOpen}
+        onOpenChange={setSendInvoiceModalOpen}
+        invoice={invoiceToSend}
+        onInvoiceSent={handleInvoiceSent}
+      />
       <ModalComponent />
     </Layout>
   );
