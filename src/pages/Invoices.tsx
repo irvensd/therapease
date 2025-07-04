@@ -105,6 +105,8 @@ const Invoices = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [createInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
+  const [sendInvoiceModalOpen, setSendInvoiceModalOpen] = useState(false);
+  const [invoiceToSend, setInvoiceToSend] = useState<Invoice | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("active");
   const [clientFilter, setClientFilter] = useState("all");
