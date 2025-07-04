@@ -144,6 +144,7 @@ export default function Layout({ children }: LayoutProps) {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                onClick={handleSignOut}
               >
                 <LogOut className="mr-3 h-5 w-5" />
                 Sign Out
