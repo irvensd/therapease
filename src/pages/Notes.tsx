@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import Layout from "@/components/Layout";
+import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   FileText,
   Plus,
@@ -17,18 +32,39 @@ import {
   Users,
   CheckCircle,
   Calendar,
+  MoreVertical,
+  Trash2,
+  Download,
+  Filter,
+  Mic,
 } from "lucide-react";
 import { NewNoteModal } from "@/components/modals/NewNoteModal";
 
-// Simplified Note interface
-interface SimpleNote {
+// Enhanced Note interface
+interface Note {
   id: number;
   title: string;
   clientName: string;
-  date: string;
-  type: "SOAP" | "DAP" | "BIRP" | "Progress";
-  status: "Draft" | "Complete";
+  sessionDate: string;
+  createdAt: string;
+  type: "SOAP" | "DAP" | "BIRP" | "Progress" | "Assessment" | "Treatment Plan";
+  status: "Draft" | "Complete" | "Reviewed" | "Archived";
+  tags: string[];
+  wordCount: number;
+  content: string;
   isStarred: boolean;
+  isConfidential: boolean;
+  sessionDuration: number;
+  diagnosis: string;
+}
+
+interface NotesStats {
+  totalNotes: number;
+  draftNotes: number;
+  completedNotes: number;
+  starredNotes: number;
+  todaysNotes: number;
+  averageWordCount: number;
 }
 
 const Notes = () => {
