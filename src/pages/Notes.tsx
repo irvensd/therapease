@@ -317,6 +317,61 @@ const Notes = () => {
     [showModal, toast],
   );
 
+  const handleExportNotes = useCallback(() => {
+    try {
+      const csvHeaders = [
+        "Title",
+        "Client Name",
+        "Date",
+        "Type",
+        "Status",
+        "Word Count",
+        "Diagnosis",
+        "Content",
+        "Goals",
+        "Follow-up",
+      ];
+
+      const csvContent = filteredNotes.map((note) =>
+        [
+          `"${note.title.replace(/"/g, '""')}"`,
+          `"${note.clientName.replace(/"/g, '""')}"`,
+          `"${new Date(note.date).toLocaleDateString()}"`,
+          `"${note.type}"`,
+          `"${note.status}"`,
+          `"${note.wordCount}"`,
+          `"${note.diagnosis.replace(/"/g, '""')}"`,
+          `"${note.content.replace(/"/g, '""')}"`,
+          `"${note.goals.replace(/"/g, '""')}"`,
+          `"${note.followUp.replace(/"/g, '""')}"`,
+        ].join(","),
+      );
+
+      const csvData = [csvHeaders.join(","), ...csvContent].join("\n");
+
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `therapy-notes-export-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Export Successful",
+        description: `Exported ${filteredNotes.length} notes to CSV file with full content.`,
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "Failed to export notes data. Please try again.",
+      });
+    }
+  }, [filteredNotes, toast]);
+
   const handleNoteModalClose = useCallback((open: boolean) => {
     setNewNoteModalOpen(open);
     if (!open) {
