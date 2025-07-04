@@ -364,7 +364,7 @@ const Notes = () => {
       type: "info",
       title: "Voice-to-Text Integration",
       message:
-        "Voice-to-text features coming soon:\n• Real-time dictation during sessions\n• Medical terminology recognition\n• HIPAA-compliant voice processing\n• Integration with session templates",
+        "Voice-to-text features coming soon:\n• Real-time dictation during sessions\n��� Medical terminology recognition\n• HIPAA-compliant voice processing\n• Integration with session templates",
       confirmLabel: "Excited for this!",
     });
   }, [showModal]);
@@ -556,11 +556,15 @@ const Notes = () => {
         {/* Notes List */}
         <Card className="therapease-card">
           <CardHeader>
-            <CardTitle>Recent Notes</CardTitle>
+            <CardTitle>
+              {filteredNotes.length === notes.length
+                ? "All Notes"
+                : `Filtered Notes (${filteredNotes.length})`}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {mockNotes.map((note) => (
+              {filteredNotes.map((note) => (
                 <div
                   key={note.id}
                   className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
@@ -571,13 +575,19 @@ const Notes = () => {
                       {note.isStarred && (
                         <Star className="h-4 w-4 text-yellow-500 fill-current flex-shrink-0" />
                       )}
-                      <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                      {note.isConfidential && (
+                        <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                      )}
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
+                    <p className="text-sm text-muted-foreground mb-1">
                       {note.clientName} •{" "}
-                      {new Date(note.date).toLocaleDateString()}
+                      {new Date(note.sessionDate).toLocaleDateString()}
                     </p>
-                    <div className="flex gap-2">
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {note.diagnosis} • {note.wordCount} words •{" "}
+                      {note.sessionDuration}min
+                    </p>
+                    <div className="flex gap-2 flex-wrap">
                       <Badge
                         className={getTypeColor(note.type)}
                         variant="outline"
@@ -590,6 +600,20 @@ const Notes = () => {
                       >
                         {note.status}
                       </Badge>
+                      {note.tags.slice(0, 2).map((tag, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="text-xs"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                      {note.tags.length > 2 && (
+                        <Badge variant="secondary" className="text-xs">
+                          +{note.tags.length - 2}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center gap-1 ml-4">
@@ -604,41 +628,63 @@ const Notes = () => {
                         <StarOff className="h-4 w-4" />
                       )}
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleViewNote(note)}
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEditNote(note)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleViewNote(note)}>
+                          <Eye className="mr-2 h-4 w-4" />
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditNote(note)}>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit Note
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleArchiveNote(note)}
+                        >
+                          <Archive className="mr-2 h-4 w-4" />
+                          Archive
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleDeleteNote(note)}
+                          className="text-destructive"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               ))}
             </div>
 
-            {mockNotes.length === 0 && (
+            {filteredNotes.length === 0 && (
               <div className="text-center py-12">
                 <FileText className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
                 <p className="text-muted-foreground font-medium">
                   No notes found
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Create your first session note to get started
+                  {searchTerm || typeFilter !== "all" || statusFilter !== "all"
+                    ? "Try adjusting your search or filter criteria"
+                    : "Create your first session note to get started"}
                 </p>
-                <Button
-                  className="mt-4"
-                  onClick={() => setNewNoteModalOpen(true)}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create First Note
-                </Button>
+                {!searchTerm &&
+                  typeFilter === "all" &&
+                  statusFilter === "all" && (
+                    <Button
+                      className="mt-4"
+                      onClick={() => setNewNoteModalOpen(true)}
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create First Note
+                    </Button>
+                  )}
               </div>
             )}
           </CardContent>
