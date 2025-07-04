@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/use-toast";
 import { AIAssistant } from "@/components/AIAssistant";
 import { TherapistWellness } from "@/components/TherapistWellness";
 import {
