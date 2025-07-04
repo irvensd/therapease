@@ -46,12 +46,12 @@ export function NewNoteModal({
 }: NewNoteModalProps) {
   const { showModal, ModalComponent } = useConfirmationModal();
   const [formData, setFormData] = useState({
-    client: "",
-    sessionDate: "",
-    sessionType: "",
-    duration: "",
-    noteType: "",
-    content: "",
+    client: editingNote?.clientName || "",
+    sessionDate: editingNote?.date || "",
+    sessionType: "Individual Therapy",
+    duration: "50",
+    noteType: editingNote?.type || "",
+    content: `Sample content for ${editingNote?.title || "new note"}...`,
     goals: "",
     followUp: "",
   });
