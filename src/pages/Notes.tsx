@@ -364,7 +364,7 @@ const Notes = () => {
       type: "info",
       title: "Voice-to-Text Integration",
       message:
-        "Voice-to-text features coming soon:\n• Real-time dictation during sessions\n��� Medical terminology recognition\n• HIPAA-compliant voice processing\n• Integration with session templates",
+        "Voice-to-text features coming soon:\n• Real-time dictation during sessions\n• Medical terminology recognition\n• HIPAA-compliant voice processing\n• Integration with session templates",
       confirmLabel: "Excited for this!",
     });
   }, [showModal]);
@@ -695,6 +695,7 @@ const Notes = () => {
         open={newNoteModalOpen}
         onOpenChange={setNewNoteModalOpen}
       />
+      <ModalComponent />
     </Layout>
   );
 };
