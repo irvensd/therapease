@@ -233,9 +233,11 @@ const Notes = () => {
           });
           break;
         case "edit":
+          setEditingNote(note);
+          setNewNoteModalOpen(true);
           toast({
-            title: "Edit Note",
-            description: `Edit functionality for "${note.title}" would be implemented here.`,
+            title: "Edit Mode",
+            description: `Opening "${note.title}" for editing.`,
           });
           break;
         case "star":
