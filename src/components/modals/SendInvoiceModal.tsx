@@ -76,7 +76,7 @@ export function SendInvoiceModal({
   });
 
   // Update email data when invoice changes
-  useState(() => {
+  useEffect(() => {
     if (invoice) {
       setEmailData({
         to: invoice.clientEmail,
@@ -98,7 +98,7 @@ Best regards,
 TherapEase Team`,
       });
     }
-  });
+  }, [invoice]);
 
   const generatePDF = useCallback((invoice: Invoice) => {
     const pdf = new jsPDF();
