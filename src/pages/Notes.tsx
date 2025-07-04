@@ -69,38 +69,107 @@ interface NotesStats {
 
 const Notes = () => {
   const { toast } = useToast();
-  const [newNoteModalOpen, setNewNoteModalOpen] = useState(false);
+  const { showModal, ModalComponent } = useConfirmationModal();
 
-  // Static mock data to avoid any computation issues
-  const mockNotes: SimpleNote[] = [
-    {
-      id: 1,
-      title: "Initial Assessment - Anxiety Treatment",
-      clientName: "Emma Thompson",
-      date: "2024-01-22",
-      type: "SOAP",
-      status: "Complete",
-      isStarred: true,
-    },
-    {
-      id: 2,
-      title: "Progress Review - Week 4",
-      clientName: "Michael Chen",
-      date: "2024-01-21",
-      type: "Progress",
-      status: "Complete",
-      isStarred: false,
-    },
-    {
-      id: 3,
-      title: "Crisis Intervention Session",
-      clientName: "Sarah Johnson",
-      date: "2024-01-20",
-      type: "BIRP",
-      status: "Draft",
-      isStarred: true,
-    },
-  ];
+  // State management
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [newNoteModalOpen, setNewNoteModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [showStarredOnly, setShowStarredOnly] = useState(false);
+
+  // Initialize with mock data
+  useState(() => {
+    const mockNotes: Note[] = [
+      {
+        id: 1,
+        title: "Initial Assessment - Anxiety Treatment",
+        clientName: "Emma Thompson",
+        sessionDate: "2024-01-22",
+        createdAt: "2024-01-22T10:30:00",
+        type: "SOAP",
+        status: "Complete",
+        tags: ["anxiety", "initial-assessment", "CBT"],
+        wordCount: 485,
+        content:
+          "Subjective: Client reports increased anxiety levels over the past month. Experiencing difficulty sleeping and concentrating at work. Objective: Client appeared nervous but engaged throughout the session. Assessment: Symptoms consistent with Generalized Anxiety Disorder. Plan: Begin CBT techniques, practice relaxation exercises, schedule follow-up in one week.",
+        isStarred: true,
+        isConfidential: true,
+        sessionDuration: 50,
+        diagnosis: "Generalized Anxiety Disorder",
+      },
+      {
+        id: 2,
+        title: "Progress Review - Week 4",
+        clientName: "Michael Chen",
+        sessionDate: "2024-01-21",
+        createdAt: "2024-01-21T15:00:00",
+        type: "Progress",
+        status: "Complete",
+        tags: ["couples-therapy", "communication", "progress"],
+        wordCount: 320,
+        content:
+          "Couple demonstrated improved communication techniques discussed in previous sessions. Both partners are actively practicing active listening and using 'I' statements. Notable reduction in conflict frequency reported by both parties.",
+        isStarred: false,
+        isConfidential: true,
+        sessionDuration: 60,
+        diagnosis: "Relationship Issues",
+      },
+      {
+        id: 3,
+        title: "Crisis Intervention Session",
+        clientName: "Sarah Johnson",
+        sessionDate: "2024-01-20",
+        createdAt: "2024-01-20T14:30:00",
+        type: "BIRP",
+        status: "Reviewed",
+        tags: ["crisis", "PTSD", "emergency"],
+        wordCount: 680,
+        content:
+          "Behavior: Client presented in distressed state following triggering event. Intervention: Implemented grounding techniques, safety planning, and emotional regulation strategies. Response: Client was able to stabilize and reported feeling safer by end of session. Plan: Increase session frequency temporarily, review safety plan.",
+        isStarred: true,
+        isConfidential: true,
+        sessionDuration: 75,
+        diagnosis: "PTSD",
+      },
+      {
+        id: 4,
+        title: "Family Therapy Session #6",
+        clientName: "Wilson Family",
+        sessionDate: "2024-01-19",
+        createdAt: "2024-01-19T16:30:00",
+        type: "DAP",
+        status: "Complete",
+        tags: ["family-therapy", "adolescent", "boundaries"],
+        wordCount: 425,
+        content:
+          "Data: Family session focused on establishing healthy boundaries and improving communication between parents and teenager. Assessment: Progress noted in family dynamics, reduced conflict. Plan: Continue family sessions bi-weekly.",
+        isStarred: false,
+        isConfidential: true,
+        sessionDuration: 60,
+        diagnosis: "Family Dysfunction",
+      },
+      {
+        id: 5,
+        title: "Treatment Plan Update",
+        clientName: "Lisa Rodriguez",
+        sessionDate: "2024-01-18",
+        createdAt: "2024-01-18T11:00:00",
+        type: "Treatment Plan",
+        status: "Draft",
+        tags: ["treatment-plan", "depression", "medication"],
+        wordCount: 250,
+        content:
+          "Updated treatment goals following psychiatric consultation. Incorporating medication management into therapy plan. Focus on mood tracking and behavioral activation techniques.",
+        isStarred: false,
+        isConfidential: true,
+        sessionDuration: 45,
+        diagnosis: "Major Depressive Disorder",
+      },
+    ];
+    setNotes(mockNotes);
+  });
 
   const handleViewNote = (note: SimpleNote) => {
     toast({
