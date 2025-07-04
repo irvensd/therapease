@@ -601,7 +601,10 @@ const Notes = () => {
                 {statusFilter === "all" && (
                   <Button
                     className="mt-4"
-                    onClick={() => setNewNoteModalOpen(true)}
+                    onClick={() => {
+                      setEditingNote(null);
+                      setNewNoteModalOpen(true);
+                    }}
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Create First Note
