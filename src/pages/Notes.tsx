@@ -424,17 +424,29 @@ const Notes = () => {
               Create, manage, and organize your therapy session notes
             </p>
           </div>
-          <Button
-            onClick={() => {
-              setEditingNote(null);
-              setNewNoteModalOpen(true);
-            }}
-            className="shrink-0"
-            aria-label="Create new note"
-          >
-            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-            New Note
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button
+              variant="outline"
+              onClick={handleExportNotes}
+              disabled={filteredNotes.length === 0}
+              className="shrink-0"
+              aria-label={`Export ${filteredNotes.length} notes to CSV`}
+            >
+              <Download className="mr-2 h-4 w-4" aria-hidden="true" />
+              Export CSV ({filteredNotes.length})
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingNote(null);
+                setNewNoteModalOpen(true);
+              }}
+              className="shrink-0"
+              aria-label="Create new note"
+            >
+              <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+              New Note
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
