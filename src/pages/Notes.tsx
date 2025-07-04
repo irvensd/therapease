@@ -295,6 +295,23 @@ const Notes = () => {
             description: `${note.title} has been archived.`,
           });
           break;
+        case "delete":
+          showModal({
+            type: "destructive",
+            title: "Delete Note",
+            message: `Are you sure you want to permanently delete "${note.title}"? This action cannot be undone and will remove all note content, goals, and follow-up information.`,
+            confirmLabel: "Delete Note",
+            cancelLabel: "Cancel",
+            showCancel: true,
+            onConfirm: () => {
+              setNotes((prev) => prev.filter((n) => n.id !== note.id));
+              toast({
+                title: "Note Deleted",
+                description: `"${note.title}" has been permanently deleted.`,
+              });
+            },
+          });
+          break;
       }
     },
     [showModal, toast],
