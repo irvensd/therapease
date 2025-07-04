@@ -53,6 +53,9 @@ interface Note {
   wordCount: number;
   isStarred: boolean;
   diagnosis: string;
+  content: string;
+  goals: string;
+  followUp: string;
 }
 
 interface NotesStats {
