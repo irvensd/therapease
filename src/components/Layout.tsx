@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   Users,
   Calendar,
+  CalendarDays,
   FileText,
   Bell,
   Receipt,
