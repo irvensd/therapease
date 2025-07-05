@@ -33,6 +33,7 @@ const navigation = [
   { name: "Notes", href: "/notes", icon: FileText },
   { name: "Reminders", href: "/reminders", icon: Bell, badge: 3 },
   { name: "Invoices", href: "/invoices", icon: Receipt },
+  { name: "Reports", href: "/reports", icon: BarChart3 },
 ];
 
 export default function Layout({ children }: LayoutProps) {
