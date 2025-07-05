@@ -14,6 +14,7 @@ import {
   FileText,
   Bell,
   Receipt,
+  BarChart3,
   Menu,
   X,
   Heart,
