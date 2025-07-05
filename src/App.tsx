@@ -17,6 +17,7 @@ import Clients from "./pages/Clients";
 import Sessions from "./pages/Sessions";
 import Calendar from "./pages/Calendar";
 import Notes from "./pages/Notes";
+import Progress from "./pages/Progress";
 import Reminders from "./pages/Reminders";
 import Invoices from "./pages/Invoices";
 import Reports from "./pages/Reports";
