@@ -15,6 +15,7 @@ import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import Sessions from "./pages/Sessions";
+import Calendar from "./pages/Calendar";
 import Notes from "./pages/Notes";
 import Reminders from "./pages/Reminders";
 import Invoices from "./pages/Invoices";
