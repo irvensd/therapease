@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-<<<<<<< HEAD
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Table,
@@ -23,6 +24,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import {
   FileText,
   Plus,
@@ -41,6 +51,16 @@ import {
   Archive,
   Calendar,
   Download,
+  Search,
+  Mic,
+  MicOff,
+  User,
+  Trash2,
+  Filter,
+  Bookmark,
+  AlertTriangle,
+  Target,
+  Brain,
 } from "lucide-react";
 import { NewNoteModal } from "@/components/modals/NewNoteModal";
 
@@ -66,294 +86,18 @@ interface NotesStats {
   draftNotes: number;
   starredNotes: number;
 }
-=======
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import {
-  FileText,
-  Plus,
-  Search,
-  Archive,
-  Mic,
-  MicOff,
-  User,
-  Calendar,
-  Clock,
-  Eye,
-  Edit,
-  Trash2,
-  Filter,
-  Download,
-  Lock,
-  Bookmark,
-  TrendingUp,
-  AlertTriangle,
-  CheckCircle,
-  Target,
-  Brain,
-} from "lucide-react";
-import { NewNoteModal } from "@/components/modals/NewNoteModal";
 
-// Mock notes data
-const mockNotes = [
-  {
-    id: 1,
-    clientName: "Emma Thompson",
-    clientId: "c1",
-    sessionNumber: 12,
-    date: "2024-11-22",
-    time: "9:00 AM",
-    duration: 60,
-    noteType: "Session Note",
-    template: "Individual Therapy Progress Note",
-    status: "completed",
-    isSecure: true,
-    mood: "anxious",
-    progressRating: 7,
-    content: {
-      presenting_concern: "Client continues to experience work-related anxiety, particularly around upcoming project deadlines and presentations.",
-      session_focus: "Cognitive restructuring techniques for catastrophic thinking patterns related to work performance.",
-      interventions: "1. Reviewed thought record from previous week\n2. Practiced cognitive reframing exercises\n3. Introduced progressive muscle relaxation technique",
-      client_response: "Client demonstrated good understanding of cognitive distortions. Expressed feeling more confident after practicing reframing exercises during session.",
-      homework_assigned: "1. Complete daily thought records for work-related anxiety\n2. Practice PMR technique 10 minutes daily\n3. Use reframing worksheet before important meetings",
-      progress_toward_goals: "Goal 1 (Reduce anxiety symptoms): Showing steady improvement. Client reports 40% reduction in daily anxiety using breathing techniques.\nGoal 2 (Improve work confidence): Moderate progress. Beginning to challenge negative self-talk.",
-      risk_assessment: "No current safety concerns identified. Client appears stable and engaged.",
-      next_session_plan: "Review homework completion, continue CBT techniques, introduce mindfulness strategies if appropriate."
-    },
-    tags: ["anxiety", "cognitive-behavioral", "work-stress"],
-    wordCount: 156,
-    lastModified: "2024-11-22 10:30 AM"
-  },
-  {
-    id: 2,
-    clientName: "Michael Chen",
-    clientId: "c2",
-    sessionNumber: 8,
-    date: "2024-11-22",
-    time: "10:30 AM",
-    duration: 90,
-    noteType: "Couples Session Note",
-    template: "Couples Therapy Progress Note",
-    status: "completed",
-    isSecure: true,
-    mood: "tense",
-    progressRating: 6,
-    content: {
-      presenting_concern: "Couple continues to struggle with communication patterns, particularly around household responsibilities and parenting decisions.",
-      session_focus: "Active listening skills and 'I' statement practice. Addressing recurring conflict about childcare duties.",
-      interventions: "1. Gottman's Speaker-Listener technique practice\n2. Role-played recent conflict about school pickup\n3. Explored underlying needs and emotions",
-      client_response: "Both partners engaged well in exercises. Wife showed particular improvement in listening without interrupting. Husband struggled initially but made progress by session end.",
-      homework_assigned: "1. Practice Speaker-Listener technique 15 minutes daily\n2. Schedule weekly check-ins about household tasks\n3. Each partner to complete 'Emotional Needs' worksheet",
-      progress_toward_goals: "Goal 1 (Improve communication): Good progress. Less interrupting observed during session.\nGoal 2 (Reduce conflict frequency): Some improvement. Couple reports only 2 major conflicts this week vs previous 4-5.",
-      risk_assessment: "No safety concerns. Relationship stress present but manageable. No signs of domestic violence.",
-      next_session_plan: "Review homework exercises, introduce conflict resolution skills, address parenting consistency."
-    },
-    tags: ["couples-therapy", "communication", "parenting"],
-    wordCount: 178,
-    lastModified: "2024-11-22 12:00 PM"
-  },
-  {
-    id: 3,
-    clientName: "Sarah Johnson",
-    clientId: "c3",
-    sessionNumber: 15,
-    date: "2024-11-21",
-    time: "1:00 PM",
-    duration: 60,
-    noteType: "Treatment Plan Review",
-    template: "Treatment Plan Progress Review",
-    status: "completed",
-    isSecure: true,
-    mood: "hopeful",
-    progressRating: 8,
-    content: {
-      presenting_concern: "Quarterly review of treatment progress for depression and self-esteem issues. Client initially presented with major depressive episode.",
-      session_focus: "Comprehensive review of treatment goals, assessment of current symptoms, and planning for next phase of treatment.",
-      interventions: "1. Administered PHQ-9 depression screening\n2. Reviewed progress on all treatment goals\n3. Discussed maintenance strategies and relapse prevention",
-      client_response: "Client reports significant improvement in mood and daily functioning. PHQ-9 score decreased from 18 (initial) to 6 (current). Expressing optimism about future.",
-      homework_assigned: "1. Continue current coping strategies\n2. Begin tapering frequency of sessions to bi-weekly\n3. Complete self-advocacy goal-setting worksheet",
-      progress_toward_goals: "Goal 1 (Reduce depressive symptoms): Excellent progress. Symptoms now in mild range.\nGoal 2 (Improve self-esteem): Good progress. Using positive self-talk regularly.\nGoal 3 (Increase social activities): Met. Joined book club and yoga class.",
-      risk_assessment: "Significant improvement in overall functioning. No current suicidal ideation. Strong support system in place.",
-      next_session_plan: "Transition to maintenance phase. Focus on relapse prevention and long-term wellness strategies."
-    },
-    tags: ["depression", "treatment-review", "progress-assessment"],
-    wordCount: 189,
-    lastModified: "2024-11-21 2:15 PM"
-  },
-  {
-    id: 4,
-    clientName: "David Wilson",
-    clientId: "c4",
-    sessionNumber: 5,
-    date: "2024-11-21",
-    time: "2:30 PM",
-    duration: 75,
-    noteType: "Family Session Note",
-    template: "Family Therapy Session Note",
-    status: "completed",
-    isSecure: true,
-    mood: "frustrated",
-    progressRating: 5,
-    content: {
-      presenting_concern: "Family session addressing 16-year-old son's behavioral issues including defiance, curfew violations, and declining academic performance.",
-      session_focus: "Family communication patterns, boundary setting, and consequences for teenage behavior. Both parents and teen present.",
-      interventions: "1. Family mapping exercise to identify roles and dynamics\n2. Problem-solving training around curfew issues\n3. Discussed age-appropriate consequences and privileges",
-      client_response: "Parents engaged and motivated. Teen initially resistant but participated more actively after expressing his perspective was heard. Some defensive behaviors noted.",
-      homework_assigned: "1. Family to practice weekly check-in meetings\n2. Parents to agree on consistent consequences before implementing\n3. Teen to propose his own accountability plan",
-      progress_toward_goals: "Goal 1 (Improve family communication): Limited progress. Still significant tension.\nGoal 2 (Establish clear boundaries): Some progress. Parents more aligned on rules.\nGoal 3 (Reduce behavioral incidents): Minimal change observed.",
-      risk_assessment: "No immediate safety concerns. Family stress elevated but manageable. Teen appears frustrated but not at-risk.",
-      next_session_plan: "Individual session with teen next week, then return to family format. Address underlying emotional needs."
-    },
-    tags: ["family-therapy", "adolescent", "behavioral-issues"],
-    wordCount: 198,
-    lastModified: "2024-11-21 4:00 PM"
-  },
-  {
-    id: 5,
-    clientName: "Lisa Park",
-    clientId: "c5",
-    sessionNumber: 22,
-    date: "2024-11-20",
-    time: "4:00 PM",
-    duration: 60,
-    noteType: "EMDR Session Note",
-    template: "EMDR Treatment Session Note",
-    status: "completed",
-    isSecure: true,
-    mood: "calm",
-    progressRating: 9,
-    content: {
-      presenting_concern: "EMDR session targeting specific traumatic memory from motor vehicle accident 2 years ago. Client continues PTSD treatment.",
-      session_focus: "Processing target memory using EMDR protocol. Memory: 'Moment of impact during car accident.'",
-      interventions: "1. Resource installation (safe place, calm/confident resources)\n2. Target memory processing - 6 sets of bilateral stimulation\n3. Installation of positive cognition: 'I survived and I am safe now'",
-      client_response: "Excellent processing session. Client reported significant reduction in emotional intensity (SUD: 8 → 2). Physical sensations cleared. No blocking beliefs identified.",
-      homework_assigned: "1. Continue daily grounding exercises\n2. Use installed resources if triggered\n3. Complete PTSD symptom tracking log",
-      progress_toward_goals: "Goal 1 (Process trauma): Excellent progress. Target memory now minimally distressing.\nGoal 2 (Reduce PTSD symptoms): Very good progress. Nightmares decreased from nightly to 1-2 per week.\nGoal 3 (Return to driving): Significant progress. Client drove to session today.",
-      risk_assessment: "Stable and improving. Strong coping resources. No safety concerns identified.",
-      next_session_plan: "Check processing of current target, assess for additional memories needing processing."
-    },
-    tags: ["emdr", "ptsd", "trauma-processing"],
-    wordCount: 167,
-    lastModified: "2024-11-20 5:30 PM"
-  },
-  {
-    id: 6,
-    clientName: "Robert Martinez",
-    clientId: "c6",
-    sessionNumber: 1,
-    date: "2024-11-19",
-    time: "11:00 AM",
-    duration: 90,
-    noteType: "Intake Assessment",
-    template: "Initial Clinical Assessment",
-    status: "completed",
-    isSecure: true,
-    mood: "apprehensive",
-    progressRating: null,
-    content: {
-      presenting_concern: "New client self-referred for anxiety and depression following job loss 3 months ago. Reports increased alcohol use and social isolation.",
-      session_focus: "Comprehensive intake assessment including mental health history, current symptoms, risk factors, and treatment planning.",
-      interventions: "1. Clinical interview and psychosocial history\n2. Administered GAD-7, PHQ-9, and AUDIT assessments\n3. Risk assessment and safety planning",
-      client_response: "Client cooperative and forthcoming. Demonstrated insight into connection between job loss and current symptoms. Motivated for treatment.",
-      homework_assigned: "1. Complete intake paperwork and release forms\n2. Begin daily mood tracking\n3. Schedule appointment with primary physician for physical exam",
-      progress_toward_goals: "Initial session - treatment goals to be established: 1. Reduce anxiety and depression symptoms 2. Develop healthy coping strategies 3. Address alcohol use concerns",
-      risk_assessment: "Mild suicide ideation without plan or intent. Increased alcohol use but not meeting criteria for dependence. Support system limited but present.",
-      next_session_plan: "Review intake materials, finalize treatment plan, begin psychoeducation about anxiety and depression."
-    },
-    tags: ["intake", "assessment", "anxiety", "depression", "alcohol-use"],
-    wordCount: 201,
-    lastModified: "2024-11-19 12:45 PM"
-  }
-];
-
-// HIPAA-compliant note templates
-const noteTemplates = [
-  {
-    id: "individual-progress",
-    name: "Individual Therapy Progress Note",
-    category: "Standard Sessions",
-    description: "Comprehensive session note for individual therapy",
-    fields: [
-      "presenting_concern",
-      "session_focus", 
-      "interventions",
-      "client_response",
-      "homework_assigned",
-      "progress_toward_goals",
-      "risk_assessment",
-      "next_session_plan"
-    ],
-    isHIPAACompliant: true
-  },
-  {
-    id: "couples-progress",
-    name: "Couples Therapy Progress Note",
-    category: "Couples/Family",
-    description: "Session note template for couples therapy",
-    fields: [
-      "presenting_concern",
-      "session_focus",
-      "interventions", 
-      "client_response",
-      "homework_assigned",
-      "progress_toward_goals",
-      "risk_assessment",
-      "next_session_plan"
-    ],
-    isHIPAACompliant: true
-  },
-  {
-    id: "intake-assessment",
-    name: "Initial Clinical Assessment",
-    category: "Assessments",
-    description: "Comprehensive intake and assessment template",
-    fields: [
-      "presenting_concern",
-      "clinical_history",
-      "mental_status_exam",
-      "risk_assessment",
-      "diagnostic_impressions",
-      "treatment_recommendations",
-      "next_session_plan"
-    ],
-    isHIPAACompliant: true
-  },
-  {
-    id: "treatment-plan-review",
-    name: "Treatment Plan Progress Review",
-    category: "Assessments", 
-    description: "Quarterly treatment plan review template",
-    fields: [
-      "treatment_period_reviewed",
-      "progress_summary",
-      "goal_achievements",
-      "barriers_to_progress",
-      "plan_modifications",
-      "next_phase_planning"
-    ],
-    isHIPAACompliant: true
-  },
-  {
-    id: "crisis-intervention",
-    name: "Crisis Intervention Note",
-    category: "Crisis/Safety",
-    description: "Emergency session and crisis intervention documentation",
-    fields: [
-      "crisis_situation",
-      "risk_assessment_detailed",
-      "interventions_implemented",
-      "safety_plan_created",
-      "referrals_made",
-      "follow_up_plan"
-    ],
-    isHIPAACompliant: true
-  }
-];
->>>>>>> def5ca9077b761119b655d8c6c6aad4773f76d19
+// Enhanced note interface for editing
+interface EditingNote {
+  id: number;
+  clientName: string;
+  title: string;
+  content: string;
+  goals: string;
+  followUp: string;
+  type: "SOAP" | "DAP" | "BIRP" | "Progress";
+  diagnosis: string;
+}
 
 const Notes = () => {
   const navigate = useNavigate();
@@ -365,10 +109,10 @@ const Notes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newNoteModalOpen, setNewNoteModalOpen] = useState(false);
-<<<<<<< HEAD
   const [selectedPeriod, setSelectedPeriod] = useState("week");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [editingNote, setEditingNote] = useState<EditingNote | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Mock notes data - in real app would be fetched from API
   const mockNotes: Note[] = [
@@ -400,295 +144,288 @@ const Notes = () => {
       isStarred: false,
       diagnosis: "Relationship Issues",
       content:
-        "Client and partner attended couples session. Significant improvement noted in communication patterns since last session. Both parties are actively using 'I' statements and practicing active listening techniques learned in previous sessions. Conflict frequency has decreased from daily arguments to 2-3 times per week. Both report feeling more heard and understood.",
+        "Client continues to show improvement in communication with partner. Reports using 'I' statements effectively in recent conversations. Conflict frequency has decreased from daily to 2-3 times per week. Client demonstrates good understanding of active listening techniques.",
       goals:
-        "Continue improving communication skills\nReduce conflict frequency to once per week or less\nIncrease quality time together",
+        "1. Continue improving communication skills\n2. Reduce conflict frequency to once per week\n3. Practice expressing needs assertively",
       followUp:
-        "Practice weekly check-ins\nImplement date night schedule\nContinue communication exercises",
+        "Complete communication exercises with partner\nJournal daily interactions\nNext session in 1 week",
     },
     {
       id: 3,
       clientName: "Sarah Johnson",
-      title: "Crisis Intervention Session",
+      title: "Session 8 - Trauma Processing",
       date: "2024-01-20",
       type: "BIRP",
-      status: "Reviewed",
-      wordCount: 680,
+      status: "Draft",
+      wordCount: 210,
       isStarred: true,
-      diagnosis: "PTSD",
+      diagnosis: "Post-Traumatic Stress Disorder",
       content:
-        "BEHAVIOR: Client presented in acute distress following a triggering event (car accident witness). Exhibited hypervigilance, rapid speech, and trembling. Reported flashbacks and intrusive thoughts.\n\nINTERVENTION: Implemented grounding techniques (5-4-3-2-1 method), deep breathing exercises, and progressive muscle relaxation. Reviewed safety plan and coping strategies. Provided psychoeducation about trauma responses.\n\nRESPONSE: Client was able to regulate breathing and reported decreased anxiety from 9/10 to 6/10 by session end. Demonstrated understanding of grounding techniques.\n\nPLAN: Increase session frequency temporarily. Review and update safety plan. Consider EMDR therapy options.",
+        "BEHAVIOR: Client was able to discuss traumatic event for 15 minutes without dissociating. Showed appropriate emotional responses.\n\nINTERVENTION: Used grounding techniques and bilateral stimulation. Processed specific memory fragments.\n\nRESPONSE: Client remained present throughout session. Reported feeling 'lighter' after processing.\n\nPLAN: Continue EMDR protocol. Schedule next session for trauma processing.",
       goals:
-        "Stabilize acute symptoms\nImplement daily grounding techniques\nProcess trauma in safe therapeutic environment",
+        "1. Process traumatic memories safely\n2. Reduce PTSD symptoms\n3. Improve daily functioning",
       followUp:
-        "Daily check-in calls for one week\nSchedule session for tomorrow\nReview safety plan with support person",
+        "Practice grounding exercises\nUse self-care techniques daily\nContact if flashbacks increase",
     },
     {
       id: 4,
       clientName: "David Wilson",
-      title: "Family Therapy Session #6",
+      title: "Family Session - Behavioral Intervention",
       date: "2024-01-19",
       type: "DAP",
       status: "Complete",
-      wordCount: 425,
+      wordCount: 380,
       isStarred: false,
-      diagnosis: "Family Dysfunction",
+      diagnosis: "Oppositional Defiant Disorder",
       content:
-        "DATA: Family session with parents and teenage son (16). Focus on establishing boundaries and improving communication. Son participated more actively this session compared to previous sessions. Parents showed improved consistency in approach.\n\nASSESSMENT: Positive progress noted in family dynamics. Reduced conflict over household rules. Son demonstrating increased compliance with agreed-upon boundaries. Parents working more as a team.\n\nPLAN: Continue family sessions bi-weekly. Implement weekly family meetings at home. Review progress on behavioral contracts.",
+        "DATA: Teen exhibited 3 episodes of defiant behavior during session. Parents demonstrated improved consistency in response.\n\nASSESSMENT: Family is showing progress in implementing behavioral strategies. Teen's opposition decreased by 40% since last month.\n\nPLAN: Continue family therapy sessions. Implement token economy system at home.",
       goals:
-        "Establish clear family boundaries\nImprove parent-teen communication\nReduce family conflict episodes",
+        "1. Reduce oppositional behaviors by 50%\n2. Improve family communication\n3. Establish consistent household rules",
       followUp:
-        "Implement weekly family meetings\nReview behavioral contract\nSchedule next session in two weeks",
+        "Implement token system\nFamily meeting weekly\nNext session in 2 weeks",
     },
     {
       id: 5,
-      clientName: "Lisa Rodriguez",
-      title: "Treatment Plan Update",
+      clientName: "Lisa Park",
+      title: "Crisis Intervention - Session Notes",
       date: "2024-01-18",
-      type: "Progress",
-      status: "Draft",
-      wordCount: 250,
-      isStarred: false,
+      type: "SOAP",
+      status: "Reviewed",
+      wordCount: 445,
+      isStarred: true,
       diagnosis: "Major Depressive Disorder",
       content:
-        "Treatment plan review following psychiatric consultation. Client has been on antidepressant medication for 6 weeks with some improvement in mood symptoms. PHQ-9 score decreased from 18 to 12. Sleep patterns improving. Still experiencing low motivation and energy levels.\n\nAdjusting therapy approach to include behavioral activation techniques. Adding mood tracking and activity scheduling to treatment plan.",
+        "SUBJECTIVE: Client presented in acute distress following job loss. Reports suicidal ideation but denies intent or plan. Support system identified (sister, close friend).\n\nOBJECTIVE: Client appeared tearful but cooperative. Good eye contact maintained. Speech normal rate and volume.\n\nASSESSMENT: Acute stress reaction to job loss. Depression symptoms exacerbated. Safety contract established.\n\nPLAN: Increased session frequency to weekly. Safety planning completed. Referral for psychiatric evaluation.",
       goals:
-        "Continue mood stabilization\nIncrease daily activities and social engagement\nImprove energy levels and motivation",
+        "1. Maintain safety and reduce suicidal ideation\n2. Develop coping strategies for job loss\n3. Stabilize mood symptoms",
       followUp:
-        "Begin mood tracking journal\nSchedule pleasant activities daily\nCoordinate with psychiatrist for medication follow-up",
+        "Daily check-ins with support person\nSafety contract in place\nPsychiatry appointment scheduled",
     },
   ];
 
-  // Load notes data on mount
+  // Initialize notes data
   useEffect(() => {
     const loadNotes = async () => {
       try {
         setIsLoading(true);
         setError(null);
+
         // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
         setNotes(mockNotes);
+        setIsLoading(false);
       } catch (err) {
-        setError("Failed to load notes data. Please try again.");
-        toast({
-          variant: "destructive",
-          title: "Error Loading Notes",
-          description: "There was a problem loading your notes.",
-        });
-      } finally {
+        setError("Failed to load notes. Please try again.");
         setIsLoading(false);
       }
     };
 
     loadNotes();
-  }, [toast]);
+  }, []);
 
-  // Computed values
-  const filteredNotes = notes.filter((note) => {
-    if (statusFilter === "all") return true;
-    return note.status.toLowerCase() === statusFilter;
-  });
+  // Calculate statistics
+  const stats = useMemo((): NotesStats => {
+    const total = notes.length;
+    const completed = notes.filter((note) => note.status === "Complete").length;
+    const draft = notes.filter((note) => note.status === "Draft").length;
+    const starred = notes.filter((note) => note.isStarred).length;
 
-  const notesStats: NotesStats = {
-    totalNotes: notes.length,
-    completedNotes: notes.filter((n) => n.status === "Complete").length,
-    draftNotes: notes.filter((n) => n.status === "Draft").length,
-    starredNotes: notes.filter((n) => n.isStarred).length,
-  };
+    return {
+      totalNotes: total,
+      completedNotes: completed,
+      draftNotes: draft,
+      starredNotes: starred,
+    };
+  }, [notes]);
 
-  // Utility functions
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Complete":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "Draft":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
-      case "Reviewed":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // Filter notes based on search and filters
+  const filteredNotes = useMemo(() => {
+    return notes.filter((note) => {
+      const matchesSearch =
+        note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.diagnosis.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.content.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "SOAP":
-        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300";
-      case "DAP":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
-      case "BIRP":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "Progress":
-        return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+      const matchesStatus =
+        statusFilter === "all" || note.status === statusFilter;
 
-  // Action handlers with proper error handling
-  const handleNavigation = useCallback(
-    (path: string, actionName: string) => {
-      try {
-        navigate(path);
-        toast({
-          title: "Navigation",
-          description: `Navigating to ${actionName}...`,
-        });
-      } catch (err) {
-        toast({
-          variant: "destructive",
-          title: "Navigation Error",
-          description: "Failed to navigate. Please try again.",
-        });
+      const today = new Date();
+      const noteDate = new Date(note.date);
+      let matchesPeriod = true;
+
+      if (selectedPeriod === "today") {
+        matchesPeriod = noteDate.toDateString() === today.toDateString();
+      } else if (selectedPeriod === "week") {
+        const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        matchesPeriod = noteDate >= weekAgo;
+      } else if (selectedPeriod === "month") {
+        const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+        matchesPeriod = noteDate >= monthAgo;
       }
-    },
-    [navigate, toast],
-  );
 
-  const handleNoteAction = useCallback(
-    (note: Note, action: string) => {
-      switch (action) {
-        case "view":
-          showModal({
-            type: "info",
-            title: `Note Details - ${note.clientName}`,
-            message: `Title: ${note.title}\nDate: ${new Date(note.date).toLocaleDateString()}\nType: ${note.type}\nStatus: ${note.status}\nWord Count: ${note.wordCount}\nDiagnosis: ${note.diagnosis}`,
-            confirmLabel: "Close",
-          });
-          break;
-        case "edit":
-          setEditingNote(note);
-          setNewNoteModalOpen(true);
+      return matchesSearch && matchesStatus && matchesPeriod;
+    });
+  }, [notes, searchTerm, statusFilter, selectedPeriod]);
+
+  // Handle note actions
+  const handleEditNote = useCallback((note: Note) => {
+    const editingData: EditingNote = {
+      id: note.id,
+      clientName: note.clientName,
+      title: note.title,
+      content: note.content,
+      goals: note.goals,
+      followUp: note.followUp,
+      type: note.type,
+      diagnosis: note.diagnosis,
+    };
+
+    setEditingNote(editingData);
+    setNewNoteModalOpen(true);
+  }, []);
+
+  const handleDeleteNote = useCallback(
+    (note: Note) => {
+      showModal({
+        type: "destructive",
+        title: "Delete Note",
+        message: `Are you sure you want to delete the note "${note.title}" for ${note.clientName}? This action cannot be undone.`,
+        confirmLabel: "Delete Note",
+        cancelLabel: "Cancel",
+        showCancel: true,
+        onConfirm: () => {
+          setNotes((prev) => prev.filter((n) => n.id !== note.id));
           toast({
-            title: "Edit Mode",
-            description: `Opening "${note.title}" for editing.`,
+            title: "Note Deleted",
+            description: `Note "${note.title}" has been permanently deleted.`,
           });
-          break;
-        case "star":
-          setNotes((prev) =>
-            prev.map((n) =>
-              n.id === note.id ? { ...n, isStarred: !n.isStarred } : n,
-            ),
-          );
-          toast({
-            title: note.isStarred ? "Unstarred" : "Starred",
-            description: `${note.title} ${note.isStarred ? "removed from" : "added to"} starred notes.`,
-          });
-          break;
-        case "archive":
-          setNotes((prev) =>
-            prev.map((n) =>
-              n.id === note.id ? { ...n, status: "Reviewed" as const } : n,
-            ),
-          );
-          toast({
-            title: "Note Archived",
-            description: `${note.title} has been archived.`,
-          });
-          break;
-        case "delete":
-          showModal({
-            type: "destructive",
-            title: "Delete Note",
-            message: `Are you sure you want to permanently delete "${note.title}"? This action cannot be undone and will remove all note content, goals, and follow-up information.`,
-            confirmLabel: "Delete Note",
-            cancelLabel: "Cancel",
-            showCancel: true,
-            onConfirm: () => {
-              setNotes((prev) => prev.filter((n) => n.id !== note.id));
-              toast({
-                title: "Note Deleted",
-                description: `"${note.title}" has been permanently deleted.`,
-              });
-            },
-          });
-          break;
-      }
+        },
+      });
     },
     [showModal, toast],
+  );
+
+  const handleToggleStar = useCallback(
+    (noteId: number) => {
+      setNotes((prev) =>
+        prev.map((note) =>
+          note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
+        ),
+      );
+
+      const note = notes.find((n) => n.id === noteId);
+      if (note) {
+        toast({
+          title: note.isStarred ? "Removed from Starred" : "Added to Starred",
+          description: `Note "${note.title}" ${note.isStarred ? "removed from" : "added to"} starred notes.`,
+        });
+      }
+    },
+    [notes, toast],
   );
 
   const handleExportNotes = useCallback(() => {
     try {
       const csvHeaders = [
-        "Title",
-        "Client Name",
         "Date",
+        "Client Name",
+        "Title",
         "Type",
         "Status",
-        "Word Count",
         "Diagnosis",
+        "Word Count",
         "Content",
         "Goals",
-        "Follow-up",
+        "Follow Up",
+        "Starred",
       ];
 
-      const csvContent = filteredNotes.map((note) =>
-        [
-          `"${note.title.replace(/"/g, '""')}"`,
-          `"${note.clientName.replace(/"/g, '""')}"`,
-          `"${new Date(note.date).toLocaleDateString()}"`,
-          `"${note.type}"`,
-          `"${note.status}"`,
-          `"${note.wordCount}"`,
-          `"${note.diagnosis.replace(/"/g, '""')}"`,
-          `"${note.content.replace(/"/g, '""')}"`,
-          `"${note.goals.replace(/"/g, '""')}"`,
-          `"${note.followUp.replace(/"/g, '""')}"`,
-        ].join(","),
-      );
+      const csvData = filteredNotes.map((note) => [
+        note.date,
+        note.clientName,
+        note.title,
+        note.type,
+        note.status,
+        note.diagnosis,
+        note.wordCount.toString(),
+        `"${note.content.replace(/"/g, '""')}"`,
+        `"${note.goals.replace(/"/g, '""')}"`,
+        `"${note.followUp.replace(/"/g, '""')}"`,
+        note.isStarred ? "Yes" : "No",
+      ]);
 
-      const csvData = [csvHeaders.join(","), ...csvContent].join("\n");
+      const csvContent = [csvHeaders, ...csvData]
+        .map((row) => row.join(","))
+        .join("\n");
 
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-      const url = window.URL.createObjectURL(blob);
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `therapy-notes-export-${new Date().toISOString().split("T")[0]}.csv`;
+      link.download = `therapy-notes-${new Date().toISOString().split("T")[0]}.csv`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      URL.revokeObjectURL(url);
 
       toast({
         title: "Export Successful",
-        description: `Exported ${filteredNotes.length} notes to CSV file with full content.`,
+        description: `${filteredNotes.length} notes exported successfully.`,
       });
     } catch (error) {
       toast({
-        variant: "destructive",
         title: "Export Failed",
-        description: "Failed to export notes data. Please try again.",
+        description: "There was an error exporting notes. Please try again.",
+        variant: "destructive",
       });
     }
   }, [filteredNotes, toast]);
 
-  const handleNoteModalClose = useCallback((open: boolean) => {
-    setNewNoteModalOpen(open);
-    if (!open) {
-      setEditingNote(null);
+  const getStatusColor = (status: Note["status"]) => {
+    switch (status) {
+      case "Complete":
+        return "default";
+      case "Draft":
+        return "secondary";
+      case "Reviewed":
+        return "outline";
+      default:
+        return "secondary";
     }
-  }, []);
+  };
 
-  // Loading state
+  const getStatusIcon = (status: Note["status"]) => {
+    switch (status) {
+      case "Complete":
+        return <CheckCircle className="h-3 w-3" />;
+      case "Draft":
+        return <Clock className="h-3 w-3" />;
+      case "Reviewed":
+        return <Eye className="h-3 w-3" />;
+      default:
+        return <Clock className="h-3 w-3" />;
+    }
+  };
+
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-            <p className="text-muted-foreground">Loading notes...</p>
+        <div className="flex items-center justify-center h-96">
+          <div className="flex items-center space-x-2">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span>Loading notes...</span>
           </div>
         </div>
       </Layout>
     );
   }
 
-  // Error state
   if (error) {
     return (
       <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex items-center justify-center h-96">
           <div className="text-center space-y-4">
             <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
             <p className="text-destructive">{error}</p>
@@ -705,791 +442,250 @@ const Notes = () => {
     <Layout>
       <div className="p-4 sm:p-6 space-y-6">
         {/* Header */}
-        <div
-          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-          role="banner"
-        >
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">Session Notes</h1>
-            <p className="text-muted-foreground text-sm sm:text-base">
-              Create, manage, and organize your therapy session notes
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <FileText className="h-8 w-8" />
+              Clinical Notes
+            </h1>
+            <p className="text-muted-foreground">
+              Manage session notes and clinical documentation
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               onClick={handleExportNotes}
               disabled={filteredNotes.length === 0}
-              className="shrink-0"
-              aria-label={`Export ${filteredNotes.length} notes to CSV`}
             >
-              <Download className="mr-2 h-4 w-4" aria-hidden="true" />
-              Export CSV ({filteredNotes.length})
+              <Download className="h-4 w-4 mr-2" />
+              Export ({filteredNotes.length})
             </Button>
-            <Button
-              onClick={() => {
-                setEditingNote(null);
-                setNewNoteModalOpen(true);
-              }}
-              className="shrink-0"
-              aria-label="Create new note"
-            >
-              <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-=======
-  const [selectedNote, setSelectedNote] = useState<any>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterClient, setFilterClient] = useState("all");
-  const [filterType, setFilterType] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("all");
-  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
-  const [newNoteContent, setNewNoteContent] = useState("");
-  const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
-
-  // Filter notes based on search and filters
-  const filteredNotes = mockNotes.filter(note => {
-    const matchesSearch = note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         note.content.presenting_concern.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         note.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesClient = filterClient === "all" || note.clientName === filterClient;
-    const matchesType = filterType === "all" || note.noteType === filterType;
-    const matchesStatus = filterStatus === "all" || note.status === filterStatus;
-    
-    return matchesSearch && matchesClient && matchesType && matchesStatus;
-  });
-
-  // Get unique clients for filter
-  const uniqueClients = [...new Set(mockNotes.map(note => note.clientName))];
-  const uniqueTypes = [...new Set(mockNotes.map(note => note.noteType))];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed": return "bg-green-100 text-green-800 border-green-200";
-      case "draft": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "review": return "bg-blue-100 text-blue-800 border-blue-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
-
-  const getMoodColor = (mood: string) => {
-    switch (mood) {
-      case "happy": return "text-green-600";
-      case "calm": return "text-blue-600";
-      case "anxious": return "text-yellow-600";
-      case "sad": return "text-purple-600";
-      case "angry": return "text-red-600";
-      case "frustrated": return "text-orange-600";
-      case "hopeful": return "text-emerald-600";
-      case "tense": return "text-rose-600";
-      default: return "text-gray-600";
-    }
-  };
-
-  const handleVoiceToggle = () => {
-    setIsVoiceRecording(!isVoiceRecording);
-    if (!isVoiceRecording) {
-      // Start voice recording
-      console.log("Starting voice recording...");
-      // In a real app, this would integrate with Web Speech API
-    } else {
-      // Stop voice recording
-      console.log("Stopping voice recording...");
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short',
-      month: 'short', 
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
-
-  // Calculate statistics
-  const totalNotes = mockNotes.length;
-  const notesThisWeek = mockNotes.filter(note => {
-    const noteDate = new Date(note.date);
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    return noteDate >= weekAgo;
-  }).length;
-  const avgProgressRating = mockNotes
-    .filter(note => note.progressRating !== null)
-    .reduce((sum, note) => sum + note.progressRating!, 0) / 
-    mockNotes.filter(note => note.progressRating !== null).length;
-
-  return (
-    <Layout>
-      <div className="p-6 space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold">Session Notes</h1>
-            <p className="text-muted-foreground">
-              HIPAA-compliant documentation with intelligent templates and voice integration
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  <Brain className="mr-2 h-4 w-4" />
-                  Templates
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl">
-                <DialogHeader>
-                  <DialogTitle>HIPAA-Compliant Note Templates</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4">
-                  {noteTemplates.map((template) => (
-                    <Card key={template.id} className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold">{template.name}</h3>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline">{template.category}</Badge>
-                          {template.isHIPAACompliant && (
-                            <Badge className="bg-green-100 text-green-800">
-                              <Lock className="mr-1 h-3 w-3" />
-                              HIPAA Compliant
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
-                      <div className="flex flex-wrap gap-1">
-                        {template.fields.map((field) => (
-                          <Badge key={field} variant="secondary" className="text-xs">
-                            {field.replace(/_/g, ' ')}
-                          </Badge>
-                        ))}
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
             <Button onClick={() => setNewNoteModalOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
->>>>>>> def5ca9077b761119b655d8c6c6aad4773f76d19
+              <Plus className="h-4 w-4 mr-2" />
               New Note
             </Button>
           </div>
         </div>
 
-<<<<<<< HEAD
-        {/* Stats Cards */}
-        <div
-          className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4"
-          role="region"
-          aria-label="Notes statistics"
-        >
-          <Card className="therapease-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <FileText className="h-4 w-4 text-primary" aria-hidden="true" />
-                Total Notes
-              </CardTitle>
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Notes</CardTitle>
+              <FileText className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-xl sm:text-2xl font-bold"
-                aria-label={`${notesStats.totalNotes} total notes`}
-              >
-                {notesStats.totalNotes}
-              </div>
-              <p className="text-xs text-muted-foreground">notes created</p>
+              <div className="text-2xl font-bold">{stats.totalNotes}</div>
+              <p className="text-xs text-muted-foreground">All time</p>
             </CardContent>
           </Card>
 
-          <Card className="therapease-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <CheckCircle
-                  className="h-4 w-4 text-green-600"
-                  aria-hidden="true"
-                />
-                Completed
-              </CardTitle>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Completed</CardTitle>
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-xl sm:text-2xl font-bold"
-                aria-label={`${notesStats.completedNotes} completed notes`}
-              >
-                {notesStats.completedNotes}
-              </div>
+              <div className="text-2xl font-bold">{stats.completedNotes}</div>
+              <p className="text-xs text-muted-foreground">Finalized notes</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Drafts</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.draftNotes}</div>
               <p className="text-xs text-muted-foreground">
-                {notesStats.draftNotes} drafts pending
+                Pending completion
               </p>
             </CardContent>
           </Card>
 
-          <Card className="therapease-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Star className="h-4 w-4 text-yellow-600" aria-hidden="true" />
-                Starred
-              </CardTitle>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Starred</CardTitle>
+              <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-xl sm:text-2xl font-bold"
-                aria-label={`${notesStats.starredNotes} starred notes`}
-              >
-                {notesStats.starredNotes}
-              </div>
-              <p className="text-xs text-muted-foreground">important notes</p>
-            </CardContent>
-          </Card>
-
-          <Card className="therapease-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <TrendingUp
-                  className="h-4 w-4 text-purple-600"
-                  aria-hidden="true"
-                />
-                Completion Rate
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl sm:text-2xl font-bold">
-                {Math.round(
-                  (notesStats.completedNotes / notesStats.totalNotes) * 100,
-                )}
-                %
-              </div>
-              <Progress
-                value={Math.round(
-                  (notesStats.completedNotes / notesStats.totalNotes) * 100,
-                )}
-                className="h-2 mt-2"
-              />
-=======
-        {/* Statistics */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <FileText className="h-8 w-8 text-blue-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Total Notes</p>
-                  <p className="text-2xl font-bold">{totalNotes}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Calendar className="h-8 w-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">This Week</p>
-                  <p className="text-2xl font-bold">{notesThisWeek}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <TrendingUp className="h-8 w-8 text-purple-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Avg Progress</p>
-                  <p className="text-2xl font-bold">{avgProgressRating.toFixed(1)}/10</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Lock className="h-8 w-8 text-orange-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Secure Notes</p>
-                  <p className="text-2xl font-bold">{mockNotes.filter(n => n.isSecure).length}</p>
-                </div>
-              </div>
->>>>>>> def5ca9077b761119b655d8c6c6aad4773f76d19
+              <div className="text-2xl font-bold">{stats.starredNotes}</div>
+              <p className="text-xs text-muted-foreground">Important notes</p>
             </CardContent>
           </Card>
         </div>
 
-<<<<<<< HEAD
-        {/* Notes List */}
-        <Card className="therapease-card">
-          <CardHeader>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <CardTitle>Recent Notes</CardTitle>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Select
-                  value={selectedPeriod}
-                  onValueChange={setSelectedPeriod}
-                >
-                  <SelectTrigger className="w-full sm:w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="week">This Week</SelectItem>
-                    <SelectItem value="month">This Month</SelectItem>
-                    <SelectItem value="all">All Time</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="complete">Complete</SelectItem>
-                    <SelectItem value="reviewed">Reviewed</SelectItem>
-                  </SelectContent>
-                </Select>
-=======
-        {/* Search and Filters */}
+        {/* Filters and Search */}
         <Card>
-          <CardContent className="p-6">
+          <CardHeader>
+            <CardTitle>Note Management</CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search notes by client, content, or tags..."
+                    placeholder="Search notes, clients, or content..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
                   />
                 </div>
               </div>
-              <Select value={filterClient} onValueChange={setFilterClient}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by client" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Clients</SelectItem>
-                  {uniqueClients.map(client => (
-                    <SelectItem key={client} value={client}>{client}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  {uniqueTypes.map(type => (
-                    <SelectItem key={type} value={type}>{type}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Statuses</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="review">Under Review</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Quick Note Creation with Voice */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Mic className="h-5 w-5" />
-              Quick Note Creation
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <Select value={selectedTemplate} onValueChange={setSelectedTemplate}>
-                  <SelectTrigger className="w-[250px]">
-                    <SelectValue placeholder="Select HIPAA template" />
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-[150px]">
+                    <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {noteTemplates.map(template => (
-                      <SelectItem key={template.id} value={template.id}>
-                        {template.name}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="Draft">Draft</SelectItem>
+                    <SelectItem value="Complete">Complete</SelectItem>
+                    <SelectItem value="Reviewed">Reviewed</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button
-                  variant={isVoiceRecording ? "destructive" : "outline"}
-                  onClick={handleVoiceToggle}
-                  className="flex items-center gap-2"
-                >
-                  {isVoiceRecording ? (
-                    <>
-                      <MicOff className="h-4 w-4" />
-                      Stop Recording
-                    </>
-                  ) : (
-                    <>
-                      <Mic className="h-4 w-4" />
-                      Voice to Text
-                    </>
-                  )}
-                </Button>
-              </div>
-              {isVoiceRecording && (
-                <div className="flex items-center gap-2 text-red-600">
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-                  <span className="text-sm">Recording... Speak clearly for voice-to-text transcription</span>
-                </div>
-              )}
-              <Textarea
-                placeholder="Start typing your note or use voice-to-text..."
-                value={newNoteContent}
-                onChange={(e) => setNewNoteContent(e.target.value)}
-                className="min-h-[100px]"
-              />
-              <div className="flex justify-between items-center">
-                <p className="text-sm text-muted-foreground">
-                  {newNoteContent.length} characters • Auto-saved • HIPAA Encrypted
-                </p>
-                <Button disabled={!newNoteContent.trim()}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Note
-                </Button>
->>>>>>> def5ca9077b761119b655d8c6c6aad4773f76d19
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border overflow-hidden">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="min-w-[200px]">
-                        Note & Client
-                      </TableHead>
-                      <TableHead className="min-w-[120px] hidden sm:table-cell">
-                        Date & Type
-                      </TableHead>
-                      <TableHead className="min-w-[100px]">Status</TableHead>
-                      <TableHead className="min-w-[100px] hidden md:table-cell">
-                        Details
-                      </TableHead>
-                      <TableHead className="w-[120px]">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredNotes.map((note) => (
-                      <TableRow
-                        key={note.id}
-                        className="hover:bg-muted/50 transition-colors"
-                      >
-                        <TableCell>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="font-medium truncate max-w-[150px] sm:max-w-none">
-                                {note.title}
-                              </div>
-                              {note.isStarred && (
-                                <Star className="h-3 w-3 text-yellow-500 fill-current flex-shrink-0" />
-                              )}
-                              <Lock className="h-3 w-3 text-gray-500 flex-shrink-0" />
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              {note.clientName}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {note.diagnosis}
-                            </div>
-                            {/* Mobile-only date info */}
-                            <div className="sm:hidden mt-1 text-xs text-muted-foreground">
-                              {new Date(note.date).toLocaleDateString()} •{" "}
-                              {note.type}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <div className="text-sm">
-                            <div className="font-medium">
-                              {new Date(note.date).toLocaleDateString()}
-                            </div>
-                            <div className="text-muted-foreground">
-                              {note.type}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-1">
-                            <Badge
-                              className={getStatusColor(note.status)}
-                              variant="outline"
-                            >
-                              {note.status}
-                            </Badge>
-                            {/* Mobile-only word count */}
-                            <div className="md:hidden text-xs text-muted-foreground">
-                              {note.wordCount} words
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          <div className="text-sm">
-                            <div className="font-medium">
-                              {note.wordCount} words
-                            </div>
-                            <Badge
-                              className={getTypeColor(note.type)}
-                              variant="outline"
-                              className="text-xs"
-                            >
-                              {note.type}
-                            </Badge>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleNoteAction(note, "star")}
-                              aria-label={
-                                note.isStarred
-                                  ? "Remove from starred"
-                                  : "Add to starred"
-                              }
-                            >
-                              {note.isStarred ? (
-                                <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                              ) : (
-                                <StarOff className="h-4 w-4" />
-                              )}
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleNoteAction(note, "view")}
-                              aria-label={`View details for ${note.title}`}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleNoteAction(note, "edit")}
-                              aria-label={`Edit ${note.title}`}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleNoteAction(note, "delete")}
-                              aria-label={`Delete ${note.title}`}
-                              className="text-destructive hover:text-destructive"
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
 
-            {filteredNotes.length === 0 && !isLoading && (
-              <div className="text-center py-12">
-                <FileText className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
-                <p className="text-muted-foreground font-medium">
-                  No notes found
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {statusFilter !== "all"
-                    ? "Try changing the status filter to see more notes"
-                    : "Create your first note to get started"}
-                </p>
-                {statusFilter === "all" && (
-                  <Button
-                    className="mt-4"
-                    onClick={() => {
-                      setEditingNote(null);
-                      setNewNoteModalOpen(true);
-                    }}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create First Note
-                  </Button>
-                )}
+                <Select
+                  value={selectedPeriod}
+                  onValueChange={setSelectedPeriod}
+                >
+                  <SelectTrigger className="w-[150px]">
+                    <SelectValue placeholder="Period" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Time</SelectItem>
+                    <SelectItem value="today">Today</SelectItem>
+                    <SelectItem value="week">This Week</SelectItem>
+                    <SelectItem value="month">This Month</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            )}
+            </div>
           </CardContent>
         </Card>
 
-        {/* Notes List */}
-        <div className="space-y-4">
-          {filteredNotes.map((note) => (
-            <Card key={note.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold">{note.clientName}</h3>
-                      <Badge className={getStatusColor(note.status)}>
-                        {note.status}
-                      </Badge>
-                      <Badge variant="outline">
-                        Session #{note.sessionNumber}
-                      </Badge>
-                      {note.isSecure && (
-                        <Badge className="bg-green-100 text-green-800">
-                          <Lock className="mr-1 h-3 w-3" />
-                          Encrypted
+        {/* Notes Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Clinical Notes ({filteredNotes.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Client & Title</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Words</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredNotes.map((note) => (
+                    <TableRow key={note.id}>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <div className="font-medium flex items-center gap-2">
+                            {note.isStarred && (
+                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            )}
+                            {note.clientName}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {note.title}
+                          </div>
+                          <Badge variant="outline" className="text-xs">
+                            {note.diagnosis}
+                          </Badge>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">
+                          {new Date(note.date).toLocaleDateString()}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{note.type}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={getStatusColor(note.status)}
+                          className="flex items-center gap-1 w-fit"
+                        >
+                          {getStatusIcon(note.status)}
+                          {note.status}
                         </Badge>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {formatDate(note.date)} • {note.time}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {note.duration} min
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FileText className="h-3 w-3" />
-                        {note.noteType}
-                      </span>
-                      {note.mood && (
-                        <span className={`flex items-center gap-1 ${getMoodColor(note.mood)}`}>
-                          <User className="h-3 w-3" />
-                          {note.mood}
-                        </span>
-                      )}
-                      {note.progressRating && (
-                        <span className="flex items-center gap-1 text-blue-600">
-                          <TrendingUp className="h-3 w-3" />
-                          Progress: {note.progressRating}/10
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                      {note.content.presenting_concern}
-                    </p>
-                    <div className="flex flex-wrap gap-1">
-                      {note.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 ml-4">
-                    <div className="text-right text-sm text-muted-foreground">
-                      <p>{note.wordCount} words</p>
-                      <p>Modified: {note.lastModified}</p>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={() => setSelectedNote(note)}>
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">{note.wordCount}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleToggleStar(note.id)}
+                          >
+                            {note.isStarred ? (
+                              <StarOff className="h-4 w-4" />
+                            ) : (
+                              <Star className="h-4 w-4" />
+                            )}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditNote(note)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteNote(note)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
 
-        {filteredNotes.length === 0 && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No notes found</h3>
-              <p className="text-muted-foreground mb-4">
-                Try adjusting your search criteria or create a new note.
-              </p>
-              <Button onClick={() => setNewNoteModalOpen(true)}>
-                <Plus className="mr-2 h-4 w-4" />
-                Create First Note
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+              {filteredNotes.length === 0 && (
+                <div className="text-center py-12">
+                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">No notes found</h3>
+                  <p className="text-muted-foreground mb-4">
+                    {searchTerm
+                      ? "Try adjusting your search or filters"
+                      : "Create your first clinical note to get started"}
+                  </p>
+                  <Button onClick={() => setNewNoteModalOpen(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Note
+                  </Button>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Note Detail Modal */}
-        {selectedNote && (
-          <Dialog open={!!selectedNote} onOpenChange={() => setSelectedNote(null)}>
-            <DialogContent className="max-w-4xl h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>
-                  {selectedNote.clientName} - Session #{selectedNote.sessionNumber}
-                </DialogTitle>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>{formatDate(selectedNote.date)} • {selectedNote.time}</span>
-                  <Badge className={getStatusColor(selectedNote.status)}>
-                    {selectedNote.status}
-                  </Badge>
-                  {selectedNote.isSecure && (
-                    <Badge className="bg-green-100 text-green-800">
-                      <Lock className="mr-1 h-3 w-3" />
-                      HIPAA Encrypted
-                    </Badge>
-                  )}
-                </div>
-              </DialogHeader>
-              <div className="space-y-6">
-                {Object.entries(selectedNote.content).map(([field, content]) => (
-                  <div key={field}>
-                    <h4 className="font-semibold mb-2 capitalize">
-                      {field.replace(/_/g, ' ')}
-                    </h4>
-                    <p className="text-sm whitespace-pre-wrap bg-muted/30 p-3 rounded-lg">
-                      {content as string}
-                    </p>
-                  </div>
-                ))}
-                <div className="flex justify-between items-center pt-4 border-t">
-                  <div className="text-sm text-muted-foreground">
-                    <p>Last modified: {selectedNote.lastModified}</p>
-                    <p>Word count: {selectedNote.wordCount}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline">
-                      <Edit className="mr-2 h-4 w-4" />
-                      Edit
-                    </Button>
-                    <Button variant="outline">
-                      <Download className="mr-2 h-4 w-4" />
-                      Export
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        )}
+        {/* Modals */}
+        <NewNoteModal
+          open={newNoteModalOpen}
+          onOpenChange={setNewNoteModalOpen}
+          editingNote={editingNote}
+        />
+        <ModalComponent />
       </div>
-
-      <NewNoteModal
-        open={newNoteModalOpen}
-        onOpenChange={handleNoteModalClose}
-        editingNote={editingNote}
-      />
-      <ModalComponent />
     </Layout>
   );
 };
