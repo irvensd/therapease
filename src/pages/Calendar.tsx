@@ -29,6 +29,7 @@ import {
 } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../styles/calendar.css";
 import {
   Calendar as CalendarIcon,
   Plus,
