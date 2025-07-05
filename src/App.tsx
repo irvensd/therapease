@@ -103,6 +103,14 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/progress"
+        element={
+          <ProtectedRoute>
+            <Progress />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/reminders"
         element={
           <ProtectedRoute>
