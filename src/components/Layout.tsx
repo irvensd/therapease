@@ -34,6 +34,7 @@ const navigation = [
   { name: "Sessions", href: "/sessions", icon: Calendar },
   { name: "Calendar", href: "/calendar", icon: CalendarDays },
   { name: "Notes", href: "/notes", icon: FileText },
+  { name: "Progress", href: "/progress", icon: Target },
   { name: "Reminders", href: "/reminders", icon: Bell, badge: 3 },
   { name: "Invoices", href: "/invoices", icon: Receipt },
   { name: "Reports", href: "/reports", icon: BarChart3 },
