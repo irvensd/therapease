@@ -31,6 +31,7 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Clients", href: "/clients", icon: Users },
   { name: "Sessions", href: "/sessions", icon: Calendar },
+  { name: "Calendar", href: "/calendar", icon: CalendarDays },
   { name: "Notes", href: "/notes", icon: FileText },
   { name: "Reminders", href: "/reminders", icon: Bell, badge: 3 },
   { name: "Invoices", href: "/invoices", icon: Receipt },
