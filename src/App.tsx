@@ -18,6 +18,7 @@ import Sessions from "./pages/Sessions";
 import Notes from "./pages/Notes";
 import Reminders from "./pages/Reminders";
 import Invoices from "./pages/Invoices";
+import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import ClientPortal from "./pages/ClientPortal";
 import NotFound from "./pages/NotFound";
