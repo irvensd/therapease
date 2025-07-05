@@ -19,6 +19,7 @@ import Notes from "./pages/Notes";
 import Reminders from "./pages/Reminders";
 import Invoices from "./pages/Invoices";
 import Settings from "./pages/Settings";
+import ClientPortal from "./pages/ClientPortal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -115,6 +116,7 @@ const AppRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+<<<<<<< HEAD
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
@@ -124,6 +126,25 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
+=======
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/clients" element={<Clients />} />
+          <Route path="/client-portal" element={<ClientPortal />} />
+          <Route path="/sessions" element={<Sessions />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/reminders" element={<Reminders />} />
+          <Route path="/invoices" element={<Invoices />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+>>>>>>> def5ca9077b761119b655d8c6c6aad4773f76d19
   </QueryClientProvider>
 );
 
