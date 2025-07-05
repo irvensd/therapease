@@ -16,6 +16,7 @@ import {
   Bell,
   Receipt,
   BarChart3,
+  Target,
   Menu,
   X,
   Heart,
