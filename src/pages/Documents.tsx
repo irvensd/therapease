@@ -1203,7 +1203,15 @@ const Documents = () => {
         </Dialog>
 
         {/* Document View Modal */}
-        <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
+        <Dialog
+          open={viewModalOpen}
+          onOpenChange={(open) => {
+            if (!open) {
+              setViewModalOpen(false);
+              setSelectedDocument(null);
+            }
+          }}
+        >
           <DialogContent className="max-w-2xl">
             {selectedDocument && (
               <>
