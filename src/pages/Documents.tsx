@@ -1205,16 +1205,16 @@ const Documents = () => {
         {/* Document View Modal */}
         <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
           <DialogContent className="max-w-2xl">
-            {selectedDocument && (
-              <>
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    {React.createElement(getFileIcon(selectedDocument.type), {
-                      className: "h-5 w-5",
-                    })}
-                    {selectedDocument.originalName}
-                  </DialogTitle>
-                </DialogHeader>
+            {selectedDocument && (() => {
+              const FileIcon = getFileIcon(selectedDocument.type);
+              return (
+                <>
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <FileIcon className="h-5 w-5" />
+                      {selectedDocument.originalName}
+                    </DialogTitle>
+                  </DialogHeader>
 
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
