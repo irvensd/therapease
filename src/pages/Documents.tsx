@@ -1205,137 +1205,116 @@ const Documents = () => {
         {/* Document View Modal */}
         <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
           <DialogContent className="max-w-2xl">
-            {selectedDocument &&
-              (() => {
-                const FileIcon = getFileIcon(selectedDocument.type);
-                return (
-                  <>
-                    <DialogHeader>
-                      <DialogTitle className="flex items-center gap-2">
-                        <FileIcon className="h-5 w-5" />
-                        {selectedDocument.originalName}
-                      </DialogTitle>
-                    </DialogHeader>
+            {selectedDocument && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    {selectedDocument.originalName}
+                  </DialogTitle>
+                </DialogHeader>
 
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label className="text-sm font-medium">Client</Label>
-                          <p className="text-sm">
-                            {selectedDocument.clientName}
-                          </p>
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">
-                            Category
-                          </Label>
-                          <Badge variant="outline">
-                            {selectedDocument.category}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-sm font-medium">Client</Label>
+                      <p className="text-sm">{selectedDocument.clientName}</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">Category</Label>
+                      <Badge variant="outline">
+                        {selectedDocument.category}
+                      </Badge>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">File Size</Label>
+                      <p className="text-sm">
+                        {formatFileSize(selectedDocument.size)}
+                      </p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">Upload Date</Label>
+                      <p className="text-sm">
+                        {formatDate(selectedDocument.uploadDate)}
+                      </p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">Uploaded By</Label>
+                      <p className="text-sm">{selectedDocument.uploadedBy}</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">Version</Label>
+                      <p className="text-sm">v{selectedDocument.version}</p>
+                    </div>
+                  </div>
+
+                  {selectedDocument.description && (
+                    <div>
+                      <Label className="text-sm font-medium">Description</Label>
+                      <p className="text-sm text-muted-foreground">
+                        {selectedDocument.description}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedDocument.tags.length > 0 && (
+                    <div>
+                      <Label className="text-sm font-medium">Tags</Label>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {selectedDocument.tags.map((tag, index) => (
+                          <Badge key={index} variant="secondary">
+                            {tag}
                           </Badge>
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">
-                            File Size
-                          </Label>
-                          <p className="text-sm">
-                            {formatFileSize(selectedDocument.size)}
-                          </p>
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">
-                            Upload Date
-                          </Label>
-                          <p className="text-sm">
-                            {formatDate(selectedDocument.uploadDate)}
-                          </p>
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">
-                            Uploaded By
-                          </Label>
-                          <p className="text-sm">
-                            {selectedDocument.uploadedBy}
-                          </p>
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">Version</Label>
-                          <p className="text-sm">v{selectedDocument.version}</p>
-                        </div>
-                      </div>
-
-                      {selectedDocument.description && (
-                        <div>
-                          <Label className="text-sm font-medium">
-                            Description
-                          </Label>
-                          <p className="text-sm text-muted-foreground">
-                            {selectedDocument.description}
-                          </p>
-                        </div>
-                      )}
-
-                      {selectedDocument.tags.length > 0 && (
-                        <div>
-                          <Label className="text-sm font-medium">Tags</Label>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {selectedDocument.tags.map((tag, index) => (
-                              <Badge key={index} variant="secondary">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          {selectedDocument.isConfidential ? (
-                            <Lock className="h-4 w-4 text-red-600" />
-                          ) : (
-                            <Unlock className="h-4 w-4 text-green-600" />
-                          )}
-                          <span className="text-sm">
-                            {selectedDocument.isConfidential
-                              ? "Confidential"
-                              : "Standard"}
-                          </span>
-                        </div>
-                        {selectedDocument.isStarred && (
-                          <div className="flex items-center gap-2">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm">Starred</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="bg-muted p-4 rounded-lg">
-                        <p className="text-sm text-center text-muted-foreground">
-                          Document preview would appear here in the full version
-                        </p>
+                        ))}
                       </div>
                     </div>
+                  )}
 
-                    <DialogFooter>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          // Direct download action without calling handleDocumentAction
-                          toast({
-                            title: "Download Started",
-                            description: `Downloading ${selectedDocument.originalName}...`,
-                          });
-                        }}
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </Button>
-                      <Button onClick={() => setViewModalOpen(false)}>
-                        Close
-                      </Button>
-                    </DialogFooter>
-                  </>
-                );
-              })()}
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      {selectedDocument.isConfidential ? (
+                        <Lock className="h-4 w-4 text-red-600" />
+                      ) : (
+                        <Unlock className="h-4 w-4 text-green-600" />
+                      )}
+                      <span className="text-sm">
+                        {selectedDocument.isConfidential
+                          ? "Confidential"
+                          : "Standard"}
+                      </span>
+                    </div>
+                    {selectedDocument.isStarred && (
+                      <div className="flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm">Starred</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-muted p-4 rounded-lg">
+                    <p className="text-sm text-center text-muted-foreground">
+                      Document preview would appear here in the full version
+                    </p>
+                  </div>
+                </div>
+
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      toast({
+                        title: "Download Started",
+                        description: `Downloading ${selectedDocument.originalName}...`,
+                      });
+                    }}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download
+                  </Button>
+                  <Button onClick={() => setViewModalOpen(false)}>Close</Button>
+                </DialogFooter>
+              </>
+            )}
           </DialogContent>
         </Dialog>
 
