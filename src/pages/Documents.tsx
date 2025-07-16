@@ -571,7 +571,7 @@ const Documents = () => {
         variant: "destructive",
       });
     }
-  }, [filteredDocuments, toast]);
+  }, [filteredDocuments]); // Remove toast dependency
 
   if (isLoading) {
     return (
