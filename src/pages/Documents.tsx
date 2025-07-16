@@ -800,7 +800,7 @@ const Documents = () => {
                       size="sm"
                       onClick={() => setViewMode("grid")}
                     >
-                      <Grid3X3 className="h-4 w-4" />
+                      <Grid className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
