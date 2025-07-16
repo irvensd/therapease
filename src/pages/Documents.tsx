@@ -456,7 +456,7 @@ const Documents = () => {
       title: "File Uploaded",
       description: "Document uploaded successfully.",
     });
-  }, [uploadData, clientFolders, toast]);
+  }, [uploadData, clientFolders]); // Remove toast dependency
 
   // Handle document actions
   const handleDocumentAction = useCallback(
