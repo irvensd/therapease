@@ -512,7 +512,7 @@ const Documents = () => {
           break;
       }
     },
-    [showModal, toast],
+    [showModal], // Remove toast dependency
   );
 
   // Export documents
