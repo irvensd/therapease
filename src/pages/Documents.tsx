@@ -254,39 +254,41 @@ const Documents = () => {
           </CardContent>
         </Card>
 
-        {/* Simple View Modal */}
-        <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
-          <DialogContent className="max-w-md">
-            {selectedDocument && (
-              <>
-                <DialogHeader>
-                  <DialogTitle>{selectedDocument.name}</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-2">
-                  <p>
-                    <strong>Client:</strong> {selectedDocument.clientName}
-                  </p>
-                  <p>
-                    <strong>Category:</strong> {selectedDocument.category}
-                  </p>
-                  <p>
-                    <strong>Size:</strong>{" "}
-                    {formatFileSize(selectedDocument.size)}
-                  </p>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    {selectedDocument.isConfidential
-                      ? "Confidential"
-                      : "Standard"}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <Button onClick={handleCloseModal}>Close</Button>
-                </DialogFooter>
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
+        {/* Custom Simple Modal */}
+        {viewModalOpen && selectedDocument && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+              <h2 className="text-lg font-semibold mb-4">
+                {selectedDocument.name}
+              </h2>
+              <div className="space-y-2 mb-4">
+                <p>
+                  <strong>Client:</strong> {selectedDocument.clientName}
+                </p>
+                <p>
+                  <strong>Category:</strong> {selectedDocument.category}
+                </p>
+                <p>
+                  <strong>Size:</strong> {formatFileSize(selectedDocument.size)}
+                </p>
+                <p>
+                  <strong>Status:</strong>{" "}
+                  {selectedDocument.isConfidential
+                    ? "Confidential"
+                    : "Standard"}
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
