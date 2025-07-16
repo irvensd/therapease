@@ -1333,7 +1333,8 @@ const Documents = () => {
           </DialogContent>
         </Dialog>
 
-        <ModalComponent />
+        {/* Temporarily commenting out ModalComponent to test */}
+        {/* <ModalComponent /> */}
       </div>
     </Layout>
   );
