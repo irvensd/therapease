@@ -1319,7 +1319,14 @@ const Documents = () => {
                     <Download className="h-4 w-4 mr-2" />
                     Download
                   </Button>
-                  <Button onClick={() => setViewModalOpen(false)}>Close</Button>
+                  <Button
+                    onClick={() => {
+                      setViewModalOpen(false);
+                      setSelectedDocument(null);
+                    }}
+                  >
+                    Close
+                  </Button>
                 </DialogFooter>
               </>
             )}
