@@ -304,7 +304,7 @@ const Documents = () => {
     };
 
     loadDocuments();
-  }, [toast]);
+  }, []); // Remove toast dependency to prevent infinite loop
 
   // Get client folders
   const clientFolders = useMemo((): ClientFolder[] => {
