@@ -1040,11 +1040,7 @@ const Documents = () => {
                   className="hover:shadow-md transition-shadow cursor-pointer"
                   onClick={() => {
                     setSelectedClient(folder.clientId);
-                    // Switch to documents tab
-                    const tabsTrigger = document.querySelector(
-                      '[value="documents"]',
-                    ) as HTMLElement;
-                    tabsTrigger?.click();
+                    setActiveTab("documents");
                   }}
                 >
                   <CardContent className="p-6">
