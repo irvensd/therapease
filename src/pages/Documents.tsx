@@ -376,13 +376,12 @@ const Documents = () => {
 
   // File icon mapping
   const getFileIcon = (type: string) => {
-    if (type.includes("pdf")) return FilePdf;
+    if (type.includes("pdf")) return FileType;
     if (type.includes("image")) return FileImage;
-    if (type.includes("spreadsheet") || type.includes("excel"))
-      return FileSpreadsheet;
-    if (type.includes("video")) return FileVideo;
-    if (type.includes("audio")) return FileAudio;
-    if (type.includes("zip") || type.includes("rar")) return FileArchive;
+    if (type.includes("spreadsheet") || type.includes("excel")) return Sheet;
+    if (type.includes("video")) return Video;
+    if (type.includes("audio")) return AudioWaveform;
+    if (type.includes("zip") || type.includes("rar")) return Archive;
     if (type.includes("word") || type.includes("document")) return FileText;
     return File;
   };
