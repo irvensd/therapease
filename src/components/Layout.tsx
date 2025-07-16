@@ -17,6 +17,7 @@ import {
   Receipt,
   BarChart3,
   Target,
+  Folder,
   Menu,
   X,
   Heart,
