@@ -1209,10 +1209,9 @@ const Documents = () => {
               <>
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
-                    {(() => {
-                      const FileIcon = getFileIcon(selectedDocument.type);
-                      return <FileIcon className="h-5 w-5" />;
-                    })()}
+                    {React.createElement(getFileIcon(selectedDocument.type), {
+                      className: "h-5 w-5",
+                    })}
                     {selectedDocument.originalName}
                   </DialogTitle>
                 </DialogHeader>
