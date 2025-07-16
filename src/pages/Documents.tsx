@@ -679,7 +679,11 @@ const Documents = () => {
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="documents" className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="documents">All Documents</TabsTrigger>
             <TabsTrigger value="folders">Client Folders</TabsTrigger>
