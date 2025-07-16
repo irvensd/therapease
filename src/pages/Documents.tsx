@@ -127,6 +127,7 @@ const Documents = () => {
   );
   const [showStarredOnly, setShowStarredOnly] = useState(false);
   const [showConfidentialOnly, setShowConfidentialOnly] = useState(false);
+  const [activeTab, setActiveTab] = useState("documents");
 
   // Mock document data
   const [documents, setDocuments] = useState<DocumentFile[]>([
