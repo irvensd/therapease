@@ -73,8 +73,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     };
 
-    // Simulate loading delay
-    setTimeout(checkAuth, 500);
+    // Check immediately
+    checkAuth();
   }, []);
 
   const signIn = async (
