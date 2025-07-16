@@ -1304,9 +1304,13 @@ const Documents = () => {
                 <DialogFooter>
                   <Button
                     variant="outline"
-                    onClick={() =>
-                      handleDocumentAction("download", selectedDocument)
-                    }
+                    onClick={() => {
+                      // Direct download action without calling handleDocumentAction
+                      toast({
+                        title: "Download Started",
+                        description: `Downloading ${selectedDocument.originalName}...`,
+                      });
+                    }}
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Download
