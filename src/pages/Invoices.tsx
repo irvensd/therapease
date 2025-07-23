@@ -604,6 +604,7 @@ const Invoices = () => {
     setCreateInvoiceModalOpen(false);
     setEditingInvoice(null);
     setInvoiceForm({
+      clientId: "",
       clientName: "",
       clientEmail: "",
       amount: "",
