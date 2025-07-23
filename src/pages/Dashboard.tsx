@@ -30,6 +30,7 @@ import {
 import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
 import { AddReminderModal } from "@/components/modals/AddReminderModal";
+import { DashboardSkeleton } from "@/components/SkeletonLoader";
 import { ScheduleSessionModal } from "@/components/modals/ScheduleSessionModal";
 import { NewNoteModal } from "@/components/modals/NewNoteModal";
 import { SessionWorkspaceModal } from "@/components/modals/SessionWorkspaceModal";
