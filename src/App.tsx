@@ -78,7 +78,7 @@ const AppRoutes = () => {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <PageTransition><Dashboard /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -86,7 +86,7 @@ const AppRoutes = () => {
         path="/clients"
         element={
           <ProtectedRoute>
-            <Clients />
+            <PageTransition><Clients /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -94,7 +94,7 @@ const AppRoutes = () => {
         path="/client-portal"
         element={
           <ProtectedRoute>
-            <ClientPortal />
+            <PageTransition><ClientPortal /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -102,7 +102,7 @@ const AppRoutes = () => {
         path="/sessions"
         element={
           <ProtectedRoute>
-            <Sessions />
+            <PageTransition><Sessions /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -110,7 +110,7 @@ const AppRoutes = () => {
         path="/calendar"
         element={
           <ProtectedRoute>
-            <Calendar />
+            <PageTransition><Calendar /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -118,7 +118,7 @@ const AppRoutes = () => {
         path="/notes"
         element={
           <ProtectedRoute>
-            <Notes />
+            <PageTransition><Notes /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -126,7 +126,7 @@ const AppRoutes = () => {
         path="/documents"
         element={
           <ProtectedRoute>
-            <Documents />
+            <PageTransition><Documents /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -134,7 +134,7 @@ const AppRoutes = () => {
         path="/progress"
         element={
           <ProtectedRoute>
-            <Progress />
+            <PageTransition><Progress /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -142,7 +142,7 @@ const AppRoutes = () => {
         path="/reminders"
         element={
           <ProtectedRoute>
-            <Reminders />
+            <PageTransition><Reminders /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -150,7 +150,7 @@ const AppRoutes = () => {
         path="/invoices"
         element={
           <ProtectedRoute>
-            <Invoices />
+            <PageTransition><Invoices /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -158,7 +158,7 @@ const AppRoutes = () => {
         path="/reports"
         element={
           <ProtectedRoute>
-            <Reports />
+            <PageTransition><Reports /></PageTransition>
           </ProtectedRoute>
         }
       />
@@ -166,7 +166,7 @@ const AppRoutes = () => {
         path="/settings"
         element={
           <ProtectedRoute>
-            <Settings />
+            <PageTransition><Settings /></PageTransition>
           </ProtectedRoute>
         }
       />
