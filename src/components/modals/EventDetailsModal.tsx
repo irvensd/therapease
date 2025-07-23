@@ -54,6 +54,12 @@ export function EventDetailsModal({
   event,
   onEventAction,
 }: EventDetailsModalProps) {
+  const { modalRef } = useModalAccessibility({
+    isOpen: open,
+    onClose: () => onOpenChange(false),
+  });
+  const { announce } = useScreenReaderAnnouncement();
+
   if (!open || !event) return null;
 
   const handleClose = () => {
