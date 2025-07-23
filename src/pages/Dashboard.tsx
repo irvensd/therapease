@@ -313,7 +313,7 @@ const Dashboard = () => {
 
         {/* Quick stats */}
         <div
-          className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid therapease-grid-spacing grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
           role="region"
           aria-label="Practice overview statistics"
         >
