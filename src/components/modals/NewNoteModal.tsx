@@ -77,7 +77,7 @@ export function NewNoteModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate required fields
     if (!formData.clientName || !formData.title || !formData.type || !formData.content) {
       toast({
@@ -90,10 +90,20 @@ export function NewNoteModal({
 
     console.log("Note data:", formData);
 
-    toast({
-      title: editingNote ? "Note Updated" : "Note Created",
-      description: `Clinical note has been ${editingNote ? "updated" : "created"} successfully.`,
-    });
+    // Call the callback to add/update the note
+    if (onCreateNote) {
+      onCreateNote({
+        ...formData,
+        isEditing: !!editingNote,
+        editingId: editingNote?.id,
+      });
+    } else {
+      // Fallback toast if no callback provided
+      toast({
+        title: editingNote ? "Note Updated" : "Note Created",
+        description: `Clinical note has been ${editingNote ? "updated" : "created"} successfully.`,
+      });
+    }
 
     // Reset form and close modal
     setFormData({
