@@ -606,6 +606,40 @@ const Progress = () => {
     handleCloseGoalModal();
   }, [goalForm, selectedGoal, toast, handleCloseGoalModal]);
 
+  const handleStartProgressEdit = useCallback((goalId: string, currentProgress: number) => {
+    setEditingProgress(goalId);
+    setProgressValue(currentProgress.toString());
+  }, []);
+
+  const handleSaveProgress = useCallback((goalId: string) => {
+    const newProgress = Math.min(100, Math.max(0, parseInt(progressValue) || 0));
+
+    setTreatmentGoals(prev =>
+      prev.map(goal =>
+        goal.id === goalId
+          ? {
+              ...goal,
+              currentProgress: newProgress,
+              status: newProgress >= 100 ? "Completed" : goal.status === "Completed" ? "Active" : goal.status,
+            }
+          : goal
+      )
+    );
+
+    setEditingProgress(null);
+    setProgressValue("");
+
+    toast({
+      title: "Progress Updated",
+      description: `Goal progress updated to ${newProgress}%.`,
+    });
+  }, [progressValue, toast]);
+
+  const handleCancelProgressEdit = useCallback(() => {
+    setEditingProgress(null);
+    setProgressValue("");
+  }, []);
+
   // Get priority color
   const getPriorityColor = (priority: string) => {
     switch (priority) {
