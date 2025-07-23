@@ -846,70 +846,190 @@ const Reminders = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border overflow-hidden">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="min-w-[200px]">
-                        Task & Details
-                      </TableHead>
-                      <TableHead className="min-w-[120px] hidden sm:table-cell">
-                        Due Date
-                      </TableHead>
-                      <TableHead className="min-w-[100px]">
-                        Priority & Status
-                      </TableHead>
-                      <TableHead className="min-w-[120px] hidden md:table-cell">
-                        Category
-                      </TableHead>
-                      <TableHead className="min-w-[150px] hidden lg:table-cell">
-                        Client/Notes
-                      </TableHead>
-                      <TableHead className="w-[140px]">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredReminders.map((reminder) => (
-                      <TableRow
-                        key={reminder.id}
-                        className="hover:bg-muted/50 transition-colors"
-                      >
-                        <TableCell>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="font-medium truncate max-w-[150px] sm:max-w-none">
-                                {reminder.title}
+            {!isMobile ? (
+              <div className="rounded-md border overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="min-w-[200px]">
+                          Task & Details
+                        </TableHead>
+                        <TableHead className="min-w-[120px] hidden sm:table-cell">
+                          Due Date
+                        </TableHead>
+                        <TableHead className="min-w-[100px]">
+                          Priority & Status
+                        </TableHead>
+                        <TableHead className="min-w-[120px] hidden md:table-cell">
+                          Category
+                        </TableHead>
+                        <TableHead className="min-w-[150px] hidden lg:table-cell">
+                          Client/Notes
+                        </TableHead>
+                        <TableHead className="w-[140px]">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredReminders.map((reminder) => (
+                        <TableRow
+                          key={reminder.id}
+                          className="hover:bg-muted/50 transition-colors"
+                        >
+                          <TableCell>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <div className="font-medium truncate max-w-[150px] sm:max-w-none">
+                                  {reminder.title}
+                                </div>
+                                {reminder.isStarred && (
+                                  <Star className="h-3 w-3 text-yellow-500 fill-current flex-shrink-0" />
+                                )}
                               </div>
-                              {reminder.isStarred && (
-                                <Star className="h-3 w-3 text-yellow-500 fill-current flex-shrink-0" />
+                              <div className="text-sm text-muted-foreground truncate">
+                                {reminder.description}
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden sm:table-cell">
+                            <div className="text-sm">
+                              <div className="font-medium">
+                                {new Date(reminder.dueDate).toLocaleDateString()}
+                              </div>
+                              {reminder.dueTime && (
+                                <div className="text-muted-foreground">
+                                  {reminder.dueTime}
+                                </div>
                               )}
                             </div>
-                            <div className="text-sm text-muted-foreground truncate">
-                              {reminder.description}
+                          </TableCell>
+                          <TableCell>
+                            <div className="space-y-1">
+                              <Badge
+                                className={getPriorityColor(reminder.priority)}
+                                variant="outline"
+                              >
+                                {reminder.priority.toUpperCase()}
+                              </Badge>
+                              <Badge
+                                className={getStatusColor(reminder.status)}
+                                variant="outline"
+                              >
+                                {reminder.status}
+                              </Badge>
                             </div>
-                            {/* Mobile-only due date */}
-                            <div className="sm:hidden mt-1 text-xs text-muted-foreground">
-                              Due:{" "}
-                              {new Date(reminder.dueDate).toLocaleDateString()}
-                              {reminder.dueTime && ` at ${reminder.dueTime}`}
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            <div className="flex items-center gap-1 text-sm">
+                              {getCategoryIcon(reminder.category)}
+                              <span className="truncate">
+                                {reminder.category}
+                              </span>
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <div className="text-sm">
-                            <div className="font-medium">
-                              {new Date(reminder.dueDate).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell">
+                            <div className="text-sm">
+                              {reminder.clientName && (
+                                <div className="font-medium">
+                                  {reminder.clientName}
+                                </div>
+                              )}
+                              {reminder.notes && (
+                                <div className="text-muted-foreground truncate max-w-[120px]">
+                                  {reminder.notes}
+                                </div>
+                              )}
+                              {!reminder.clientName && !reminder.notes && (
+                                <span className="text-muted-foreground">—</span>
+                              )}
                             </div>
-                            {reminder.dueTime && (
-                              <div className="text-muted-foreground">
-                                {reminder.dueTime}
-                              </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleToggleStar(reminder.id)}
+                              >
+                                {reminder.isStarred ? (
+                                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                                ) : (
+                                  <StarOff className="h-4 w-4" />
+                                )}
+                              </Button>
+                              {reminder.status === "pending" && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleCompleteReminder(reminder)}
+                                  className="text-green-600 hover:text-green-700"
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                </Button>
+                              )}
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem
+                                    onClick={() => handleViewReminder(reminder)}
+                                  >
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    View Details
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleEditReminder(reminder)}
+                                  >
+                                    <Edit className="mr-2 h-4 w-4" />
+                                    Edit Reminder
+                                  </DropdownMenuItem>
+                                  {reminder.status === "pending" && (
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        handleSnoozeReminder(reminder)
+                                      }
+                                    >
+                                      <Clock className="mr-2 h-4 w-4" />
+                                      Snooze
+                                    </DropdownMenuItem>
+                                  )}
+                                  <DropdownMenuItem
+                                    onClick={() => handleDeleteReminder(reminder)}
+                                    className="text-destructive"
+                                  >
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredReminders.map((reminder) => (
+                  <Card key={reminder.id}>
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-medium text-sm">{reminder.title}</h4>
+                            {reminder.isStarred && (
+                              <Star className="h-3 w-3 text-yellow-500 fill-current" />
                             )}
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground mb-2">
+                            {reminder.description}
+                          </p>
+                          <div className="flex flex-wrap gap-1 mb-2">
                             <Badge
                               className={getPriorityColor(reminder.priority)}
                               variant="outline"
@@ -922,102 +1042,95 @@ const Reminders = () => {
                             >
                               {reminder.status}
                             </Badge>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          <div className="flex items-center gap-1 text-sm">
-                            {getCategoryIcon(reminder.category)}
-                            <span className="truncate">
+                            <Badge variant="secondary" className="text-xs">
                               {reminder.category}
-                            </span>
+                            </Badge>
                           </div>
-                        </TableCell>
-                        <TableCell className="hidden lg:table-cell">
-                          <div className="text-sm">
-                            {reminder.clientName && (
-                              <div className="font-medium">
-                                {reminder.clientName}
-                              </div>
-                            )}
-                            {reminder.notes && (
-                              <div className="text-muted-foreground truncate max-w-[120px]">
-                                {reminder.notes}
-                              </div>
-                            )}
-                            {!reminder.clientName && !reminder.notes && (
-                              <span className="text-muted-foreground">—</span>
-                            )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 text-xs text-muted-foreground">
+                        <div className="flex justify-between">
+                          <span>Due:</span>
+                          <span>
+                            {new Date(reminder.dueDate).toLocaleDateString()}
+                            {reminder.dueTime && ` at ${reminder.dueTime}`}
+                          </span>
+                        </div>
+                        {reminder.clientName && (
+                          <div className="flex justify-between">
+                            <span>Client:</span>
+                            <span className="font-medium">{reminder.clientName}</span>
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-1">
+                        )}
+                        {reminder.notes && (
+                          <div>
+                            <span>Notes:</span>
+                            <p className="text-xs mt-1">{reminder.notes}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleToggleStar(reminder.id)}
+                            className="h-8 w-8 p-0"
+                          >
+                            {reminder.isStarred ? (
+                              <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                            ) : (
+                              <StarOff className="h-4 w-4" />
+                            )}
+                          </Button>
+                          {reminder.status === "pending" && (
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleToggleStar(reminder.id)}
+                              onClick={() => handleCompleteReminder(reminder)}
+                              className="h-8 w-8 p-0 text-green-600 hover:text-green-700"
                             >
-                              {reminder.isStarred ? (
-                                <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                              ) : (
-                                <StarOff className="h-4 w-4" />
-                              )}
+                              <CheckCircle className="h-4 w-4" />
                             </Button>
-                            {reminder.status === "pending" && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleCompleteReminder(reminder)}
-                                className="text-green-600 hover:text-green-700"
-                              >
-                                <CheckCircle className="h-4 w-4" />
-                              </Button>
-                            )}
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem
-                                  onClick={() => handleViewReminder(reminder)}
-                                >
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  View Details
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleEditReminder(reminder)}
-                                >
-                                  <Edit className="mr-2 h-4 w-4" />
-                                  Edit Reminder
-                                </DropdownMenuItem>
-                                {reminder.status === "pending" && (
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      handleSnoozeReminder(reminder)
-                                    }
-                                  >
-                                    <Clock className="mr-2 h-4 w-4" />
-                                    Snooze
-                                  </DropdownMenuItem>
-                                )}
-                                <DropdownMenuItem
-                                  onClick={() => handleDeleteReminder(reminder)}
-                                  className="text-destructive"
-                                >
-                                  <Trash2 className="mr-2 h-4 w-4" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                          )}
+                        </div>
+
+                        <div className="flex gap-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewReminder(reminder)}
+                            className="h-8 px-2 text-xs"
+                          >
+                            <Eye className="h-3 w-3 mr-1" />
+                            View
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEditReminder(reminder)}
+                            className="h-8 px-2 text-xs"
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteReminder(reminder)}
+                            className="h-8 px-2 text-xs text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
-            </div>
+            )}
 
             {filteredReminders.length === 0 && !isLoading && (
               <div className="text-center py-12">
