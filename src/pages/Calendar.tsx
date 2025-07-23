@@ -827,11 +827,11 @@ const Calendar = () => {
 
         {/* Legend */}
         <Card>
-          <CardHeader>
-            <CardTitle>Session Type Legend</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Session Type Legend</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-blue-600 rounded"></div>
                 <span className="text-sm">Individual Therapy</span>
