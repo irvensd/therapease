@@ -24,6 +24,7 @@ interface ScheduleSessionModalProps {
 export function ScheduleSessionModal({
   open,
   onOpenChange,
+  onScheduleSession,
 }: ScheduleSessionModalProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
