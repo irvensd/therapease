@@ -11,6 +11,15 @@ import Landing from "./pages/Landing";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
+// Public info pages
+import Security from "./pages/Security";
+import HelpCenter from "./pages/HelpCenter";
+import Contact from "./pages/Contact";
+import Training from "./pages/Training";
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+
 // App pages
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
