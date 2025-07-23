@@ -412,14 +412,14 @@ const Settings = () => {
 
   return (
     <Layout>
-      <div className="p-6 space-y-6 max-w-4xl mx-auto">
-        <div className="flex justify-between items-start">
+      <div className="p-4 sm:p-6 space-y-6 max-w-4xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <SettingsIcon className="h-8 w-8" />
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+              <SettingsIcon className="h-6 w-6 sm:h-8 sm:w-8" />
               Settings
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Manage your account and application preferences
             </p>
             {hasUnsavedChanges && (
@@ -429,15 +429,16 @@ const Settings = () => {
               </Badge>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             {hasUnsavedChanges && (
-              <Button variant="outline" onClick={discardChanges}>
+              <Button variant="outline" onClick={discardChanges} className="w-full sm:w-auto">
                 Discard Changes
               </Button>
             )}
             <Button
               onClick={saveSettings}
               disabled={isSaving || !hasUnsavedChanges}
+              className="w-full sm:w-auto"
             >
               {isSaving ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
