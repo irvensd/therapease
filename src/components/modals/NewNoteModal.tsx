@@ -30,6 +30,7 @@ interface NewNoteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   editingNote?: EditingNote | null;
+  onCreateNote?: (noteData: any) => void;
 }
 
 export function NewNoteModal({
