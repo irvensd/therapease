@@ -498,6 +498,15 @@ const Calendar = () => {
   // Export calendar data
   const handleExportCalendar = useCallback(() => {
     try {
+      if (filteredEvents.length === 0) {
+        toast({
+          title: "No Data to Export",
+          description: "There are no calendar events to export. Try adjusting your filters.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const csvHeaders = [
         "Date",
         "Time",
@@ -513,16 +522,14 @@ const Calendar = () => {
 
       const csvData = filteredEvents.map((event) => [
         moment(event.start).format("YYYY-MM-DD"),
-        moment(event.start).format("HH:mm") +
-          " - " +
-          moment(event.end).format("HH:mm"),
-        event.resource.clientName,
-        event.resource.sessionType,
-        event.resource.format,
-        event.resource.status,
-        event.resource.duration.toString(),
-        `$${event.resource.rate}`,
-        event.resource.diagnosis,
+        moment(event.start).format("HH:mm") + " - " + moment(event.end).format("HH:mm"),
+        event.resource.clientName || "",
+        event.resource.sessionType || "",
+        event.resource.format || "",
+        event.resource.status || "",
+        event.resource.duration?.toString() || "0",
+        `$${event.resource.rate || 0}`,
+        event.resource.diagnosis || "",
         `"${(event.resource.notes || "").replace(/"/g, '""')}"`,
       ]);
 
@@ -530,11 +537,12 @@ const Calendar = () => {
         .map((row) => row.join(","))
         .join("\n");
 
-      const blob = new Blob([csvContent], { type: "text/csv" });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = `calendar-${currentView}-${moment(currentDate).format("YYYY-MM")}.csv`;
+      link.setAttribute("aria-label", "Download calendar data as CSV file");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -545,9 +553,10 @@ const Calendar = () => {
         description: `${filteredEvents.length} appointments exported successfully.`,
       });
     } catch (error) {
+      console.error("Export error:", error);
       toast({
         title: "Export Failed",
-        description: "There was an error exporting the calendar.",
+        description: "There was an error exporting the calendar. Please try again.",
         variant: "destructive",
       });
     }
