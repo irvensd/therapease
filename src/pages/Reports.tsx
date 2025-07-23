@@ -877,45 +877,90 @@ const Reports = () => {
                 </Button>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Client</TableHead>
-                      <TableHead>Diagnosis</TableHead>
-                      <TableHead>Sessions</TableHead>
-                      <TableHead>Initial Score</TableHead>
-                      <TableHead>Current Score</TableHead>
-                      <TableHead>Improvement</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {analyticsData.clientOutcomes.map((outcome, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">
-                          {outcome.clientName}
-                        </TableCell>
-                        <TableCell>{outcome.diagnosis}</TableCell>
-                        <TableCell>{outcome.sessionsCompleted}</TableCell>
-                        <TableCell>{outcome.initialScore}</TableCell>
-                        <TableCell>{outcome.currentScore}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            {getImprovementIcon(outcome.improvement)}
-                            <span>{outcome.improvement.toFixed(1)}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={getOutcomeStatusColor(outcome.status)}
-                          >
-                            {outcome.status}
-                          </Badge>
-                        </TableCell>
+                {!isMobile ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Client</TableHead>
+                        <TableHead>Diagnosis</TableHead>
+                        <TableHead>Sessions</TableHead>
+                        <TableHead>Initial Score</TableHead>
+                        <TableHead>Current Score</TableHead>
+                        <TableHead>Improvement</TableHead>
+                        <TableHead>Status</TableHead>
                       </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {analyticsData.clientOutcomes.map((outcome, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">
+                            {outcome.clientName}
+                          </TableCell>
+                          <TableCell>{outcome.diagnosis}</TableCell>
+                          <TableCell>{outcome.sessionsCompleted}</TableCell>
+                          <TableCell>{outcome.initialScore}</TableCell>
+                          <TableCell>{outcome.currentScore}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              {getImprovementIcon(outcome.improvement)}
+                              <span>{outcome.improvement.toFixed(1)}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={getOutcomeStatusColor(outcome.status)}
+                            >
+                              {outcome.status}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="space-y-4">
+                    {analyticsData.clientOutcomes.map((outcome, index) => (
+                      <Card key={index}>
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <h4 className="font-medium">{outcome.clientName}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {outcome.diagnosis}
+                              </p>
+                            </div>
+                            <Badge variant={getOutcomeStatusColor(outcome.status)}>
+                              {outcome.status}
+                            </Badge>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground">Sessions:</span>
+                              <p className="font-medium">{outcome.sessionsCompleted}</p>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Initial Score:</span>
+                              <p className="font-medium">{outcome.initialScore}</p>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Current Score:</span>
+                              <p className="font-medium">{outcome.currentScore}</p>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Improvement:</span>
+                              <div className="flex items-center gap-1">
+                                {getImprovementIcon(outcome.improvement)}
+                                <span className="font-medium">
+                                  {outcome.improvement.toFixed(1)}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
-                  </TableBody>
-                </Table>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
