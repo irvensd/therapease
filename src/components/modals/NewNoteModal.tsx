@@ -37,6 +37,7 @@ export function NewNoteModal({
   open,
   onOpenChange,
   editingNote,
+  onCreateNote,
 }: NewNoteModalProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
