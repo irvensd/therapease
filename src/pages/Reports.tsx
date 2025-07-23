@@ -600,38 +600,70 @@ const Reports = () => {
                 </Button>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Session Type</TableHead>
-                      <TableHead>Count</TableHead>
-                      <TableHead>Percentage</TableHead>
-                      <TableHead>Avg Duration</TableHead>
-                      <TableHead>Completion Rate</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {analyticsData.sessionAnalytics.map((session, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">
-                          {session.type}
-                        </TableCell>
-                        <TableCell>{session.count}</TableCell>
-                        <TableCell>{session.percentage.toFixed(1)}%</TableCell>
-                        <TableCell>{session.averageDuration} min</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <span>{session.completionRate.toFixed(1)}%</span>
-                            <Progress
-                              value={session.completionRate}
-                              className="w-16"
-                            />
-                          </div>
-                        </TableCell>
+                {!isMobile ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Session Type</TableHead>
+                        <TableHead>Count</TableHead>
+                        <TableHead>Percentage</TableHead>
+                        <TableHead>Avg Duration</TableHead>
+                        <TableHead>Completion Rate</TableHead>
                       </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {analyticsData.sessionAnalytics.map((session, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">
+                            {session.type}
+                          </TableCell>
+                          <TableCell>{session.count}</TableCell>
+                          <TableCell>{session.percentage.toFixed(1)}%</TableCell>
+                          <TableCell>{session.averageDuration} min</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <span>{session.completionRate.toFixed(1)}%</span>
+                              <Progress
+                                value={session.completionRate}
+                                className="w-16"
+                              />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="space-y-4">
+                    {analyticsData.sessionAnalytics.map((session, index) => (
+                      <Card key={index}>
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="font-medium">{session.type}</h4>
+                            <Badge variant="outline">{session.count} sessions</Badge>
+                          </div>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span>Percentage:</span>
+                              <span>{session.percentage.toFixed(1)}%</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Avg Duration:</span>
+                              <span>{session.averageDuration} min</span>
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex justify-between">
+                                <span>Completion Rate:</span>
+                                <span>{session.completionRate.toFixed(1)}%</span>
+                              </div>
+                              <Progress value={session.completionRate} />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
-                  </TableBody>
-                </Table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
