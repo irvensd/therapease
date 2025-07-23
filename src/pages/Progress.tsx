@@ -163,6 +163,8 @@ const Progress = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [editingProgress, setEditingProgress] = useState<string | null>(null);
+  const [progressValue, setProgressValue] = useState<string>("");
 
   // Goal form state
   const [goalForm, setGoalForm] = useState({
