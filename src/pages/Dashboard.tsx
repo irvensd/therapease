@@ -435,7 +435,7 @@ const Dashboard = () => {
                 {dashboardData.todaySessions.map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors cursor-pointer gap-2 sm:gap-0"
                     role="listitem"
                     onClick={() => {
                       setSessionWorkspaceModalOpen(true);
@@ -447,15 +447,15 @@ const Dashboard = () => {
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-8 bg-primary rounded-full" />
-                      <div>
-                        <p className="font-medium">{session.client}</p>
-                        <p className="text-sm text-muted-foreground">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm sm:text-base">{session.client}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           {session.type}
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium">{session.time}</p>
+                    <div className="flex items-center justify-between sm:flex-col sm:text-right">
+                      <p className="font-medium text-sm sm:text-base">{session.time}</p>
                       <Badge
                         variant={
                           session.status === "confirmed" ? "default" : "outline"
