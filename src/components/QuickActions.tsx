@@ -65,30 +65,8 @@ export function QuickActions({
     console.log(`Quick action: ${actionId}`, data);
     onAction?.(actionId, data);
 
-    // Provide immediate feedback for actions
-    const actionMessages: Record<string, string> = {
-      "new-client":
-        "✅ New Client form ready! Fill in their information to get started.",
-      "schedule-session":
-        "📅 Session scheduler ready! Select your client and preferred time slot.",
-      "create-note":
-        "📝 Note editor opened! Document your session with AI assistance available.",
-      "create-invoice":
-        "💰 Invoice builder ready! Add services and the system will calculate totals.",
-      "emergency-contact":
-        "🚨 Emergency resources displayed. These contacts are available 24/7.",
-      "backup-data":
-        "💾 Practice data exported successfully! Download will start automatically.",
-      "quick-search":
-        "🔍 Global search activated! Type to find clients, notes, sessions, or invoices.",
-      "video-call": "📹 Opening secure video call platform in new window...",
-      "send-reminder":
-        "📲 Reminder system ready! Choose client and reminder type.",
-    };
-
-    if (actionMessages[actionId]) {
-      alert(actionMessages[actionId]);
-    }
+    // Actions are now handled by the parent component through onAction callback
+    // No need for alert dialogs here
   };
 
   const quickActions: QuickAction[] = [
