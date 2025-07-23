@@ -262,6 +262,66 @@ const Notes = () => {
     });
   }, [notes, searchTerm, statusFilter, selectedPeriod]);
 
+  // Handle creating/updating notes
+  const handleCreateNote = useCallback((noteData: any) => {
+    try {
+      if (noteData.isEditing) {
+        // Update existing note
+        setNotes(prev => prev.map(note =>
+          note.id === noteData.editingId
+            ? {
+                ...note,
+                clientName: noteData.clientName,
+                title: noteData.title,
+                type: noteData.type as "SOAP" | "DAP" | "BIRP" | "Progress",
+                content: noteData.content,
+                goals: noteData.goals,
+                followUp: noteData.followUp,
+                diagnosis: noteData.diagnosis,
+                wordCount: noteData.content.split(' ').length,
+                date: new Date().toISOString().split('T')[0], // Update date
+              }
+            : note
+        ));
+
+        toast({
+          title: "Note Updated",
+          description: `"${noteData.title}" has been updated successfully.`,
+        });
+      } else {
+        // Create new note
+        const newNote: Note = {
+          id: Date.now(), // Simple ID generation
+          clientName: noteData.clientName,
+          title: noteData.title,
+          date: new Date().toISOString().split('T')[0],
+          type: noteData.type as "SOAP" | "DAP" | "BIRP" | "Progress",
+          status: "Draft",
+          wordCount: noteData.content.split(' ').length,
+          isStarred: false,
+          diagnosis: noteData.diagnosis || "To be determined",
+          content: noteData.content,
+          goals: noteData.goals || "",
+          followUp: noteData.followUp || "",
+        };
+
+        setNotes(prev => [newNote, ...prev]); // Add to beginning
+
+        toast({
+          title: "Note Created",
+          description: `"${noteData.title}" has been created successfully.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error creating/updating note:", error);
+      toast({
+        title: "Error",
+        description: "There was an error saving the note. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
+
   // Handle note actions
   const handleEditNote = useCallback((note: Note) => {
     const editingData: EditingNote = {
