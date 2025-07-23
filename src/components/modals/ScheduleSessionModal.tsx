@@ -39,13 +39,29 @@ export function ScheduleSessionModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate required fields
+    if (!formData.client || !formData.sessionType || !formData.date || !formData.time) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log("New session data:", formData);
 
-    // Show success toast instead of problematic alert
-    toast({
-      title: "Session Scheduled",
-      description: "The therapy session has been scheduled successfully.",
-    });
+    // Call the callback to add the session to the calendar
+    if (onScheduleSession) {
+      onScheduleSession(formData);
+    } else {
+      // Fallback toast if no callback provided
+      toast({
+        title: "Session Scheduled",
+        description: "The therapy session has been scheduled successfully.",
+      });
+    }
 
     // Reset form and close modal
     setFormData({
