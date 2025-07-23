@@ -764,7 +764,7 @@ const Sessions = () => {
           onOpenChange={setPrepModalOpen}
           session={selectedSession}
         />
-{/* <SessionDetailsModal
+        <SessionDetailsModal
           open={sessionDetailsModalOpen}
           onOpenChange={setSessionDetailsModalOpen}
           session={selectedSession}
@@ -772,23 +772,7 @@ const Sessions = () => {
             setSelectedSession(session);
             setScheduleModalOpen(true);
           }}
-          onDelete={(session) => {
-            showModal({
-              type: "destructive",
-              title: "Delete Session",
-              message: `Are you sure you want to delete the session with ${session.clientName}? This action cannot be undone.`,
-              confirmLabel: "Delete Session",
-              cancelLabel: "Cancel",
-              showCancel: true,
-              onConfirm: () => {
-                toast({
-                  title: "Session Deleted",
-                  description: `Session with ${session.clientName} has been deleted.`,
-                });
-              },
-            });
-          }}
-        /> */}
+        />
         <ModalComponent />
       </div>
     </Layout>
