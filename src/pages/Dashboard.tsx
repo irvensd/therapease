@@ -24,6 +24,8 @@ import {
   Mail,
   Activity,
   Target,
+  Settings,
+  Heart,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { NewClientModal } from "@/components/modals/NewClientModal";
