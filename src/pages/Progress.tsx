@@ -1487,7 +1487,164 @@ const Progress = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Modals would go here */}
+        {/* Goal Edit/Create Modal */}
+        {goalModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-4 sm:p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold">
+                  {selectedGoal ? "Edit Goal" : "Create New Goal"}
+                </h2>
+                <button
+                  onClick={handleCloseGoalModal}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="client">Client *</Label>
+                    <Select
+                      value={goalForm.clientId}
+                      onValueChange={(value) =>
+                        setGoalForm(prev => ({ ...prev, clientId: value }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select client" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="c1">Emma Thompson</SelectItem>
+                        <SelectItem value="c2">Michael Chen</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="category">Category</Label>
+                    <Select
+                      value={goalForm.category}
+                      onValueChange={(value) =>
+                        setGoalForm(prev => ({ ...prev, category: value as TreatmentGoal["category"] }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Symptom">Symptom</SelectItem>
+                        <SelectItem value="Functional">Functional</SelectItem>
+                        <SelectItem value="Behavioral">Behavioral</SelectItem>
+                        <SelectItem value="Cognitive">Cognitive</SelectItem>
+                        <SelectItem value="Social">Social</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="title">Goal Title *</Label>
+                  <Input
+                    placeholder="Enter goal title..."
+                    value={goalForm.title}
+                    onChange={(e) =>
+                      setGoalForm(prev => ({ ...prev, title: e.target.value }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    placeholder="Describe the treatment goal..."
+                    value={goalForm.description}
+                    onChange={(e) =>
+                      setGoalForm(prev => ({ ...prev, description: e.target.value }))
+                    }
+                    rows={3}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="priority">Priority</Label>
+                    <Select
+                      value={goalForm.priority}
+                      onValueChange={(value) =>
+                        setGoalForm(prev => ({ ...prev, priority: value as TreatmentGoal["priority"] }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="High">High</SelectItem>
+                        <SelectItem value="Medium">Medium</SelectItem>
+                        <SelectItem value="Low">Low</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="targetDate">Target Date</Label>
+                    <Input
+                      type="date"
+                      value={goalForm.targetDate}
+                      onChange={(e) =>
+                        setGoalForm(prev => ({ ...prev, targetDate: e.target.value }))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="measurableOutcome">Measurable Outcome</Label>
+                  <Textarea
+                    placeholder="How will success be measured?"
+                    value={goalForm.measurableOutcome}
+                    onChange={(e) =>
+                      setGoalForm(prev => ({ ...prev, measurableOutcome: e.target.value }))
+                    }
+                    rows={2}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="interventions">Interventions</Label>
+                  <Input
+                    placeholder="Enter interventions separated by commas..."
+                    value={goalForm.interventions}
+                    onChange={(e) =>
+                      setGoalForm(prev => ({ ...prev, interventions: e.target.value }))
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Separate multiple interventions with commas
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 mt-6">
+                <button
+                  onClick={handleCloseGoalModal}
+                  className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveGoal}
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  {selectedGoal ? "Update Goal" : "Create Goal"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <ModalComponent />
       </div>
     </Layout>
