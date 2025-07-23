@@ -898,9 +898,10 @@ const Invoices = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border overflow-hidden">
-              <div className="overflow-x-auto">
-                <Table>
+            {!isMobile ? (
+              <div className="rounded-md border overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead className="min-w-[150px]">
@@ -1042,41 +1043,38 @@ const Invoices = () => {
                                 <CreditCard className="h-4 w-4" />
                               </Button>
                             )}
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem
-                                  onClick={() => handleViewInvoice(invoice)}
-                                >
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  View Details
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Edit className="mr-2 h-4 w-4" />
-                                  Edit Invoice
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleSendInvoice(invoice)}
-                                >
-                                  <Send className="mr-2 h-4 w-4" />
-                                  {invoice.status === "Draft"
-                                    ? "Send"
-                                    : "Resend"}{" "}
-                                  Invoice
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleDeleteInvoice(invoice)}
-                                  className="text-destructive"
-                                >
-                                  <Trash2 className="mr-2 h-4 w-4" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleViewInvoice(invoice)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditInvoice(invoice)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleSendInvoice(invoice)}
+                              className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
+                            >
+                              <Send className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteInvoice(invoice)}
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -1085,6 +1083,138 @@ const Invoices = () => {
                 </Table>
               </div>
             </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredInvoices.map((invoice) => (
+                  <Card key={invoice.id}>
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-medium text-sm">{invoice.invoiceNumber}</h4>
+                            {invoice.isStarred && (
+                              <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-1">
+                            {invoice.clientName}
+                          </p>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            {invoice.clientEmail}
+                          </p>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge
+                              className={getStatusColor(invoice.status)}
+                              variant="outline"
+                            >
+                              <span className="flex items-center gap-1">
+                                {getStatusIcon(invoice.status)}
+                                {invoice.status}
+                              </span>
+                            </Badge>
+                            <span className="text-sm font-bold">
+                              ${invoice.totalAmount.toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 text-xs text-muted-foreground">
+                        <div className="flex justify-between">
+                          <span>Issue Date:</span>
+                          <span>{new Date(invoice.issueDate).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Due Date:</span>
+                          <span>{new Date(invoice.dueDate).toLocaleDateString()}</span>
+                        </div>
+                        {invoice.paidDate && (
+                          <div className="flex justify-between text-green-600">
+                            <span>Paid Date:</span>
+                            <span>{new Date(invoice.paidDate).toLocaleDateString()}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between">
+                          <span>Services:</span>
+                          <span>{invoice.services.length} item(s)</span>
+                        </div>
+                        {invoice.paymentMethod && (
+                          <div className="flex justify-between">
+                            <span>Payment:</span>
+                            <span>{invoice.paymentMethod}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleToggleStar(invoice.id)}
+                            className="h-8 w-8 p-0"
+                          >
+                            {invoice.isStarred ? (
+                              <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                            ) : (
+                              <StarOff className="h-4 w-4" />
+                            )}
+                          </Button>
+                          {invoice.status !== "Paid" && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleMarkAsPaid(invoice)}
+                              className="h-8 w-8 p-0 text-green-600 hover:text-green-700"
+                            >
+                              <CreditCard className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+
+                        <div className="flex gap-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewInvoice(invoice)}
+                            className="h-8 px-2 text-xs"
+                          >
+                            <Eye className="h-3 w-3 mr-1" />
+                            View
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEditInvoice(invoice)}
+                            className="h-8 px-2 text-xs"
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleSendInvoice(invoice)}
+                            className="h-8 px-2 text-xs text-blue-600 hover:text-blue-700"
+                          >
+                            <Send className="h-3 w-3 mr-1" />
+                            Send
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteInvoice(invoice)}
+                            className="h-8 px-2 text-xs text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
 
             {filteredInvoices.length === 0 && !isLoading && (
               <div className="text-center py-12">
