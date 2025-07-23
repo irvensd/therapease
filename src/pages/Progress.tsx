@@ -164,6 +164,18 @@ const Progress = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
+  // Goal form state
+  const [goalForm, setGoalForm] = useState({
+    title: "",
+    description: "",
+    category: "Symptom" as TreatmentGoal["category"],
+    priority: "Medium" as TreatmentGoal["priority"],
+    targetDate: "",
+    measurableOutcome: "",
+    interventions: "",
+    clientId: "",
+  });
+
   // Mock data
   const [treatmentGoals, setTreatmentGoals] = useState<TreatmentGoal[]>([
     {
