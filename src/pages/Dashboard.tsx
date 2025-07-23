@@ -343,10 +343,27 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <QuickActions
-          onNewClient={handleNewClientModalOpen}
-          onScheduleSession={() => setScheduleSessionModalOpen(true)}
-          onAddNote={() => setNewNoteModalOpen(true)}
-          onAddReminder={handleAddReminderModalOpen}
+          onAction={(action, data) => {
+            switch (action) {
+              case "new-client":
+                handleNewClientModalOpen();
+                break;
+              case "schedule-session":
+                setScheduleSessionModalOpen(true);
+                break;
+              case "create-note":
+                setNewNoteModalOpen(true);
+                break;
+              case "create-invoice":
+                handleNavigation("/invoices", "invoice creation");
+                break;
+              case "send-reminder":
+                handleAddReminderModalOpen();
+                break;
+              default:
+                break;
+            }
+          }}
         />
 
         {/* Main content grid */}
