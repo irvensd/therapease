@@ -392,8 +392,15 @@ const Dashboard = () => {
                 {dashboardData.todaySessions.map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                    className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
                     role="listitem"
+                    onClick={() => {
+                      setSessionWorkspaceModalOpen(true);
+                      toast({
+                        title: "Session Workspace",
+                        description: `Opening workspace for ${session.client}...`,
+                      });
+                    }}
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-8 bg-primary rounded-full" />
