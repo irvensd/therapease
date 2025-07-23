@@ -532,7 +532,10 @@ export function AIAssistant({
           variant="outline"
           size="sm"
           className="w-full"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            console.log("AI Assistant button clicked, setting isOpen to true");
+            setIsOpen(true);
+          }}
         >
           <MessageSquare className="h-3 w-3 mr-1" />
           Open AI Assistant
