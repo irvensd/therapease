@@ -487,7 +487,7 @@ const Dashboard = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Active Reminders */}
             <Card className="therapease-card">
               <CardHeader className="flex flex-row items-center justify-between">
