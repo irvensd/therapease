@@ -897,7 +897,7 @@ const Progress = () => {
                           {goal.milestones.map((milestone) => (
                             <div
                               key={milestone.id}
-                              className="flex items-start gap-2 p-2 rounded border"
+                              className="flex items-start gap-2 p-3 rounded border bg-gray-50"
                             >
                               {milestone.completed ? (
                                 <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
