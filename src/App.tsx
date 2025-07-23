@@ -63,6 +63,15 @@ const AppRoutes = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
 
+      {/* Public info pages */}
+      <Route path="/security" element={<Security />} />
+      <Route path="/help" element={<HelpCenter />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/training" element={<Training />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+
       {/* Protected app routes */}
       <Route
         path="/dashboard"
