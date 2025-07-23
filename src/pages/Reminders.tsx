@@ -1164,10 +1164,177 @@ const Reminders = () => {
         </Card>
       </div>
 
-      <AddReminderModal
-        open={addReminderModalOpen}
-        onOpenChange={handleReminderModalClose}
-      />
+      {/* Safe Reminder Modal */}
+      {addReminderModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">
+                {editingReminder ? "Edit Reminder" : "Add New Reminder"}
+              </h2>
+              <button
+                onClick={handleReminderModalClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="title">Title *</Label>
+                  <Input
+                    placeholder="Follow up with client..."
+                    value={reminderForm.title}
+                    onChange={(e) =>
+                      setReminderForm(prev => ({ ...prev, title: e.target.value }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="category">Category</Label>
+                  <Select
+                    value={reminderForm.category}
+                    onValueChange={(value) =>
+                      setReminderForm(prev => ({ ...prev, category: value as Reminder["category"] }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Client Follow-up">Client Follow-up</SelectItem>
+                      <SelectItem value="Documentation">Documentation</SelectItem>
+                      <SelectItem value="Administrative">Administrative</SelectItem>
+                      <SelectItem value="Professional">Professional</SelectItem>
+                      <SelectItem value="Personal">Personal</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  placeholder="Additional details about this reminder..."
+                  value={reminderForm.description}
+                  onChange={(e) =>
+                    setReminderForm(prev => ({ ...prev, description: e.target.value }))
+                  }
+                  rows={3}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="priority">Priority</Label>
+                  <Select
+                    value={reminderForm.priority}
+                    onValueChange={(value) =>
+                      setReminderForm(prev => ({ ...prev, priority: value as Reminder["priority"] }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="urgent">Urgent</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="recurringType">Recurring</Label>
+                  <Select
+                    value={reminderForm.recurringType}
+                    onValueChange={(value) =>
+                      setReminderForm(prev => ({ ...prev, recurringType: value as Reminder["recurringType"] }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">One-time</SelectItem>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="dueDate">Due Date *</Label>
+                  <Input
+                    type="date"
+                    value={reminderForm.dueDate}
+                    onChange={(e) =>
+                      setReminderForm(prev => ({ ...prev, dueDate: e.target.value }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="dueTime">Due Time</Label>
+                  <Input
+                    type="time"
+                    value={reminderForm.dueTime}
+                    onChange={(e) =>
+                      setReminderForm(prev => ({ ...prev, dueTime: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="clientName">Client Name (if applicable)</Label>
+                <Input
+                  placeholder="Client name..."
+                  value={reminderForm.clientName}
+                  onChange={(e) =>
+                    setReminderForm(prev => ({ ...prev, clientName: e.target.value }))
+                  }
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea
+                  placeholder="Additional notes or context..."
+                  value={reminderForm.notes}
+                  onChange={(e) =>
+                    setReminderForm(prev => ({ ...prev, notes: e.target.value }))
+                  }
+                  rows={2}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-6">
+              <button
+                onClick={handleReminderModalClose}
+                className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveReminder}
+                className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                {editingReminder ? "Update Reminder" : "Add Reminder"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ModalComponent />
     </Layout>
   );
