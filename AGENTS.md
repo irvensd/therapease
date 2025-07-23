@@ -92,6 +92,28 @@ The styling system supports dark mode through CSS variables and media queries.
 - **Type Checking**: `npm run typecheck` - Validates TypeScript types
 - **Run tests**: `npm test` - Run all .spec tests
 
+## Modal Implementation Guidelines
+
+**IMPORTANT**: There is a known issue with the shadcn `Dialog` component causing app freezing when closing modals.
+
+**For new modals, use the simple div-based approach** demonstrated in `src/components/modals/SessionDetailsModal.tsx` instead of the shadcn Dialog component.
+
+**Working Pattern**:
+```tsx
+// Simple div-based modal - NO FREEZING ISSUES
+<div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full">
+    {/* Modal content */}
+  </div>
+</div>
+```
+
+**Avoid**:
+```tsx
+// This causes freezing issues - DO NOT USE
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+```
+
 ## Architecture Overview
 
 The architecture follows a modern React application structure:
