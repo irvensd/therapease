@@ -238,29 +238,7 @@ const Sessions = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle session ID in URL
-  useEffect(() => {
-    if (sessionId && !isLoading && sessions.length > 0) {
-      // Find the session by ID
-      const session = sessions.find(s => s.id.toString() === sessionId);
-      if (session) {
-        // Set the session as selected and open the details modal
-        setSelectedSession(session);
-        setSessionDetailsModalOpen(true);
-        // Navigate back to clean URL without causing re-render loop
-        window.history.replaceState(null, "", "/sessions");
-      } else {
-        // Session not found
-        toast({
-          title: "Session Not Found",
-          description: "The requested session could not be found.",
-          variant: "destructive",
-        });
-        // Navigate back to clean URL
-        window.history.replaceState(null, "", "/sessions");
-      }
-    }
-  }, [sessionId, sessions.length, toast, isLoading]);
+
 
   // Calculate statistics
   const stats = useMemo((): SessionStats => {
