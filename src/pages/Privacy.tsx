@@ -1,14 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Heart,
-  Shield,
-  Lock,
-  Eye,
-  ArrowLeft,
-  Calendar,
-} from "lucide-react";
+import { Heart, Shield, Lock, Eye, ArrowLeft, Calendar } from "lucide-react";
 
 const Privacy = () => {
   return (
@@ -44,14 +37,16 @@ const Privacy = () => {
         </Button>
 
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Privacy Policy</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Privacy Policy
+          </h1>
           <div className="flex items-center text-muted-foreground mb-6">
             <Calendar className="mr-2 h-4 w-4" />
             Last updated: December 1, 2024
           </div>
           <p className="text-xl text-muted-foreground">
-            At TherapEase, we take your privacy seriously. This policy explains how we
-            collect, use, and protect your personal information.
+            At TherapEase, we take your privacy seriously. This policy explains
+            how we collect, use, and protect your personal information.
           </p>
         </div>
 
@@ -66,13 +61,17 @@ const Privacy = () => {
             <CardContent className="prose prose-gray max-w-none">
               <p>We collect information you provide directly to us, such as:</p>
               <ul>
-                <li>Account information (name, email, professional credentials)</li>
-                <li>Practice information (business name, address, phone number)</li>
+                <li>
+                  Account information (name, email, professional credentials)
+                </li>
+                <li>
+                  Practice information (business name, address, phone number)
+                </li>
                 <li>Client data you enter into our system</li>
                 <li>Payment and billing information</li>
                 <li>Communications with our support team</li>
               </ul>
-              
+
               <p>We also automatically collect certain information:</p>
               <ul>
                 <li>Device and browser information</li>
@@ -101,11 +100,13 @@ const Privacy = () => {
                 <li>Ensure security and prevent fraud</li>
                 <li>Comply with legal obligations</li>
               </ul>
-              
+
               <p>
-                <strong>We do not sell your personal information to third parties.</strong> 
-                We may share your information only in limited circumstances outlined 
-                in this policy.
+                <strong>
+                  We do not sell your personal information to third parties.
+                </strong>
+                We may share your information only in limited circumstances
+                outlined in this policy.
               </p>
             </CardContent>
           </Card>
@@ -119,20 +120,22 @@ const Privacy = () => {
             </CardHeader>
             <CardContent className="prose prose-gray max-w-none">
               <p>
-                TherapEase is fully HIPAA compliant. When you use our platform to 
-                store Protected Health Information (PHI):
+                TherapEase is fully HIPAA compliant. When you use our platform
+                to store Protected Health Information (PHI):
               </p>
               <ul>
                 <li>All PHI is encrypted at rest and in transit</li>
-                <li>Access controls ensure only authorized users can view data</li>
+                <li>
+                  Access controls ensure only authorized users can view data
+                </li>
                 <li>We maintain detailed audit logs of all system access</li>
                 <li>Regular security assessments and penetration testing</li>
                 <li>Business Associate Agreements available upon request</li>
                 <li>Incident response procedures for any security events</li>
               </ul>
-              
+
               <p>
-                You retain full control over your client data and can export or 
+                You retain full control over your client data and can export or
                 delete it at any time.
               </p>
             </CardContent>
@@ -161,29 +164,31 @@ const Privacy = () => {
               <CardTitle>Information Sharing</CardTitle>
             </CardHeader>
             <CardContent className="prose prose-gray max-w-none">
-              <p>We may share your information in these limited circumstances:</p>
+              <p>
+                We may share your information in these limited circumstances:
+              </p>
               <ul>
                 <li>
-                  <strong>Service Providers:</strong> With trusted third-party 
-                  vendors who help us operate our platform (all under strict 
+                  <strong>Service Providers:</strong> With trusted third-party
+                  vendors who help us operate our platform (all under strict
                   confidentiality agreements)
                 </li>
                 <li>
-                  <strong>Legal Requirements:</strong> When required by law, 
+                  <strong>Legal Requirements:</strong> When required by law,
                   regulation, or court order
                 </li>
                 <li>
-                  <strong>Safety:</strong> To protect the safety of our users 
-                  or the public
+                  <strong>Safety:</strong> To protect the safety of our users or
+                  the public
                 </li>
                 <li>
-                  <strong>Business Transfers:</strong> In connection with a 
+                  <strong>Business Transfers:</strong> In connection with a
                   merger, acquisition, or sale of assets (with advance notice)
                 </li>
               </ul>
-              
+
               <p>
-                We never share PHI without proper authorization and Business 
+                We never share PHI without proper authorization and Business
                 Associate Agreements in place.
               </p>
             </CardContent>
@@ -203,9 +208,9 @@ const Privacy = () => {
                 <li>Opt out of non-essential communications</li>
                 <li>Request information about how your data is used</li>
               </ul>
-              
+
               <p>
-                To exercise these rights, contact us at privacy@therapease.com 
+                To exercise these rights, contact us at privacy@therapease.com
                 or through your account settings.
               </p>
             </CardContent>
@@ -223,10 +228,10 @@ const Privacy = () => {
                 <li>Required to comply with legal obligations</li>
                 <li>Necessary to resolve disputes and enforce agreements</li>
               </ul>
-              
+
               <p>
-                When you delete your account, we will delete your personal 
-                information within 30 days, except where retention is required 
+                When you delete your account, we will delete your personal
+                information within 30 days, except where retention is required
                 by law.
               </p>
             </CardContent>
@@ -238,8 +243,9 @@ const Privacy = () => {
             </CardHeader>
             <CardContent className="prose prose-gray max-w-none">
               <p>
-                Your information may be transferred to and processed in countries 
-                other than your own. We ensure appropriate safeguards are in place:
+                Your information may be transferred to and processed in
+                countries other than your own. We ensure appropriate safeguards
+                are in place:
               </p>
               <ul>
                 <li>Standard Contractual Clauses for EU data</li>
@@ -255,7 +261,7 @@ const Privacy = () => {
             </CardHeader>
             <CardContent className="prose prose-gray max-w-none">
               <p>
-                We may update this privacy policy from time to time. We will 
+                We may update this privacy policy from time to time. We will
                 notify you of any material changes by:
               </p>
               <ul>
@@ -263,9 +269,9 @@ const Privacy = () => {
                 <li>Sending you an email notification</li>
                 <li>Displaying a notice in your account dashboard</li>
               </ul>
-              
+
               <p>
-                Your continued use of our services after any changes indicates 
+                Your continued use of our services after any changes indicates
                 your acceptance of the updated policy.
               </p>
             </CardContent>
@@ -277,20 +283,23 @@ const Privacy = () => {
             </CardHeader>
             <CardContent className="prose prose-gray max-w-none">
               <p>
-                If you have questions about this privacy policy or our privacy 
+                If you have questions about this privacy policy or our privacy
                 practices, please contact us:
               </p>
               <ul>
                 <li>Email: privacy@therapease.com</li>
                 <li>Phone: 1-800-THERAPY</li>
-                <li>Mail: TherapEase Privacy Office<br />
-                    123 Healthcare Blvd, Suite 456<br />
-                    San Francisco, CA 94102
+                <li>
+                  Mail: TherapEase Privacy Office
+                  <br />
+                  123 Healthcare Blvd, Suite 456
+                  <br />
+                  San Francisco, CA 94102
                 </li>
               </ul>
-              
+
               <p>
-                For HIPAA-related inquiries, please contact our HIPAA Security 
+                For HIPAA-related inquiries, please contact our HIPAA Security
                 Officer at hipaa@therapease.com.
               </p>
             </CardContent>

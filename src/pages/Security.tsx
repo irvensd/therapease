@@ -95,7 +95,7 @@ const Security = () => {
               Back to Home
             </Link>
           </Button>
-          
+
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4">
               <Shield className="mr-2 h-4 w-4" />
@@ -229,7 +229,12 @@ const Security = () => {
             <Button size="lg" asChild className="text-lg px-8">
               <Link to="/signup">Start Free Trial</Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="text-lg px-8">
+            <Button
+              variant="outline"
+              size="lg"
+              asChild
+              className="text-lg px-8"
+            >
               <Link to="/contact">Contact Security Team</Link>
             </Button>
           </div>

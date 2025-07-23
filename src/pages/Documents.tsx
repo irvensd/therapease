@@ -472,7 +472,9 @@ const Documents = () => {
             cancelLabel: "Cancel",
             showCancel: true,
             onConfirm: () => {
-              setDocuments((prev) => prev.filter((doc) => doc.id !== document.id));
+              setDocuments((prev) =>
+                prev.filter((doc) => doc.id !== document.id),
+              );
               toast({
                 title: "Document Deleted",
                 description: `${document.originalName} has been deleted.`,
@@ -558,8 +560,6 @@ const Documents = () => {
       tags: "",
     });
   };
-
-
 
   return (
     <Layout>
@@ -1337,8 +1337,6 @@ const Documents = () => {
             </div>
           </div>
         )}
-
-
       </div>
     </Layout>
   );

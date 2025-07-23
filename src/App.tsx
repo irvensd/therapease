@@ -2,7 +2,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { PageTransition } from "@/components/PageTransition";
@@ -60,25 +66,97 @@ const AppRoutes = () => {
       <Route path="/" element={<RootRedirect />} />
 
       {/* Public routes */}
-      <Route path="/landing" element={<PageTransition><Landing /></PageTransition>} />
-      <Route path="/signin" element={<PageTransition><SignIn /></PageTransition>} />
-      <Route path="/signup" element={<PageTransition><SignUp /></PageTransition>} />
+      <Route
+        path="/landing"
+        element={
+          <PageTransition>
+            <Landing />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/signin"
+        element={
+          <PageTransition>
+            <SignIn />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <PageTransition>
+            <SignUp />
+          </PageTransition>
+        }
+      />
 
       {/* Public info pages */}
-      <Route path="/security" element={<PageTransition><Security /></PageTransition>} />
-      <Route path="/help" element={<PageTransition><HelpCenter /></PageTransition>} />
-      <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-      <Route path="/training" element={<PageTransition><Training /></PageTransition>} />
-      <Route path="/about" element={<PageTransition><About /></PageTransition>} />
-      <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
-      <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+      <Route
+        path="/security"
+        element={
+          <PageTransition>
+            <Security />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/help"
+        element={
+          <PageTransition>
+            <HelpCenter />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/contact"
+        element={
+          <PageTransition>
+            <Contact />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/training"
+        element={
+          <PageTransition>
+            <Training />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/about"
+        element={
+          <PageTransition>
+            <About />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/privacy"
+        element={
+          <PageTransition>
+            <Privacy />
+          </PageTransition>
+        }
+      />
+      <Route
+        path="/terms"
+        element={
+          <PageTransition>
+            <Terms />
+          </PageTransition>
+        }
+      />
 
       {/* Protected app routes */}
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <PageTransition><Dashboard /></PageTransition>
+            <PageTransition>
+              <Dashboard />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -86,7 +164,9 @@ const AppRoutes = () => {
         path="/clients"
         element={
           <ProtectedRoute>
-            <PageTransition><Clients /></PageTransition>
+            <PageTransition>
+              <Clients />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -94,7 +174,9 @@ const AppRoutes = () => {
         path="/client-portal"
         element={
           <ProtectedRoute>
-            <PageTransition><ClientPortal /></PageTransition>
+            <PageTransition>
+              <ClientPortal />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -102,7 +184,9 @@ const AppRoutes = () => {
         path="/sessions"
         element={
           <ProtectedRoute>
-            <PageTransition><Sessions /></PageTransition>
+            <PageTransition>
+              <Sessions />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -110,7 +194,9 @@ const AppRoutes = () => {
         path="/calendar"
         element={
           <ProtectedRoute>
-            <PageTransition><Calendar /></PageTransition>
+            <PageTransition>
+              <Calendar />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -118,7 +204,9 @@ const AppRoutes = () => {
         path="/notes"
         element={
           <ProtectedRoute>
-            <PageTransition><Notes /></PageTransition>
+            <PageTransition>
+              <Notes />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -126,7 +214,9 @@ const AppRoutes = () => {
         path="/documents"
         element={
           <ProtectedRoute>
-            <PageTransition><Documents /></PageTransition>
+            <PageTransition>
+              <Documents />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -134,7 +224,9 @@ const AppRoutes = () => {
         path="/progress"
         element={
           <ProtectedRoute>
-            <PageTransition><Progress /></PageTransition>
+            <PageTransition>
+              <Progress />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -142,7 +234,9 @@ const AppRoutes = () => {
         path="/reminders"
         element={
           <ProtectedRoute>
-            <PageTransition><Reminders /></PageTransition>
+            <PageTransition>
+              <Reminders />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -150,7 +244,9 @@ const AppRoutes = () => {
         path="/invoices"
         element={
           <ProtectedRoute>
-            <PageTransition><Invoices /></PageTransition>
+            <PageTransition>
+              <Invoices />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -158,7 +254,9 @@ const AppRoutes = () => {
         path="/reports"
         element={
           <ProtectedRoute>
-            <PageTransition><Reports /></PageTransition>
+            <PageTransition>
+              <Reports />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
@@ -166,13 +264,22 @@ const AppRoutes = () => {
         path="/settings"
         element={
           <ProtectedRoute>
-            <PageTransition><Settings /></PageTransition>
+            <PageTransition>
+              <Settings />
+            </PageTransition>
           </ProtectedRoute>
         }
       />
 
       {/* 404 fallback */}
-      <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+      <Route
+        path="*"
+        element={
+          <PageTransition>
+            <NotFound />
+          </PageTransition>
+        }
+      />
     </Routes>
   );
 };

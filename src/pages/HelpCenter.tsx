@@ -116,15 +116,16 @@ const HelpCenter = () => {
               Back to Home
             </Link>
           </Button>
-          
+
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               How can we help you?
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Find answers, guides, and resources to get the most out of TherapEase
+              Find answers, guides, and resources to get the most out of
+              TherapEase
             </p>
-            
+
             {/* Search Bar */}
             <div className="relative max-w-xl mx-auto">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -161,7 +162,9 @@ const HelpCenter = () => {
                       <category.icon className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl">{category.title}</CardTitle>
+                      <CardTitle className="text-xl">
+                        {category.title}
+                      </CardTitle>
                       <Badge variant="secondary" className="mt-1">
                         {category.articles} articles
                       </Badge>
@@ -230,7 +233,7 @@ const HelpCenter = () => {
           <p className="text-xl text-muted-foreground mb-8">
             Our support team is here to help you succeed
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="border-0 shadow-lg">
               <CardHeader>

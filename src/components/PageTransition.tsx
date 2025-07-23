@@ -58,11 +58,11 @@ interface ComponentTransitionProps {
   direction?: "up" | "down" | "left" | "right";
 }
 
-export const ComponentTransition = ({ 
-  children, 
-  delay = 0, 
+export const ComponentTransition = ({
+  children,
+  delay = 0,
   duration = 0.3,
-  direction = "up" 
+  direction = "up",
 }: ComponentTransitionProps) => {
   const directionVariants = {
     up: { initial: { y: 20 }, animate: { y: 0 } },
@@ -73,18 +73,18 @@ export const ComponentTransition = ({
 
   return (
     <motion.div
-      initial={{ 
-        opacity: 0, 
-        ...directionVariants[direction].initial 
+      initial={{
+        opacity: 0,
+        ...directionVariants[direction].initial,
       }}
-      animate={{ 
-        opacity: 1, 
-        ...directionVariants[direction].animate 
+      animate={{
+        opacity: 1,
+        ...directionVariants[direction].animate,
       }}
-      transition={{ 
-        duration, 
+      transition={{
+        duration,
         delay,
-        ease: "easeOut" 
+        ease: "easeOut",
       }}
     >
       {children}
@@ -96,7 +96,7 @@ export const ComponentTransition = ({
 export const LoadingTransition = ({
   isLoading,
   children,
-  skeleton
+  skeleton,
 }: {
   isLoading: boolean;
   children: ReactNode;

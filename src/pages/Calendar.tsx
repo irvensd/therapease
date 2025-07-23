@@ -878,15 +878,19 @@ const Calendar = () => {
                 <div className="p-6 bg-muted/50 rounded-full mb-6">
                   <CalendarIcon className="h-12 w-12 text-muted-foreground" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">No appointments scheduled</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  No appointments scheduled
+                </h3>
                 <p className="text-muted-foreground mb-6 max-w-sm">
                   {filters.client !== "all" || filters.type !== "all"
                     ? "No appointments match your current filters. Try adjusting your search criteria."
-                    : "Get started by scheduling your first session or appointment."
-                  }
+                    : "Get started by scheduling your first session or appointment."}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button onClick={() => setScheduleModalOpen(true)} className="gap-2">
+                  <Button
+                    onClick={() => setScheduleModalOpen(true)}
+                    className="gap-2"
+                  >
                     <Plus className="h-4 w-4" />
                     Schedule Session
                   </Button>

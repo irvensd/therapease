@@ -4,7 +4,10 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { useModalAccessibility, useScreenReaderAnnouncement } from "@/hooks/use-modal-accessibility";
+import {
+  useModalAccessibility,
+  useScreenReaderAnnouncement,
+} from "@/hooks/use-modal-accessibility";
 import {
   Calendar as CalendarIcon,
   Clock,
@@ -120,7 +123,10 @@ export function EventDetailsModal({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 id="modal-title" className="text-xl font-semibold flex items-center gap-2">
+          <h2
+            id="modal-title"
+            className="text-xl font-semibold flex items-center gap-2"
+          >
             <User className="h-5 w-5" />
             {event.resource.clientName}
           </h2>
@@ -244,7 +250,9 @@ export function EventDetailsModal({
                   size="sm"
                   onClick={() => {
                     onEventAction("edit", event);
-                    announce(`Editing appointment for ${event.resource.clientName}`);
+                    announce(
+                      `Editing appointment for ${event.resource.clientName}`,
+                    );
                     handleClose();
                   }}
                   aria-label={`Edit appointment for ${event.resource.clientName}`}
@@ -257,7 +265,9 @@ export function EventDetailsModal({
                   size="sm"
                   onClick={() => {
                     onEventAction("duplicate", event);
-                    announce(`Duplicating appointment for ${event.resource.clientName}`);
+                    announce(
+                      `Duplicating appointment for ${event.resource.clientName}`,
+                    );
                     handleClose();
                   }}
                   aria-label={`Duplicate appointment for ${event.resource.clientName}`}

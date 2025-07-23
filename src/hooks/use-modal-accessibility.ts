@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from "react";
 
 interface UseModalAccessibilityProps {
   isOpen: boolean;
@@ -32,10 +32,10 @@ export const useModalAccessibility = ({
     if (isOpen) {
       // Focus the first focusable element in the modal
       const focusableElements = modalRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       const firstFocusableElement = focusableElements[0] as HTMLElement;
-      
+
       if (firstFocusableElement) {
         // Small delay to ensure the modal is fully rendered
         setTimeout(() => {
@@ -49,40 +49,48 @@ export const useModalAccessibility = ({
   }, [isOpen, restoreFocus]);
 
   // Escape key handler
-  const handleEscapeKey = useCallback((event: KeyboardEvent) => {
-    if (closeOnEscape && event.key === 'Escape') {
-      event.preventDefault();
-      onClose();
-    }
-  }, [closeOnEscape, onClose]);
+  const handleEscapeKey = useCallback(
+    (event: KeyboardEvent) => {
+      if (closeOnEscape && event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    },
+    [closeOnEscape, onClose],
+  );
 
   // Focus trap handler
-  const handleTabKey = useCallback((event: KeyboardEvent) => {
-    if (!trapFocus || !modalRef.current) return;
+  const handleTabKey = useCallback(
+    (event: KeyboardEvent) => {
+      if (!trapFocus || !modalRef.current) return;
 
-    const focusableElements = modalRef.current.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    
-    const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
 
-    if (event.key === 'Tab') {
-      if (event.shiftKey) {
-        // Shift + Tab - moving backwards
-        if (document.activeElement === firstFocusableElement) {
-          event.preventDefault();
-          lastFocusableElement.focus();
-        }
-      } else {
-        // Tab - moving forwards
-        if (document.activeElement === lastFocusableElement) {
-          event.preventDefault();
-          firstFocusableElement.focus();
+      const firstFocusableElement = focusableElements[0] as HTMLElement;
+      const lastFocusableElement = focusableElements[
+        focusableElements.length - 1
+      ] as HTMLElement;
+
+      if (event.key === "Tab") {
+        if (event.shiftKey) {
+          // Shift + Tab - moving backwards
+          if (document.activeElement === firstFocusableElement) {
+            event.preventDefault();
+            lastFocusableElement.focus();
+          }
+        } else {
+          // Tab - moving forwards
+          if (document.activeElement === lastFocusableElement) {
+            event.preventDefault();
+            firstFocusableElement.focus();
+          }
         }
       }
-    }
-  }, [trapFocus]);
+    },
+    [trapFocus],
+  );
 
   // Keyboard event listener
   useEffect(() => {
@@ -93,10 +101,10 @@ export const useModalAccessibility = ({
       handleTabKey(event);
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, handleEscapeKey, handleTabKey]);
 
@@ -104,8 +112,8 @@ export const useModalAccessibility = ({
   useEffect(() => {
     if (isOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
-      document.body.style.overflow = 'hidden';
-      
+      document.body.style.overflow = "hidden";
+
       return () => {
         document.body.style.overflow = originalStyle;
       };
@@ -118,7 +126,7 @@ export const useModalAccessibility = ({
     focusFirstElement: () => {
       if (!modalRef.current) return;
       const focusableElements = modalRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       const firstElement = focusableElements[0] as HTMLElement;
       if (firstElement) firstElement.focus();
@@ -126,9 +134,11 @@ export const useModalAccessibility = ({
     focusLastElement: () => {
       if (!modalRef.current) return;
       const focusableElements = modalRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
-      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+      const lastElement = focusableElements[
+        focusableElements.length - 1
+      ] as HTMLElement;
       if (lastElement) lastElement.focus();
     },
   };
@@ -136,20 +146,23 @@ export const useModalAccessibility = ({
 
 // Hook for announcements to screen readers
 export const useScreenReaderAnnouncement = () => {
-  const announce = useCallback((message: string, priority: 'polite' | 'assertive' = 'polite') => {
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', priority);
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.setAttribute('class', 'sr-only');
-    announcement.textContent = message;
-    
-    document.body.appendChild(announcement);
-    
-    // Remove the announcement after a delay
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
-  }, []);
+  const announce = useCallback(
+    (message: string, priority: "polite" | "assertive" = "polite") => {
+      const announcement = document.createElement("div");
+      announcement.setAttribute("aria-live", priority);
+      announcement.setAttribute("aria-atomic", "true");
+      announcement.setAttribute("class", "sr-only");
+      announcement.textContent = message;
+
+      document.body.appendChild(announcement);
+
+      // Remove the announcement after a delay
+      setTimeout(() => {
+        document.body.removeChild(announcement);
+      }, 1000);
+    },
+    [],
+  );
 
   return { announce };
 };

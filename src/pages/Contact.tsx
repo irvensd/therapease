@@ -55,7 +55,7 @@ const Contact = () => {
               Back to Home
             </Link>
           </Button>
-          
+
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Get in Touch
@@ -96,7 +96,9 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold">Email Support</h3>
-                      <p className="text-muted-foreground">support@therapease.com</p>
+                      <p className="text-muted-foreground">
+                        support@therapease.com
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         Response within 24 hours
                       </p>
@@ -123,8 +125,10 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold">Office</h3>
                       <p className="text-muted-foreground">
-                        123 Healthcare Blvd<br />
-                        Suite 456<br />
+                        123 Healthcare Blvd
+                        <br />
+                        Suite 456
+                        <br />
                         San Francisco, CA 94102
                       </p>
                     </div>
@@ -137,8 +141,10 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold">Business Hours</h3>
                       <p className="text-muted-foreground">
-                        Monday - Friday: 9:00 AM - 6:00 PM EST<br />
-                        Saturday: 10:00 AM - 4:00 PM EST<br />
+                        Monday - Friday: 9:00 AM - 6:00 PM EST
+                        <br />
+                        Saturday: 10:00 AM - 4:00 PM EST
+                        <br />
                         Sunday: Closed
                       </p>
                     </div>
@@ -153,7 +159,8 @@ const Contact = () => {
                 <CardHeader>
                   <CardTitle>Send us a message</CardTitle>
                   <p className="text-muted-foreground">
-                    Fill out the form below and we'll get back to you as soon as possible.
+                    Fill out the form below and we'll get back to you as soon as
+                    possible.
                   </p>
                 </CardHeader>
                 <CardContent>
@@ -194,11 +201,19 @@ const Contact = () => {
                           <SelectValue placeholder="Select a subject" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="general">General Inquiry</SelectItem>
-                          <SelectItem value="support">Technical Support</SelectItem>
-                          <SelectItem value="billing">Billing Question</SelectItem>
+                          <SelectItem value="general">
+                            General Inquiry
+                          </SelectItem>
+                          <SelectItem value="support">
+                            Technical Support
+                          </SelectItem>
+                          <SelectItem value="billing">
+                            Billing Question
+                          </SelectItem>
                           <SelectItem value="sales">Sales Inquiry</SelectItem>
-                          <SelectItem value="feature">Feature Request</SelectItem>
+                          <SelectItem value="feature">
+                            Feature Request
+                          </SelectItem>
                           <SelectItem value="bug">Bug Report</SelectItem>
                         </SelectContent>
                       </Select>
@@ -234,23 +249,28 @@ const Contact = () => {
           <p className="text-xl text-muted-foreground mb-8">
             Find quick answers to common questions
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-left">How secure is my data?</CardTitle>
+                <CardTitle className="text-left">
+                  How secure is my data?
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-left">
-                  TherapEase is fully HIPAA compliant with enterprise-grade security,
-                  including AES-256 encryption and SOC 2 Type II certification.
+                  TherapEase is fully HIPAA compliant with enterprise-grade
+                  security, including AES-256 encryption and SOC 2 Type II
+                  certification.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-left">Do you offer training?</CardTitle>
+                <CardTitle className="text-left">
+                  Do you offer training?
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-left">
@@ -262,7 +282,9 @@ const Contact = () => {
 
             <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-left">Can I import my existing data?</CardTitle>
+                <CardTitle className="text-left">
+                  Can I import my existing data?
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-left">
@@ -274,12 +296,14 @@ const Contact = () => {
 
             <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-left">What support do you provide?</CardTitle>
+                <CardTitle className="text-left">
+                  What support do you provide?
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-left">
-                  We offer 24/7 chat support, phone support during business hours,
-                  and comprehensive documentation and training resources.
+                  We offer 24/7 chat support, phone support during business
+                  hours, and comprehensive documentation and training resources.
                 </p>
               </CardContent>
             </Card>

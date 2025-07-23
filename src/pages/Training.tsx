@@ -120,7 +120,7 @@ const Training = () => {
               Back to Home
             </Link>
           </Button>
-          
+
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4">
               <Award className="mr-2 h-4 w-4" />
@@ -130,15 +130,17 @@ const Training = () => {
               Master TherapEase with Expert Training
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive training programs designed to help you maximize
-              your practice efficiency and get the most out of TherapEase.
+              Comprehensive training programs designed to help you maximize your
+              practice efficiency and get the most out of TherapEase.
             </p>
           </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">10,000+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                10,000+
+              </div>
               <div className="text-muted-foreground">Trained Users</div>
             </div>
             <div className="text-center">
@@ -187,14 +189,16 @@ const Training = () => {
                   <p className="text-muted-foreground mb-4">
                     {program.description}
                   </p>
-                  
+
                   <div className="space-y-2 mb-6">
                     <h4 className="font-semibold">What you'll learn:</h4>
                     <ul className="space-y-1">
                       {program.topics.map((topic, topicIndex) => (
                         <li key={topicIndex} className="flex items-start">
                           <CheckCircle className="mr-2 h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground">{topic}</span>
+                          <span className="text-sm text-muted-foreground">
+                            {topic}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -234,7 +238,9 @@ const Training = () => {
                   <Badge variant="secondary">{resource.count}</Badge>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{resource.description}</p>
+                  <p className="text-muted-foreground">
+                    {resource.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -260,10 +266,12 @@ const Training = () => {
                 1
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Welcome & Assessment</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  Welcome & Assessment
+                </h3>
                 <p className="text-muted-foreground">
-                  We start with a brief assessment to understand your current knowledge
-                  and create a personalized learning path.
+                  We start with a brief assessment to understand your current
+                  knowledge and create a personalized learning path.
                 </p>
               </div>
             </div>
@@ -273,10 +281,12 @@ const Training = () => {
                 2
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Foundation Training</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  Foundation Training
+                </h3>
                 <p className="text-muted-foreground">
-                  Master the essentials with our quick start program and get your
-                  practice up and running immediately.
+                  Master the essentials with our quick start program and get
+                  your practice up and running immediately.
                 </p>
               </div>
             </div>
@@ -286,10 +296,12 @@ const Training = () => {
                 3
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Advanced Features</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  Advanced Features
+                </h3>
                 <p className="text-muted-foreground">
-                  Dive deeper into advanced functionality to optimize your workflow
-                  and maximize efficiency.
+                  Dive deeper into advanced functionality to optimize your
+                  workflow and maximize efficiency.
                 </p>
               </div>
             </div>
@@ -327,7 +339,12 @@ const Training = () => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="text-lg px-8">
+            <Button
+              variant="outline"
+              size="lg"
+              asChild
+              className="text-lg px-8"
+            >
               <Link to="/contact">Schedule Training</Link>
             </Button>
           </div>

@@ -86,7 +86,9 @@ const Dashboard = () => {
   const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
-    const hasVisitedDashboard = localStorage.getItem("therapease_dashboard_visited");
+    const hasVisitedDashboard = localStorage.getItem(
+      "therapease_dashboard_visited",
+    );
     if (!hasVisitedDashboard) {
       setIsNewUser(true);
       localStorage.setItem("therapease_dashboard_visited", "true");
@@ -270,36 +272,57 @@ const Dashboard = () => {
                   Welcome to TherapEase!
                 </h3>
                 <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  Let's get your practice set up. Start by adding your first client,
-                  scheduling sessions, or exploring the platform features.
+                  Let's get your practice set up. Start by adding your first
+                  client, scheduling sessions, or exploring the platform
+                  features.
                 </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-3xl mx-auto">
-                <Card className="cursor-pointer hover:shadow-md transition-shadow"
-                      onClick={() => handleNavigation("/clients", "add first client")}>
+                <Card
+                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() =>
+                    handleNavigation("/clients", "add first client")
+                  }
+                >
                   <CardContent className="p-4 text-center">
                     <Users className="h-6 w-6 text-primary mx-auto mb-2" />
-                    <h4 className="font-semibold mb-1">Add Your First Client</h4>
-                    <p className="text-sm text-muted-foreground">Create client profiles and intake forms</p>
+                    <h4 className="font-semibold mb-1">
+                      Add Your First Client
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Create client profiles and intake forms
+                    </p>
                   </CardContent>
                 </Card>
 
-                <Card className="cursor-pointer hover:shadow-md transition-shadow"
-                      onClick={() => handleNavigation("/calendar", "schedule first session")}>
+                <Card
+                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() =>
+                    handleNavigation("/calendar", "schedule first session")
+                  }
+                >
                   <CardContent className="p-4 text-center">
                     <Calendar className="h-6 w-6 text-primary mx-auto mb-2" />
                     <h4 className="font-semibold mb-1">Schedule Sessions</h4>
-                    <p className="text-sm text-muted-foreground">Set up your calendar and appointments</p>
+                    <p className="text-sm text-muted-foreground">
+                      Set up your calendar and appointments
+                    </p>
                   </CardContent>
                 </Card>
 
-                <Card className="cursor-pointer hover:shadow-md transition-shadow"
-                      onClick={() => handleNavigation("/settings", "configure practice")}>
+                <Card
+                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() =>
+                    handleNavigation("/settings", "configure practice")
+                  }
+                >
                   <CardContent className="p-4 text-center">
                     <Settings className="h-6 w-6 text-primary mx-auto mb-2" />
                     <h4 className="font-semibold mb-1">Configure Practice</h4>
-                    <p className="text-sm text-muted-foreground">Set up your practice information</p>
+                    <p className="text-sm text-muted-foreground">
+                      Set up your practice information
+                    </p>
                   </CardContent>
                 </Card>
               </div>
