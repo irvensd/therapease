@@ -108,6 +108,17 @@ const Invoices = () => {
   const [clientFilter, setClientFilter] = useState("all");
   const [showStarredOnly, setShowStarredOnly] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Invoice form state
+  const [invoiceForm, setInvoiceForm] = useState({
+    clientName: "",
+    clientEmail: "",
+    amount: "",
+    dueDate: "",
+    services: "",
+    notes: "",
+  });
 
   // Mock invoice data - in real app would be fetched from API
   const mockInvoices: Invoice[] = [
