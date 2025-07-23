@@ -364,7 +364,13 @@ const Calendar = () => {
       start: Date;
       end: Date;
     }) => {
-      if (start < new Date()) {
+      // Only allow moving to future dates (compare dates only, not time)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to start of day
+      const selectedDate = new Date(start);
+      selectedDate.setHours(0, 0, 0, 0); // Reset time to start of day
+
+      if (selectedDate < today) {
         toast({
           title: "Invalid Move",
           description: "Cannot move appointments to the past.",
