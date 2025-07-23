@@ -675,9 +675,7 @@ const Clients = () => {
                       <div>
                         <div className="text-muted-foreground text-xs">Last Session</div>
                         <div className="font-medium">
-                          {client.lastSession
-                            ? new Date(client.lastSession).toLocaleDateString()
-                            : "None"}
+                          {formatDate(client.lastSession)}
                         </div>
                       </div>
                     </div>
