@@ -880,7 +880,7 @@ const Progress = () => {
                           </Label>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {goal.interventions.map((intervention, index) => (
-                              <Badge key={index} variant="secondary">
+                              <Badge key={index} variant="secondary" className="text-xs">
                                 {intervention}
                               </Badge>
                             ))}
