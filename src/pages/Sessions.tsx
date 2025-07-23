@@ -240,17 +240,13 @@ const Sessions = () => {
 
   // Handle session ID in URL
   useEffect(() => {
-    if (sessionId) {
+    if (sessionId && !isLoading) {
       // Find the session by ID
       const session = sessions.find(s => s.id.toString() === sessionId);
       if (session) {
-        // Show session details in a toast and redirect back to sessions list
-        toast({
-          title: "Session Details",
-          description: `Viewing session with ${session.clientName} on ${session.date} at ${session.time}`,
-        });
-        // Set the session as selected for any modals
+        // Set the session as selected and open the details modal
         setSelectedSession(session);
+        setSessionDetailsModalOpen(true);
       } else {
         // Session not found
         toast({
@@ -262,7 +258,7 @@ const Sessions = () => {
       // Redirect back to sessions list to avoid invalid URL state
       navigate("/sessions", { replace: true });
     }
-  }, [sessionId, sessions, navigate, toast]);
+  }, [sessionId, sessions, navigate, toast, isLoading]);
 
   // Calculate statistics
   const stats = useMemo((): SessionStats => {
