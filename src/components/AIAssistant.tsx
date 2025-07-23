@@ -240,7 +240,7 @@ export function AIAssistant({
 
     // General helpful response
     const responses = [
-      "I'm here to support your clinical practice! I can help with:\n\n• **Documentation** - Generate SOAP, DAP, BIRP notes\n• **Treatment Planning** - Evidence-based recommendations\n• **Risk Assessment** - Safety protocols and crisis resources\n• **Progress Tracking** - Visual charts and outcome measures\n• **Practice Management** - Scheduling and workflow optimization\n\nWhat specific area would you like assistance with?",
+      "I'm here to support your clinical practice! I can help with:\n\n• **Documentation** - Generate SOAP, DAP, BIRP notes\n• **Treatment Planning** - Evidence-based recommendations\n• **Risk Assessment** - Safety protocols and crisis resources\n• **Progress Tracking** - Visual charts and outcome measures\n��� **Practice Management** - Scheduling and workflow optimization\n\nWhat specific area would you like assistance with?",
 
       "As your AI Clinical Assistant, I can provide:\n\n• **Real-time clinical insights** based on current research\n• **Automated documentation** that saves you time\n• **Risk monitoring** and safety alerts\n• **Treatment outcome predictions** using evidence-based data\n• **Practice analytics** to optimize your workflow\n\nHow can I help you provide exceptional care today?",
     ];
@@ -536,8 +536,8 @@ export function AIAssistant({
                 )}
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </div>
+        )}
       </>
     );
   }
