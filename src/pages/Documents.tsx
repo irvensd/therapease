@@ -468,8 +468,21 @@ const Documents = () => {
           break;
 
         case "delete":
-          setDocumentToDelete(document);
-          setConfirmDeleteOpen(true);
+          showModal({
+            type: "destructive",
+            title: "Delete Document",
+            message: `Are you sure you want to permanently delete "${document.originalName}"? This action cannot be undone.`,
+            confirmLabel: "Delete Document",
+            cancelLabel: "Cancel",
+            showCancel: true,
+            onConfirm: () => {
+              setDocuments((prev) => prev.filter((doc) => doc.id !== document.id));
+              toast({
+                title: "Document Deleted",
+                description: `${document.originalName} has been deleted.`,
+              });
+            },
+          });
           break;
       }
     },
