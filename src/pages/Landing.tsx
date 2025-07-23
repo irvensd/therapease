@@ -418,9 +418,9 @@ const Landing = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/security" className="hover:text-foreground">
                     Security
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -428,19 +428,19 @@ const Landing = () => {
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/help" className="hover:text-foreground">
                     Help Center
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/contact" className="hover:text-foreground">
                     Contact Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/training" className="hover:text-foreground">
                     Training
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -448,19 +448,19 @@ const Landing = () => {
               <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/about" className="hover:text-foreground">
                     About Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/privacy" className="hover:text-foreground">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <Link to="/terms" className="hover:text-foreground">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
