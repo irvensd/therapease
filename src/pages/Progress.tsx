@@ -813,25 +813,27 @@ const Progress = () => {
               {filteredGoals.map((goal) => (
                 <Card key={goal.id}>
                   <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                           <CardTitle className="text-lg">
                             {goal.title}
                           </CardTitle>
-                          <Badge variant={getPriorityColor(goal.priority)}>
-                            {goal.priority}
-                          </Badge>
-                          <Badge variant={getStatusColor(goal.status)}>
-                            {goal.status}
-                          </Badge>
-                          <Badge variant="outline">{goal.category}</Badge>
+                          <div className="flex flex-wrap gap-1">
+                            <Badge variant={getPriorityColor(goal.priority)}>
+                              {goal.priority}
+                            </Badge>
+                            <Badge variant={getStatusColor(goal.status)}>
+                              {goal.status}
+                            </Badge>
+                            <Badge variant="outline">{goal.category}</Badge>
+                          </div>
                         </div>
                         <p className="text-sm text-muted-foreground">
                           {goal.clientName} • Target: {goal.targetDate}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 md:flex-shrink-0">
                         <Button
                           variant="ghost"
                           size="sm"
