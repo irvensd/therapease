@@ -1011,47 +1011,110 @@ const Progress = () => {
                       <div>
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium">Progress</span>
-                          {editingProgress === goal.id ? (
-                            <div className="flex items-center gap-2">
-                              <Input
-                                type="number"
-                                min="0"
-                                max="100"
-                                value={progressValue}
-                                onChange={(e) => setProgressValue(e.target.value)}
-                                className="w-16 h-6 text-xs"
-                                placeholder="0-100"
-                              />
-                              <span className="text-xs">%</span>
-                              <Button
-                                size="sm"
-                                onClick={() => handleSaveProgress(goal.id)}
-                                className="h-6 px-2 text-xs"
-                              >
-                                ✓
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={handleCancelProgressEdit}
-                                className="h-6 px-2 text-xs"
-                              >
-                                ✕
-                              </Button>
-                            </div>
-                          ) : (
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium">
+                              {goal.currentProgress}%
+                            </span>
                             <button
                               onClick={() => handleStartProgressEdit(goal.id, goal.currentProgress)}
-                              className="text-sm hover:text-blue-600 cursor-pointer"
+                              className="text-xs text-blue-600 hover:text-blue-800"
                             >
-                              {goal.currentProgress}% (click to edit)
+                              Edit
                             </button>
-                          )}
+                          </div>
                         </div>
-                        <ProgressBar
-                          value={goal.currentProgress}
-                          className={editingProgress === goal.id ? "opacity-50" : ""}
-                        />
+
+                        {editingProgress === goal.id ? (
+                          <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs w-8">0%</span>
+                              <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                step="5"
+                                value={progressValue}
+                                onChange={(e) => setProgressValue(e.target.value)}
+                                className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                                style={{
+                                  background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${progressValue}%, #e5e7eb ${progressValue}%, #e5e7eb 100%)`
+                                }}
+                              />
+                              <span className="text-xs w-12">100%</span>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setProgressValue("0")}
+                                  className="h-6 px-2 text-xs"
+                                >
+                                  0%
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setProgressValue("25")}
+                                  className="h-6 px-2 text-xs"
+                                >
+                                  25%
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setProgressValue("50")}
+                                  className="h-6 px-2 text-xs"
+                                >
+                                  50%
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setProgressValue("75")}
+                                  className="h-6 px-2 text-xs"
+                                >
+                                  75%
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setProgressValue("100")}
+                                  className="h-6 px-2 text-xs"
+                                >
+                                  100%
+                                </Button>
+                              </div>
+
+                              <div className="flex gap-1">
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleSaveProgress(goal.id)}
+                                  className="h-6 px-3 text-xs"
+                                >
+                                  Save
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={handleCancelProgressEdit}
+                                  className="h-6 px-3 text-xs"
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+
+                            <div className="text-center">
+                              <span className="text-sm font-medium text-blue-600">
+                                {progressValue}%
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <ProgressBar value={goal.currentProgress} />
+                        )}
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
