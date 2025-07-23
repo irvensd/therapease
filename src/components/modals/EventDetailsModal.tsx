@@ -257,8 +257,10 @@ export function EventDetailsModal({
                   size="sm"
                   onClick={() => {
                     onEventAction("duplicate", event);
+                    announce(`Duplicating appointment for ${event.resource.clientName}`);
                     handleClose();
                   }}
+                  aria-label={`Duplicate appointment for ${event.resource.clientName}`}
                 >
                   <Copy className="h-4 w-4 mr-2" />
                   Duplicate
