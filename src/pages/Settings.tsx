@@ -451,25 +451,29 @@ const Settings = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile" className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              Profile
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+            <TabsTrigger value="profile" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <User className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Profile</span>
+              <span className="sm:hidden">Profile</span>
             </TabsTrigger>
             <TabsTrigger
               value="notifications"
-              className="flex items-center gap-2"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
             >
-              <Bell className="h-4 w-4" />
-              Notifications
+              <Bell className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Notifications</span>
+              <span className="sm:hidden">Alerts</span>
             </TabsTrigger>
-            <TabsTrigger value="practice" className="flex items-center gap-2">
-              <Briefcase className="h-4 w-4" />
-              Practice
+            <TabsTrigger value="practice" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <Briefcase className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Practice</span>
+              <span className="sm:hidden">Practice</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              Security
+            <TabsTrigger value="security" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Security</span>
+              <span className="sm:hidden">Security</span>
             </TabsTrigger>
           </TabsList>
 
