@@ -18,6 +18,7 @@ import { useToast } from "@/components/ui/use-toast";
 interface ScheduleSessionModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onScheduleSession?: (sessionData: any) => void;
 }
 
 export function ScheduleSessionModal({
