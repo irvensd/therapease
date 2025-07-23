@@ -494,7 +494,7 @@ const Dashboard = () => {
         />
 
         {/* Main content grid */}
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
+        <div className="grid therapease-grid-spacing lg:grid-cols-3">
           {/* Today's Schedule */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card className="therapease-card">
