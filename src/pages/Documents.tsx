@@ -1333,6 +1333,50 @@ const Documents = () => {
             </div>
           </div>
         )}
+
+        {/* Confirmation Delete Modal */}
+        {confirmDeleteOpen && documentToDelete && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-red-600">Confirm Delete</h2>
+                <button
+                  onClick={handleCancelDelete}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-sm text-gray-700 mb-2">
+                  Are you sure you want to delete this document?
+                </p>
+                <p className="text-sm font-medium text-gray-900">
+                  "{documentToDelete.originalName}"
+                </p>
+                <p className="text-xs text-red-600 mt-2">
+                  This action cannot be undone.
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={handleCancelDelete}
+                  className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmDelete}
+                  className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Delete Document
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
