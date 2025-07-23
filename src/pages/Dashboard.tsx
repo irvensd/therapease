@@ -412,7 +412,7 @@ const Dashboard = () => {
           {/* Today's Schedule */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card className="therapease-card">
-              <CardHeader className="flex flex-row items-center justify-between">
+              <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" aria-hidden="true" />
                   Today's Schedule
@@ -424,8 +424,10 @@ const Dashboard = () => {
                     handleNavigation("/sessions", "session management")
                   }
                   aria-label="View all sessions"
+                  className="self-start sm:self-auto"
                 >
-                  View All
+                  <span className="sm:hidden">View All Sessions</span>
+                  <span className="hidden sm:inline">View All</span>
                   <ArrowRight className="ml-1 h-3 w-3" aria-hidden="true" />
                 </Button>
               </CardHeader>
