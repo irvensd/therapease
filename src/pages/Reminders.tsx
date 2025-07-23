@@ -964,44 +964,30 @@ const Reminders = () => {
                                   <CheckCircle className="h-4 w-4" />
                                 </Button>
                               )}
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem
-                                    onClick={() => handleViewReminder(reminder)}
-                                  >
-                                    <Eye className="mr-2 h-4 w-4" />
-                                    View Details
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => handleEditReminder(reminder)}
-                                  >
-                                    <Edit className="mr-2 h-4 w-4" />
-                                    Edit Reminder
-                                  </DropdownMenuItem>
-                                  {reminder.status === "pending" && (
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        handleSnoozeReminder(reminder)
-                                      }
-                                    >
-                                      <Clock className="mr-2 h-4 w-4" />
-                                      Snooze
-                                    </DropdownMenuItem>
-                                  )}
-                                  <DropdownMenuItem
-                                    onClick={() => handleDeleteReminder(reminder)}
-                                    className="text-destructive"
-                                  >
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
+                              <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleViewReminder(reminder)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditReminder(reminder)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteReminder(reminder)}
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                             </div>
                           </TableCell>
                         </TableRow>
