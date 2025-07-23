@@ -506,11 +506,11 @@ const Reports = () => {
 
         {/* Main Analytics Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="financial">Financial</TabsTrigger>
-            <TabsTrigger value="clinical">Clinical</TabsTrigger>
-            <TabsTrigger value="outcomes">Outcomes</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="financial" className="text-xs sm:text-sm">Financial</TabsTrigger>
+            <TabsTrigger value="clinical" className="text-xs sm:text-sm">Clinical</TabsTrigger>
+            <TabsTrigger value="outcomes" className="text-xs sm:text-sm">Outcomes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
