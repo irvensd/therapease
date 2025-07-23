@@ -323,7 +323,7 @@ const Sessions = () => {
 
       switch (action) {
         case "view":
-          // Open session details modal
+          // Open session details modal directly
           setSessionDetailsModalOpen(true);
           break;
 
