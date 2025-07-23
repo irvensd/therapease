@@ -858,7 +858,12 @@ const Notes = () => {
         {/* Modals */}
         <NewNoteModal
           open={newNoteModalOpen}
-          onOpenChange={setNewNoteModalOpen}
+          onOpenChange={(open) => {
+            setNewNoteModalOpen(open);
+            if (!open) {
+              setEditingNote(null); // Clear editing state when modal closes
+            }
+          }}
           editingNote={editingNote}
           onCreateNote={handleCreateNote}
         />
