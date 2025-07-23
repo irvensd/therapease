@@ -306,12 +306,12 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div
-                className="text-xl sm:text-2xl font-bold"
+                className="text-lg sm:text-xl lg:text-2xl font-bold"
                 aria-label={`$${dashboardData.stats.monthlyRevenue.toLocaleString()} monthly revenue`}
               >
                 ${dashboardData.stats.monthlyRevenue.toLocaleString()}
               </div>
-              <p className="text-xs text-muted-foreground">this month</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">this month</p>
             </CardContent>
           </Card>
 
