@@ -153,6 +153,18 @@ const Settings = () => {
     }, 800);
   }, [toast]);
 
+  // Sync settings with user context changes
+  useEffect(() => {
+    if (user) {
+      setSettings(prev => ({
+        ...prev,
+        name: user.name,
+        title: user.title,
+        email: user.email,
+      }));
+    }
+  }, [user]);
+
   // Track changes
   useEffect(() => {
     const hasChanges =
