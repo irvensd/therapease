@@ -321,6 +321,15 @@ const Notes = () => {
 
   const handleExportNotes = useCallback(() => {
     try {
+      if (filteredNotes.length === 0) {
+        toast({
+          title: "No Data to Export",
+          description: "There are no notes to export. Try adjusting your filters.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const csvHeaders = [
         "Date",
         "Client Name",
@@ -336,16 +345,16 @@ const Notes = () => {
       ];
 
       const csvData = filteredNotes.map((note) => [
-        note.date,
-        note.clientName,
-        note.title,
-        note.type,
-        note.status,
-        note.diagnosis,
-        note.wordCount.toString(),
-        `"${note.content.replace(/"/g, '""')}"`,
-        `"${note.goals.replace(/"/g, '""')}"`,
-        `"${note.followUp.replace(/"/g, '""')}"`,
+        note.date || "",
+        note.clientName || "",
+        note.title || "",
+        note.type || "",
+        note.status || "",
+        note.diagnosis || "",
+        note.wordCount?.toString() || "0",
+        `"${(note.content || "").replace(/"/g, '""')}"`,
+        `"${(note.goals || "").replace(/"/g, '""')}"`,
+        `"${(note.followUp || "").replace(/"/g, '""')}"`,
         note.isStarred ? "Yes" : "No",
       ]);
 
@@ -353,11 +362,12 @@ const Notes = () => {
         .map((row) => row.join(","))
         .join("\n");
 
-      const blob = new Blob([csvContent], { type: "text/csv" });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = `therapy-notes-${new Date().toISOString().split("T")[0]}.csv`;
+      link.setAttribute("aria-label", "Download notes data as CSV file");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -368,6 +378,7 @@ const Notes = () => {
         description: `${filteredNotes.length} notes exported successfully.`,
       });
     } catch (error) {
+      console.error("Export error:", error);
       toast({
         title: "Export Failed",
         description: "There was an error exporting notes. Please try again.",
