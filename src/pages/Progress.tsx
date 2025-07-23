@@ -143,6 +143,7 @@ const Progress = () => {
 
   // State management
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [selectedClient, setSelectedClient] = useState<string>("all");
   const [selectedGoal, setSelectedGoal] = useState<TreatmentGoal | null>(null);
   const [goalModalOpen, setGoalModalOpen] = useState(false);
