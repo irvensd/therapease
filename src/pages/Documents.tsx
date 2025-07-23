@@ -109,6 +109,9 @@ const Documents = () => {
   const [showStarredOnly, setShowStarredOnly] = useState(false);
   const [showConfidentialOnly, setShowConfidentialOnly] = useState(false);
   const [activeTab, setActiveTab] = useState("documents");
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState<DocumentFile | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Mock document data
   const [documents, setDocuments] = useState<DocumentFile[]>([
