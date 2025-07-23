@@ -542,12 +542,101 @@ const Reminders = () => {
     }
   }, [filteredReminders, toast]);
 
-  const handleReminderModalClose = useCallback((open: boolean) => {
-    setAddReminderModalOpen(open);
-    if (!open) {
-      setEditingReminder(null);
-    }
+  const handleReminderModalClose = useCallback(() => {
+    setAddReminderModalOpen(false);
+    setEditingReminder(null);
+    setReminderForm({
+      title: "",
+      description: "",
+      category: "Client Follow-up",
+      priority: "medium",
+      dueDate: "",
+      dueTime: "",
+      clientName: "",
+      notes: "",
+      recurringType: "none",
+    });
   }, []);
+
+  const handleEditReminder = useCallback((reminder: Reminder) => {
+    setEditingReminder(reminder);
+    setReminderForm({
+      title: reminder.title,
+      description: reminder.description,
+      category: reminder.category,
+      priority: reminder.priority,
+      dueDate: reminder.dueDate,
+      dueTime: reminder.dueTime || "",
+      clientName: reminder.clientName || "",
+      notes: reminder.notes || "",
+      recurringType: reminder.recurringType || "none",
+    });
+    setAddReminderModalOpen(true);
+  }, []);
+
+  const handleSaveReminder = useCallback(() => {
+    if (!reminderForm.title || !reminderForm.dueDate) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in the title and due date.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (editingReminder) {
+      // Update existing reminder
+      setReminders(prev =>
+        prev.map(reminder =>
+          reminder.id === editingReminder.id
+            ? {
+                ...reminder,
+                title: reminderForm.title,
+                description: reminderForm.description,
+                category: reminderForm.category,
+                priority: reminderForm.priority,
+                dueDate: reminderForm.dueDate,
+                dueTime: reminderForm.dueTime,
+                clientName: reminderForm.clientName,
+                notes: reminderForm.notes,
+                recurringType: reminderForm.recurringType,
+              }
+            : reminder
+        )
+      );
+
+      toast({
+        title: "Reminder Updated",
+        description: `"${reminderForm.title}" has been updated.`,
+      });
+    } else {
+      // Create new reminder
+      const newReminder: Reminder = {
+        id: Date.now(),
+        title: reminderForm.title,
+        description: reminderForm.description,
+        category: reminderForm.category,
+        priority: reminderForm.priority,
+        status: "pending",
+        dueDate: reminderForm.dueDate,
+        dueTime: reminderForm.dueTime,
+        createdAt: new Date().toISOString(),
+        clientName: reminderForm.clientName,
+        notes: reminderForm.notes,
+        isStarred: false,
+        recurringType: reminderForm.recurringType,
+      };
+
+      setReminders(prev => [newReminder, ...prev]);
+
+      toast({
+        title: "Reminder Created",
+        description: `"${reminderForm.title}" has been created.`,
+      });
+    }
+
+    handleReminderModalClose();
+  }, [reminderForm, editingReminder, toast, handleReminderModalClose]);
 
   // Loading state
   if (isLoading) {
