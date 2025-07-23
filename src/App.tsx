@@ -172,7 +172,7 @@ const AppRoutes = () => {
       />
 
       {/* 404 fallback */}
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
     </Routes>
   );
 };
