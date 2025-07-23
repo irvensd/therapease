@@ -748,27 +748,26 @@ const Documents = () => {
                     </Select>
                   </div>
 
-                  <div className="flex items-end">
+                  <div className="flex flex-wrap items-end gap-2">
                     <Button
                       variant={showStarredOnly ? "default" : "outline"}
                       size="sm"
                       onClick={() => setShowStarredOnly(!showStarredOnly)}
+                      className="text-xs"
                     >
-                      <Star className="h-4 w-4 mr-2" />
-                      Starred
+                      <Star className="h-3 w-3 mr-1 sm:mr-2" />
+                      <span className="hidden sm:inline">Starred</span>
                     </Button>
-                  </div>
-
-                  <div className="flex items-end">
                     <Button
                       variant={showConfidentialOnly ? "default" : "outline"}
                       size="sm"
                       onClick={() =>
                         setShowConfidentialOnly(!showConfidentialOnly)
                       }
+                      className="text-xs"
                     >
-                      <Lock className="h-4 w-4 mr-2" />
-                      Confidential
+                      <Lock className="h-3 w-3 mr-1 sm:mr-2" />
+                      <span className="hidden sm:inline">Confidential</span>
                     </Button>
                   </div>
 
@@ -777,15 +776,17 @@ const Documents = () => {
                       variant={viewMode === "list" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setViewMode("list")}
+                      className="text-xs"
                     >
-                      <List className="h-4 w-4" />
+                      <List className="h-3 w-3" />
                     </Button>
                     <Button
                       variant={viewMode === "grid" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setViewMode("grid")}
+                      className="text-xs"
                     >
-                      <Grid className="h-4 w-4" />
+                      <Grid className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
