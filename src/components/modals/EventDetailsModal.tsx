@@ -111,8 +111,12 @@ export function EventDetailsModal({
       onClick={handleOverlayClick}
     >
       <div
+        ref={modalRef}
         className="bg-white rounded-lg shadow-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
