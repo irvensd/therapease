@@ -1,3 +1,6 @@
+// WARNING: Using div-based modal to avoid shadcn Dialog freezing issues
+// DO NOT replace with shadcn Dialog component
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +39,7 @@ export function ScheduleSessionModal({
     e.preventDefault();
     console.log("New session data:", formData);
 
-    // Show success toast instead of alert
+    // Show success toast instead of problematic alert
     toast({
       title: "Session Scheduled",
       description: "The therapy session has been scheduled successfully.",
@@ -65,17 +68,34 @@ export function ScheduleSessionModal({
     }
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[525px]">
-        <DialogHeader>
-          <DialogTitle>Schedule New Session</DialogTitle>
-          <DialogDescription>
-            Schedule a therapy session with a client.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
+    <div 
+      className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+      onClick={handleOverlayClick}
+    >
+      <div 
+        className="bg-white rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b">
+          <div>
+            <h2 className="text-xl font-semibold">Schedule New Session</h2>
+            <p className="text-sm text-gray-600 mt-1">Schedule a therapy session with a client.</p>
+          </div>
+          <button 
+            onClick={handleClose}
+            className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6">
+          <div className="grid gap-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="client" className="text-right">
                 Client
@@ -98,6 +118,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
+            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="sessionType" className="text-right">
                 Session Type
@@ -120,6 +141,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
+            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="date" className="text-right">
                 Date
@@ -135,6 +157,7 @@ export function ScheduleSessionModal({
                 required
               />
             </div>
+            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="time" className="text-right">
                 Time
@@ -150,6 +173,7 @@ export function ScheduleSessionModal({
                 required
               />
             </div>
+            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="duration" className="text-right">
                 Duration
@@ -171,6 +195,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
+            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="location" className="text-right">
                 Location
@@ -191,6 +216,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
+            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="notes" className="text-right">
                 Notes
@@ -207,18 +233,20 @@ export function ScheduleSessionModal({
               />
             </div>
           </div>
-          <DialogFooter>
+          
+          {/* Footer */}
+          <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
             <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={handleClose}
             >
               Cancel
             </Button>
             <Button type="submit">Schedule Session</Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }
