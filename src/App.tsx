@@ -88,14 +88,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/sessions/:id"
-        element={
-          <ProtectedRoute>
-            <Sessions />
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="/calendar"
         element={
           <ProtectedRoute>
