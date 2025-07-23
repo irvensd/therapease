@@ -548,6 +548,25 @@ const Documents = () => {
     });
   };
 
+  const handleConfirmDelete = () => {
+    if (documentToDelete) {
+      setDocuments((prev) =>
+        prev.filter((doc) => doc.id !== documentToDelete.id),
+      );
+      toast({
+        title: "Document Deleted",
+        description: `${documentToDelete.originalName} has been deleted.`,
+      });
+      setConfirmDeleteOpen(false);
+      setDocumentToDelete(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDeleteOpen(false);
+    setDocumentToDelete(null);
+  };
+
   return (
     <Layout>
       <div className="p-4 sm:p-6 space-y-6">
