@@ -220,12 +220,16 @@ export function AIAssistant({
 
         {/* Custom AI Assistant Modal */}
         {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={(e) => {
-            console.log("Modal backdrop clicked");
-            if (e.target === e.currentTarget) {
-              setIsOpen(false);
-            }
-          }}>
+          <div
+            className="fixed inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center z-50"
+            style={{ zIndex: 9999 }}
+            onClick={(e) => {
+              console.log("Modal backdrop clicked");
+              if (e.target === e.currentTarget) {
+                setIsOpen(false);
+              }
+            }}
+          >
             <div className="bg-white rounded-lg w-full max-w-[600px] max-h-[700px] mx-4 overflow-hidden">
               {/* Header */}
               <div className="p-6 pb-4 border-b">
