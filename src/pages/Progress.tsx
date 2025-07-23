@@ -448,6 +448,16 @@ const Progress = () => {
   // Goal management functions
   const handleCreateGoal = useCallback(() => {
     setSelectedGoal(null);
+    setGoalForm({
+      title: "",
+      description: "",
+      category: "Symptom",
+      priority: "Medium",
+      targetDate: "",
+      measurableOutcome: "",
+      interventions: "",
+      clientId: "",
+    });
     setGoalModalOpen(true);
   }, []);
 
