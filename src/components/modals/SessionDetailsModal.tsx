@@ -1,30 +1,3 @@
-import React, { useMemo } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Phone,
-  Video,
-  User,
-  FileText,
-  Target,
-  Activity,
-  AlertCircle,
-  CheckCircle,
-  XCircle,
-  Edit,
-  Trash2,
-} from "lucide-react";
-
 interface Session {
   id: number;
   clientName: string;
@@ -51,239 +24,117 @@ interface SessionDetailsModalProps {
   onDelete?: (session: Session) => void;
 }
 
-// Move static functions outside component to prevent recreation
-const getStatusColor = (status: Session["status"]) => {
-  switch (status) {
-    case "confirmed":
-      return "default";
-    case "completed":
-      return "secondary";
-    case "pending":
-      return "outline";
-    case "cancelled":
-      return "destructive";
-    case "no-show":
-      return "destructive";
-    default:
-      return "secondary";
-  }
-};
-
-const getStatusIcon = (status: Session["status"]) => {
-  switch (status) {
-    case "confirmed":
-      return <CheckCircle className="h-3 w-3" />;
-    case "completed":
-      return <CheckCircle className="h-3 w-3" />;
-    case "pending":
-      return <Clock className="h-3 w-3" />;
-    case "cancelled":
-      return <XCircle className="h-3 w-3" />;
-    case "no-show":
-      return <AlertCircle className="h-3 w-3" />;
-    default:
-      return <Clock className="h-3 w-3" />;
-  }
-};
-
-const getFormatIcon = (format: Session["format"]) => {
-  switch (format) {
-    case "In-Person":
-      return <MapPin className="h-4 w-4" />;
-    case "Telehealth":
-      return <Video className="h-4 w-4" />;
-    case "Phone Call":
-      return <Phone className="h-4 w-4" />;
-    default:
-      return <MapPin className="h-4 w-4" />;
-  }
-};
-
-const formatDate = (dateString: string) => {
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch (error) {
-    return dateString;
-  }
-};
-
-export const SessionDetailsModal = React.memo(({
+export function SessionDetailsModal({
   open,
   onOpenChange,
   session,
   onEdit,
-  onDelete,
-}: SessionDetailsModalProps) => {
-  // Early return if no session
-  if (!session) return null;
+}: SessionDetailsModalProps) {
+  if (!open || !session) return null;
 
-  // Memoize expensive computations
-  const statusBadge = useMemo(() => (
-    <Badge
-      variant={getStatusColor(session.status)}
-      className="flex items-center gap-1"
-    >
-      {getStatusIcon(session.status)}
-      {session.status.charAt(0).toUpperCase() + session.status.slice(1)}
-    </Badge>
-  ), [session.status]);
+  const handleClose = () => {
+    onOpenChange(false);
+  };
 
-  const formattedDate = useMemo(() => formatDate(session.date), [session.date]);
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Session Details - {session.clientName}
-          </DialogTitle>
-        </DialogHeader>
+    <div 
+      className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+      onClick={handleOverlayClick}
+    >
+      <div 
+        className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b">
+          <h2 className="text-xl font-semibold">Session Details</h2>
+          <button 
+            onClick={handleClose}
+            className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+          >
+            ×
+          </button>
+        </div>
 
-        <div className="space-y-4">
-          {/* Session Overview */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center justify-between">
-                Session Overview
-                {statusBadge}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{formattedDate}</div>
-                      <div className="text-sm text-muted-foreground">Session Date</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{session.time}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {session.duration} minutes
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    {getFormatIcon(session.format)}
-                    <div>
-                      <div className="font-medium">{session.format}</div>
-                      <div className="text-sm text-muted-foreground">Session Format</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <Activity className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{session.type}</div>
-                      <div className="text-sm text-muted-foreground">
-                        Session #{session.sessionNumber}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Target className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{session.treatmentFocus}</div>
-                      <div className="text-sm text-muted-foreground">Treatment Focus</div>
-                    </div>
-                  </div>
-                </div>
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          <div>
+            <h3 className="font-semibold text-lg mb-2">{session.clientName}</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="text-gray-600">Date:</span> {session.date}
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Client Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Client Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="font-medium text-lg">{session.clientName}</div>
-                <div className="text-sm text-muted-foreground">
-                  Client ID: {session.clientId}
-                </div>
-                {session.diagnosis && (
-                  <Badge variant="outline" className="text-xs">
-                    {session.diagnosis}
-                  </Badge>
-                )}
-                {session.location && (
-                  <div className="flex items-center gap-3 mt-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{session.location}</div>
-                      <div className="text-sm text-muted-foreground">Location</div>
-                    </div>
-                  </div>
-                )}
+              <div>
+                <span className="text-gray-600">Time:</span> {session.time}
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Session Notes */}
-          {session.notes && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
-                  Session Notes
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-muted/50 p-3 rounded-lg">
-                  <p className="text-sm leading-relaxed">{session.notes}</p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Actions */}
-          <div className="flex justify-between items-center pt-4 border-t">
-            <div className="text-sm text-muted-foreground">
-              Session ID: {session.id}
-            </div>
-            <div className="flex gap-2">
-              {onEdit && (
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    onEdit(session);
-                    onOpenChange(false);
-                  }}
-                >
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit
-                </Button>
-              )}
-              <Button onClick={() => onOpenChange(false)}>
-                Close
-              </Button>
+              <div>
+                <span className="text-gray-600">Duration:</span> {session.duration} minutes
+              </div>
+              <div>
+                <span className="text-gray-600">Type:</span> {session.type}
+              </div>
+              <div>
+                <span className="text-gray-600">Format:</span> {session.format}
+              </div>
+              <div>
+                <span className="text-gray-600">Status:</span> {session.status}
+              </div>
+              <div>
+                <span className="text-gray-600">Session #:</span> {session.sessionNumber}
+              </div>
+              <div>
+                <span className="text-gray-600">Client ID:</span> {session.clientId}
+              </div>
             </div>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-});
 
-SessionDetailsModal.displayName = "SessionDetailsModal";
+          <div>
+            <h4 className="font-medium mb-1">Treatment Focus</h4>
+            <p className="text-sm text-gray-700">{session.treatmentFocus}</p>
+          </div>
+
+          {session.notes && (
+            <div>
+              <h4 className="font-medium mb-1">Notes</h4>
+              <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded">{session.notes}</p>
+            </div>
+          )}
+
+          {session.location && (
+            <div>
+              <h4 className="font-medium mb-1">Location</h4>
+              <p className="text-sm text-gray-700">{session.location}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-2 p-6 border-t">
+          {onEdit && (
+            <button
+              onClick={() => {
+                onEdit(session);
+                handleClose();
+              }}
+              className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+            >
+              Edit
+            </button>
+          )}
+          <button
+            onClick={handleClose}
+            className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
