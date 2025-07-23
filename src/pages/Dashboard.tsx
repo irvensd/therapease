@@ -252,7 +252,7 @@ const Dashboard = () => {
           role="region"
           aria-label="Practice overview statistics"
         >
-          <Card className="therapease-card">
+          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/clients", "client management")}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Active Clients
@@ -275,7 +275,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="therapease-card">
+          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/sessions", "session management")}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">This Week</CardTitle>
               <Calendar
@@ -296,7 +296,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="therapease-card">
+          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/invoices", "billing and invoices")}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Revenue</CardTitle>
               <DollarSign
@@ -315,7 +315,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="therapease-card">
+          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/reports", "reports and analytics")}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Completion Rate
