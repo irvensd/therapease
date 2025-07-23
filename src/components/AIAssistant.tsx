@@ -207,6 +207,7 @@ export function AIAssistant({
   };
 
   if (isFloating) {
+    console.log("Floating AI Assistant rendering, isOpen:", isOpen);
     return (
       <>
         {/* Floating AI Assistant Button */}
@@ -219,11 +220,9 @@ export function AIAssistant({
         </Button>
 
         {/* Custom AI Assistant Modal */}
-        {isOpen && (() => {
-          console.log("Modal should be rendering now", isOpen);
-          return (
+        {isOpen && (
           <div
-            className="fixed inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-red-500 bg-opacity-80 flex items-center justify-center"
             style={{ zIndex: 9999 }}
             onClick={(e) => {
               console.log("Modal backdrop clicked");
