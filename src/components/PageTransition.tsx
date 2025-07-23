@@ -92,13 +92,15 @@ export const ComponentTransition = ({
   );
 };
 
-// Loading transition for state changes
-export const LoadingTransition = ({ 
-  isLoading, 
-  children 
-}: { 
-  isLoading: boolean; 
+// Loading transition for state changes with skeleton support
+export const LoadingTransition = ({
+  isLoading,
+  children,
+  skeleton
+}: {
+  isLoading: boolean;
   children: ReactNode;
+  skeleton?: ReactNode;
 }) => {
   return (
     <AnimatePresence mode="wait">
@@ -109,12 +111,15 @@ export const LoadingTransition = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="flex items-center justify-center min-h-[200px]"
         >
-          <div className="text-center space-y-4">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-muted-foreground">Loading...</p>
-          </div>
+          {skeleton || (
+            <div className="flex items-center justify-center min-h-[200px]">
+              <div className="text-center space-y-4">
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                <p className="text-muted-foreground">Loading...</p>
+              </div>
+            </div>
+          )}
         </motion.div>
       ) : (
         <motion.div
