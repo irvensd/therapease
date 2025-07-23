@@ -466,19 +466,8 @@ const Documents = () => {
           break;
 
         case "delete":
-          if (
-            window.confirm(
-              `Are you sure you want to delete "${document.originalName}"? This action cannot be undone.`,
-            )
-          ) {
-            setDocuments((prev) =>
-              prev.filter((doc) => doc.id !== document.id),
-            );
-            toast({
-              title: "Document Deleted",
-              description: `${document.originalName} has been deleted.`,
-            });
-          }
+          setDocumentToDelete(document);
+          setConfirmDeleteOpen(true);
           break;
       }
     },
