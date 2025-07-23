@@ -630,10 +630,10 @@ const Invoices = () => {
   }, []);
 
   const handleSaveInvoice = useCallback(() => {
-    if (!invoiceForm.clientName || !invoiceForm.amount || !invoiceForm.dueDate) {
+    if (!invoiceForm.clientId || !invoiceForm.amount || !invoiceForm.dueDate) {
       toast({
         title: "Validation Error",
-        description: "Please fill in client name, amount, and due date.",
+        description: "Please select a client, enter amount, and set due date.",
         variant: "destructive",
       });
       return;
