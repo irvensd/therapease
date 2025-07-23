@@ -659,13 +659,13 @@ const Calendar = () => {
     <Layout>
       <div className="p-4 sm:p-6 space-y-6">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <CalendarIcon className="h-8 w-8" />
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+              <CalendarIcon className="h-6 w-6 sm:h-8 sm:w-8" />
               Calendar
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Manage your appointment schedule and sessions
             </p>
           </div>
@@ -674,13 +674,15 @@ const Calendar = () => {
               variant="outline"
               onClick={handleExportCalendar}
               disabled={filteredEvents.length === 0}
+              size="sm"
+              className="text-xs sm:text-sm"
             >
-              <Download className="h-4 w-4 mr-2" />
-              Export ({filteredEvents.length})
+              <Download className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Export </span>({filteredEvents.length})
             </Button>
-            <Button onClick={() => setScheduleModalOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Schedule Session
+            <Button onClick={() => setScheduleModalOpen(true)} size="sm" className="text-xs sm:text-sm">
+              <Plus className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Schedule </span>Session
             </Button>
           </div>
         </div>
