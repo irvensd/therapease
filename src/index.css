@@ -138,4 +138,88 @@
   .therapease-sidebar {
     @apply bg-sidebar border-r border-sidebar-border;
   }
+
+  /* Consistent spacing utilities */
+  .therapease-page-container {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+
+  .therapease-section-spacing {
+    @apply space-y-6 sm:space-y-8;
+  }
+
+  .therapease-grid-spacing {
+    @apply gap-4 sm:gap-6;
+  }
+
+  /* Consistent button sizes */
+  .therapease-button-sm {
+    @apply h-8 px-3 text-sm;
+  }
+
+  .therapease-button-md {
+    @apply h-10 px-4 text-base;
+  }
+
+  .therapease-button-lg {
+    @apply h-12 px-6 text-lg;
+  }
+
+  /* Form consistency */
+  .therapease-form-spacing {
+    @apply space-y-4;
+  }
+
+  .therapease-form-field {
+    @apply space-y-2;
+  }
+
+  /* Modal consistency */
+  .therapease-modal-content {
+    @apply bg-background rounded-lg shadow-xl w-full max-h-[90vh] overflow-hidden;
+  }
+
+  .therapease-modal-header {
+    @apply p-6 border-b;
+  }
+
+  .therapease-modal-body {
+    @apply p-6;
+  }
+
+  .therapease-modal-footer {
+    @apply p-6 border-t bg-muted/50;
+  }
+
+  /* Touch targets for mobile */
+  .therapease-touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Focus styles for accessibility */
+  .therapease-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  /* Status indicators */
+  .therapease-status-success {
+    @apply bg-green-100 text-green-800 border-green-200;
+  }
+
+  .therapease-status-warning {
+    @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+  }
+
+  .therapease-status-error {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+
+  .therapease-status-info {
+    @apply bg-blue-100 text-blue-800 border-blue-200;
+  }
+
+  /* Loading skeleton */
+  .therapease-skeleton {
+    @apply animate-pulse bg-muted rounded;
+  }
 }
