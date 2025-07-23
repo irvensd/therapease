@@ -749,7 +749,7 @@ const Settings = () => {
                   <CardTitle>Security Settings</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
                     <div className="space-y-0.5">
                       <Label>Two-Factor Authentication</Label>
                       <p className="text-sm text-muted-foreground">
@@ -781,7 +781,7 @@ const Settings = () => {
                         updateSetting("sessionTimeout", value)
                       }
                     >
-                      <SelectTrigger className="w-48">
+                      <SelectTrigger className="w-full sm:w-48 mt-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
