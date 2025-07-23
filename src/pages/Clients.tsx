@@ -572,21 +572,118 @@ const Clients = () => {
 
         {/* Clients Table */}
         <Card>
-          <CardHeader>
-            <CardTitle>Client List ({filteredClients.length})</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Client List ({filteredClients.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            {/* Mobile Card View */}
+            <div className="block sm:hidden space-y-4">
+              {filteredClients.map((client) => (
+                <Card key={client.id} className="p-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <div className="font-medium text-base">{client.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {client.diagnosis}
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {client.insurance}
+                        </Badge>
+                      </div>
+                      <Badge
+                        variant={getStatusColor(client.status)}
+                        className="flex items-center gap-1"
+                      >
+                        {getStatusIcon(client.status)}
+                        {client.status}
+                      </Badge>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Mail className="h-3 w-3 text-muted-foreground" />
+                        <span className="truncate">{client.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Phone className="h-3 w-3 text-muted-foreground" />
+                        <span>{client.phone}</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <div className="text-muted-foreground text-xs">Sessions</div>
+                        <div className="font-medium">{client.sessionsCount}</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground text-xs">Last Session</div>
+                        <div className="font-medium">
+                          {client.lastSession
+                            ? new Date(client.lastSession).toLocaleDateString()
+                            : "None"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t">
+                      <div className="text-xs text-muted-foreground">
+                        Next: {client.nextSession
+                          ? new Date(client.nextSession).toLocaleDateString()
+                          : "Not scheduled"}
+                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => handleViewClient(client)}
+                          >
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Profile
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleEditClient(client)}
+                          >
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit Client
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleScheduleSession(client)}
+                          >
+                            <Calendar className="h-4 w-4 mr-2" />
+                            Schedule Session
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteClient(client)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete Client
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Client</TableHead>
-                    <TableHead>Contact</TableHead>
+                    <TableHead className="hidden md:table-cell">Contact</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Sessions</TableHead>
-                    <TableHead>Last Session</TableHead>
-                    <TableHead>Next Session</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead className="hidden lg:table-cell">Sessions</TableHead>
+                    <TableHead className="hidden lg:table-cell">Last Session</TableHead>
+                    <TableHead className="hidden xl:table-cell">Next Session</TableHead>
+                    <TableHead className="w-[50px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -603,11 +700,11 @@ const Clients = () => {
                           </Badge>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <div className="space-y-1">
                           <div className="flex items-center gap-1 text-sm">
                             <Mail className="h-3 w-3" />
-                            {client.email}
+                            <span className="truncate max-w-[150px]">{client.email}</span>
                           </div>
                           <div className="flex items-center gap-1 text-sm text-muted-foreground">
                             <Phone className="h-3 w-3" />
@@ -624,7 +721,7 @@ const Clients = () => {
                           {client.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div className="text-center">
                           <div className="font-medium">
                             {client.sessionsCount}
@@ -634,14 +731,14 @@ const Clients = () => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div className="text-sm">
                           {client.lastSession
                             ? new Date(client.lastSession).toLocaleDateString()
                             : "None"}
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden xl:table-cell">
                         <div className="text-sm">
                           {client.nextSession
                             ? new Date(client.nextSession).toLocaleDateString()
@@ -688,25 +785,25 @@ const Clients = () => {
                   ))}
                 </TableBody>
               </Table>
-
-              {filteredClients.length === 0 && (
-                <div className="text-center py-12">
-                  <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">
-                    No clients found
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    {searchTerm
-                      ? "Try adjusting your search or filters"
-                      : "Add your first client to get started"}
-                  </p>
-                  <Button onClick={() => setNewClientModalOpen(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Client
-                  </Button>
-                </div>
-              )}
             </div>
+
+            {filteredClients.length === 0 && (
+              <div className="text-center py-12">
+                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">
+                  No clients found
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  {searchTerm
+                    ? "Try adjusting your search or filters"
+                    : "Add your first client to get started"}
+                </p>
+                <Button onClick={() => setNewClientModalOpen(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Client
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
