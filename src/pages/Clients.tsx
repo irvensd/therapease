@@ -790,9 +790,7 @@ const Clients = () => {
                       </TableCell>
                       <TableCell className="hidden xl:table-cell">
                         <div className="text-sm">
-                          {client.nextSession
-                            ? new Date(client.nextSession).toLocaleDateString()
-                            : "Not scheduled"}
+                          {formatDate(client.nextSession) === "None" ? "Not scheduled" : formatDate(client.nextSession)}
                         </div>
                       </TableCell>
                       <TableCell>
