@@ -121,8 +121,19 @@ const Invoices = () => {
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Mock clients data - in real app would be fetched from clients API
+  const mockClients = [
+    { id: "c1", name: "Emma Thompson", email: "emma.t@email.com" },
+    { id: "c2", name: "Michael Chen", email: "m.chen@email.com" },
+    { id: "c3", name: "Sarah Johnson", email: "sarah.j@email.com" },
+    { id: "c4", name: "David Wilson", email: "d.wilson@email.com" },
+    { id: "c5", name: "Lisa Rodriguez", email: "lisa.r@email.com" },
+    { id: "c6", name: "Robert Kim", email: "robert.k@email.com" },
+  ];
+
   // Invoice form state
   const [invoiceForm, setInvoiceForm] = useState({
+    clientId: "",
     clientName: "",
     clientEmail: "",
     amount: "",
