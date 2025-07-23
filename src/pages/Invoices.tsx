@@ -1246,16 +1246,168 @@ const Invoices = () => {
         </Card>
       </div>
 
-      <CreateInvoiceModal
-        open={createInvoiceModalOpen}
-        onOpenChange={handleInvoiceModalClose}
-      />
-      <SendInvoiceModal
-        open={sendInvoiceModalOpen}
-        onOpenChange={setSendInvoiceModalOpen}
-        invoice={invoiceToSend}
-        onInvoiceSent={handleInvoiceSent}
-      />
+      {/* Safe Invoice Creation/Edit Modal */}
+      {createInvoiceModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">
+                {editingInvoice ? "Edit Invoice" : "Create New Invoice"}
+              </h2>
+              <button
+                onClick={handleInvoiceModalClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="clientName">Client Name *</Label>
+                  <Input
+                    placeholder="Client name..."
+                    value={invoiceForm.clientName}
+                    onChange={(e) =>
+                      setInvoiceForm(prev => ({ ...prev, clientName: e.target.value }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="clientEmail">Client Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="client@email.com"
+                    value={invoiceForm.clientEmail}
+                    onChange={(e) =>
+                      setInvoiceForm(prev => ({ ...prev, clientEmail: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="amount">Amount *</Label>
+                  <Input
+                    type="number"
+                    placeholder="0.00"
+                    value={invoiceForm.amount}
+                    onChange={(e) =>
+                      setInvoiceForm(prev => ({ ...prev, amount: e.target.value }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="dueDate">Due Date *</Label>
+                  <Input
+                    type="date"
+                    value={invoiceForm.dueDate}
+                    onChange={(e) =>
+                      setInvoiceForm(prev => ({ ...prev, dueDate: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="services">Services Description</Label>
+                <Textarea
+                  placeholder="Describe the services provided..."
+                  value={invoiceForm.services}
+                  onChange={(e) =>
+                    setInvoiceForm(prev => ({ ...prev, services: e.target.value }))
+                  }
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea
+                  placeholder="Additional notes or payment terms..."
+                  value={invoiceForm.notes}
+                  onChange={(e) =>
+                    setInvoiceForm(prev => ({ ...prev, notes: e.target.value }))
+                  }
+                  rows={2}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-6">
+              <button
+                onClick={handleInvoiceModalClose}
+                className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveInvoice}
+                className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                {editingInvoice ? "Update Invoice" : "Create Invoice"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Safe Send Invoice Modal */}
+      {sendInvoiceModalOpen && invoiceToSend && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Send Invoice</h2>
+              <button
+                onClick={() => setSendInvoiceModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-medium">{invoiceToSend.invoiceNumber}</h3>
+                <p className="text-sm text-gray-600">{invoiceToSend.clientName}</p>
+                <p className="text-sm text-gray-600">{invoiceToSend.clientEmail}</p>
+                <p className="font-medium">${invoiceToSend.totalAmount.toLocaleString()}</p>
+              </div>
+
+              <p className="text-sm text-gray-600">
+                This will send the invoice to {invoiceToSend.clientEmail} and mark it as "Sent".
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-6">
+              <button
+                onClick={() => setSendInvoiceModalOpen(false)}
+                className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  handleInvoiceSent(invoiceToSend.id);
+                  setSendInvoiceModalOpen(false);
+                  toast({
+                    title: "Invoice Sent",
+                    description: `Invoice ${invoiceToSend.invoiceNumber} has been sent to ${invoiceToSend.clientEmail}.`,
+                  });
+                }}
+                className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Send Invoice
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ModalComponent />
     </Layout>
   );
