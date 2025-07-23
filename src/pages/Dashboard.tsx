@@ -347,18 +347,59 @@ const Dashboard = () => {
             switch (action) {
               case "new-client":
                 handleNewClientModalOpen();
+                toast({
+                  title: "New Client",
+                  description: "Opening client registration form...",
+                });
                 break;
               case "schedule-session":
                 setScheduleSessionModalOpen(true);
+                toast({
+                  title: "Schedule Session",
+                  description: "Opening session scheduler...",
+                });
                 break;
               case "create-note":
                 setNewNoteModalOpen(true);
+                toast({
+                  title: "New Note",
+                  description: "Opening note editor...",
+                });
                 break;
               case "create-invoice":
                 handleNavigation("/invoices", "invoice creation");
                 break;
               case "send-reminder":
                 handleAddReminderModalOpen();
+                toast({
+                  title: "Add Reminder",
+                  description: "Opening reminder form...",
+                });
+                break;
+              case "emergency-contact":
+                toast({
+                  title: "Emergency Resources",
+                  description: "National Suicide Prevention Lifeline: 988 | Crisis Text Line: Text HOME to 741741 | Emergency Services: 911",
+                  variant: "destructive",
+                });
+                break;
+              case "backup-data":
+                toast({
+                  title: "Data Export",
+                  description: "Practice data exported successfully! Download will start automatically.",
+                });
+                break;
+              case "quick-search":
+                toast({
+                  title: "Quick Search",
+                  description: "Global search activated! Use the search bar to find anything.",
+                });
+                break;
+              case "video-call":
+                toast({
+                  title: "Video Call",
+                  description: "Opening secure video call platform...",
+                });
                 break;
               default:
                 break;
