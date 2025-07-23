@@ -64,6 +64,7 @@ import {
   UserPlus,
   Activity,
   MoreVertical,
+  Trash2,
 } from "lucide-react";
 
 // Types for better type safety
