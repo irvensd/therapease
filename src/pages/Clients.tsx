@@ -447,13 +447,40 @@ const Clients = () => {
   if (error) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center space-y-4">
-            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
-            <p className="text-destructive">{error}</p>
-            <Button onClick={() => window.location.reload()}>
-              Refresh Page
-            </Button>
+        <div className="flex items-center justify-center min-h-[400px] p-4">
+          <div className="text-center space-y-4 max-w-md">
+            <AlertCircle className="h-12 w-12 mx-auto text-destructive" />
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
+              <p className="text-muted-foreground text-sm">{error}</p>
+            </div>
+            <div className="flex gap-2 justify-center">
+              <Button
+                onClick={() => {
+                  setError(null);
+                  setIsLoading(true);
+                  // Retry loading
+                  setTimeout(() => {
+                    try {
+                      setClients(mockClients);
+                    } catch (err) {
+                      setError("Failed to load clients. Please try again.");
+                    } finally {
+                      setIsLoading(false);
+                    }
+                  }, 500);
+                }}
+                variant="default"
+              >
+                Try Again
+              </Button>
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+              >
+                Refresh Page
+              </Button>
+            </div>
           </div>
         </div>
       </Layout>
