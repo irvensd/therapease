@@ -248,7 +248,7 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+      <div className="therapease-page-container therapease-section-spacing">
         {/* Welcome section */}
         <div
           className="therapease-gradient rounded-xl p-4 sm:p-6"
