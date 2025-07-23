@@ -713,6 +713,18 @@ const Invoices = () => {
     handleInvoiceModalClose();
   }, [invoiceForm, editingInvoice, invoices.length, toast, handleInvoiceModalClose]);
 
+  const handleClientSelect = useCallback((clientId: string) => {
+    const selectedClient = mockClients.find(c => c.id === clientId);
+    if (selectedClient) {
+      setInvoiceForm(prev => ({
+        ...prev,
+        clientId: clientId,
+        clientName: selectedClient.name,
+        clientEmail: selectedClient.email,
+      }));
+    }
+  }, []);
+
   // Loading state
   if (isLoading) {
     return (
