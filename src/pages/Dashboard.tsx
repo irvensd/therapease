@@ -260,6 +260,55 @@ const Dashboard = () => {
           </p>
         </div>
 
+        {/* Empty State for New Users */}
+        {isNewUser && (
+          <Card className="border-dashed border-2 border-muted-foreground/25">
+            <CardContent className="p-8 text-center">
+              <div className="mb-6">
+                <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto mb-4">
+                  <Heart className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2">
+                  Welcome to TherapEase!
+                </h3>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  Let's get your practice set up. Start by adding your first client,
+                  scheduling sessions, or exploring the platform features.
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-3xl mx-auto">
+                <Card className="cursor-pointer hover:shadow-md transition-shadow"
+                      onClick={() => handleNavigation("/clients", "add first client")}>
+                  <CardContent className="p-4 text-center">
+                    <Users className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <h4 className="font-semibold mb-1">Add Your First Client</h4>
+                    <p className="text-sm text-muted-foreground">Create client profiles and intake forms</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="cursor-pointer hover:shadow-md transition-shadow"
+                      onClick={() => handleNavigation("/calendar", "schedule first session")}>
+                  <CardContent className="p-4 text-center">
+                    <Calendar className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <h4 className="font-semibold mb-1">Schedule Sessions</h4>
+                    <p className="text-sm text-muted-foreground">Set up your calendar and appointments</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="cursor-pointer hover:shadow-md transition-shadow"
+                      onClick={() => handleNavigation("/settings", "configure practice")}>
+                  <CardContent className="p-4 text-center">
+                    <Settings className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <h4 className="font-semibold mb-1">Configure Practice</h4>
+                    <p className="text-sm text-muted-foreground">Set up your practice information</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Quick stats */}
         <div
           className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
