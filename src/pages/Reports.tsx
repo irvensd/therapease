@@ -670,7 +670,7 @@ const Reports = () => {
 
           {/* Financial Tab */}
           <TabsContent value="financial" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
               {/* Revenue Sources */}
               <Card>
                 <CardHeader>
