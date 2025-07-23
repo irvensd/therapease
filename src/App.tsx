@@ -60,18 +60,18 @@ const AppRoutes = () => {
       <Route path="/" element={<RootRedirect />} />
 
       {/* Public routes */}
-      <Route path="/landing" element={<Landing />} />
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route path="/landing" element={<PageTransition><Landing /></PageTransition>} />
+      <Route path="/signin" element={<PageTransition><SignIn /></PageTransition>} />
+      <Route path="/signup" element={<PageTransition><SignUp /></PageTransition>} />
 
       {/* Public info pages */}
-      <Route path="/security" element={<Security />} />
-      <Route path="/help" element={<HelpCenter />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/training" element={<Training />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/terms" element={<Terms />} />
+      <Route path="/security" element={<PageTransition><Security /></PageTransition>} />
+      <Route path="/help" element={<PageTransition><HelpCenter /></PageTransition>} />
+      <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+      <Route path="/training" element={<PageTransition><Training /></PageTransition>} />
+      <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+      <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+      <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
 
       {/* Protected app routes */}
       <Route
