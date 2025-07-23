@@ -127,6 +127,8 @@ export function EventDetailsModal({
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+            aria-label="Close event details"
+            type="button"
           >
             ×
           </button>
