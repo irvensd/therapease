@@ -48,8 +48,7 @@ import {
   Star,
   StarOff,
 } from "lucide-react";
-import { CreateInvoiceModal } from "@/components/modals/CreateInvoiceModal";
-import { SendInvoiceModal } from "@/components/modals/SendInvoiceModal";
+
 
 // Types for better type safety
 interface Invoice {
