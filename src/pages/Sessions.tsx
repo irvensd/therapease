@@ -321,8 +321,8 @@ const Sessions = () => {
 
       switch (action) {
         case "view":
-          // Open session details
-          navigate(`/sessions/${session.id}`);
+          // Open session details modal
+          setSessionDetailsModalOpen(true);
           break;
 
         case "edit":
