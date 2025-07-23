@@ -333,10 +333,15 @@ const Calendar = () => {
   // Handle slot selection for new appointments
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
-      // Only allow selection of future slots
-      if (start < new Date()) {
+      // Only allow selection of future dates (compare dates only, not time)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to start of day
+      const selectedDate = new Date(start);
+      selectedDate.setHours(0, 0, 0, 0); // Reset time to start of day
+
+      if (selectedDate < today) {
         toast({
-          title: "Invalid Time",
+          title: "Invalid Date",
           description: "Cannot schedule appointments in the past.",
           variant: "destructive",
         });
