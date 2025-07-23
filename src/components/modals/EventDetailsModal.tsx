@@ -99,11 +99,11 @@ export function EventDetailsModal({
   const FormatIcon = getFormatIcon(event.resource.format);
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
       onClick={handleOverlayClick}
     >
-      <div 
+      <div
         className="bg-white rounded-lg shadow-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
@@ -113,7 +113,7 @@ export function EventDetailsModal({
             <User className="h-5 w-5" />
             {event.resource.clientName}
           </h2>
-          <button 
+          <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
           >
@@ -126,23 +126,30 @@ export function EventDetailsModal({
           {/* Session Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label className="text-sm font-semibold text-gray-800">Date & Time</Label>
+              <Label className="text-sm font-semibold text-gray-800">
+                Date & Time
+              </Label>
               <div className="bg-gray-50 p-3 rounded-lg mt-2 space-y-2">
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-gray-600" />
-                  <span className="text-sm">{moment(event.start).format("MMMM Do, YYYY")}</span>
+                  <span className="text-sm">
+                    {moment(event.start).format("MMMM Do, YYYY")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-gray-600" />
                   <span className="text-sm">
-                    {moment(event.start).format("h:mm A")} - {moment(event.end).format("h:mm A")}
+                    {moment(event.start).format("h:mm A")} -{" "}
+                    {moment(event.end).format("h:mm A")}
                   </span>
                 </div>
               </div>
             </div>
 
             <div>
-              <Label className="text-sm font-semibold text-gray-800">Session Details</Label>
+              <Label className="text-sm font-semibold text-gray-800">
+                Session Details
+              </Label>
               <div className="bg-gray-50 p-3 rounded-lg mt-2 space-y-2">
                 <Badge variant="outline" className="text-xs">
                   {event.resource.sessionType} Therapy
@@ -152,7 +159,9 @@ export function EventDetailsModal({
                   <span className="text-sm">{event.resource.format}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <StatusIcon className={`h-4 w-4 ${getStatusInfo(event.resource.status).color}`} />
+                  <StatusIcon
+                    className={`h-4 w-4 ${getStatusInfo(event.resource.status).color}`}
+                  />
                   <span className="text-sm">{event.resource.status}</span>
                 </div>
               </div>
@@ -161,18 +170,26 @@ export function EventDetailsModal({
 
           {/* Diagnosis */}
           <div>
-            <Label className="text-sm font-semibold text-gray-800">Diagnosis</Label>
+            <Label className="text-sm font-semibold text-gray-800">
+              Diagnosis
+            </Label>
             <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-200 mt-2">
-              <p className="text-sm text-gray-700">{event.resource.diagnosis}</p>
+              <p className="text-sm text-gray-700">
+                {event.resource.diagnosis}
+              </p>
             </div>
           </div>
 
           {/* Notes */}
           {event.resource.notes && (
             <div>
-              <Label className="text-sm font-semibold text-gray-800">Session Notes</Label>
+              <Label className="text-sm font-semibold text-gray-800">
+                Session Notes
+              </Label>
               <div className="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-200 mt-2">
-                <p className="text-sm text-gray-700 leading-relaxed">{event.resource.notes}</p>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {event.resource.notes}
+                </p>
               </div>
             </div>
           )}
@@ -180,16 +197,26 @@ export function EventDetailsModal({
           {/* Session Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <Label className="text-sm font-medium text-gray-600">Session #</Label>
-              <p className="text-lg font-semibold text-gray-800 mt-1">{event.resource.sessionNumber}</p>
+              <Label className="text-sm font-medium text-gray-600">
+                Session #
+              </Label>
+              <p className="text-lg font-semibold text-gray-800 mt-1">
+                {event.resource.sessionNumber}
+              </p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <Label className="text-sm font-medium text-gray-600">Duration</Label>
-              <p className="text-lg font-semibold text-gray-800 mt-1">{event.resource.duration} min</p>
+              <Label className="text-sm font-medium text-gray-600">
+                Duration
+              </Label>
+              <p className="text-lg font-semibold text-gray-800 mt-1">
+                {event.resource.duration} min
+              </p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <Label className="text-sm font-medium text-gray-600">Rate</Label>
-              <p className="text-lg font-semibold text-gray-800 mt-1">${event.resource.rate}</p>
+              <p className="text-lg font-semibold text-gray-800 mt-1">
+                ${event.resource.rate}
+              </p>
             </div>
           </div>
         </div>
@@ -258,9 +285,7 @@ export function EventDetailsModal({
                 </Button>
               </>
             )}
-            <Button onClick={handleClose}>
-              Close
-            </Button>
+            <Button onClick={handleClose}>Close</Button>
           </div>
         </div>
       </div>

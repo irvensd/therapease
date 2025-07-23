@@ -237,8 +237,6 @@ const Sessions = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
-
   // Calculate statistics
   const stats = useMemo((): SessionStats => {
     const total = sessions.length;

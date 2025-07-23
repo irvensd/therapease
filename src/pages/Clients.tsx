@@ -229,7 +229,9 @@ const Clients = () => {
         setClients(mockClients);
       } catch (err) {
         console.error("Failed to load clients:", err);
-        setError("Failed to load clients. Please check your connection and try again.");
+        setError(
+          "Failed to load clients. Please check your connection and try again.",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -336,7 +338,8 @@ const Clients = () => {
       if (filteredClients.length === 0) {
         toast({
           title: "No Data to Export",
-          description: "There are no clients to export. Add some clients first.",
+          description:
+            "There are no clients to export. Add some clients first.",
           variant: "destructive",
         });
         return;
@@ -466,7 +469,9 @@ const Clients = () => {
           <div className="text-center space-y-4 max-w-md">
             <AlertCircle className="h-12 w-12 mx-auto text-destructive" />
             <div>
-              <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Something went wrong
+              </h3>
               <p className="text-muted-foreground text-sm">{error}</p>
             </div>
             <div className="flex gap-2 justify-center">
@@ -525,9 +530,14 @@ const Clients = () => {
               className="text-xs sm:text-sm"
             >
               <Download className="h-4 w-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Export </span>({filteredClients.length})
+              <span className="hidden sm:inline">Export </span>(
+              {filteredClients.length})
             </Button>
-            <Button onClick={() => setNewClientModalOpen(true)} size="sm" className="text-xs sm:text-sm">
+            <Button
+              onClick={() => setNewClientModalOpen(true)}
+              size="sm"
+              className="text-xs sm:text-sm"
+            >
               <Plus className="h-4 w-4 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Add </span>Client
             </Button>
@@ -629,7 +639,9 @@ const Clients = () => {
         {/* Clients Table */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Client List ({filteredClients.length})</CardTitle>
+            <CardTitle className="text-lg">
+              Client List ({filteredClients.length})
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {/* Mobile Card View */}
@@ -639,7 +651,9 @@ const Clients = () => {
                   <div className="space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <div className="font-medium text-base">{client.name}</div>
+                        <div className="font-medium text-base">
+                          {client.name}
+                        </div>
                         <div className="text-sm text-muted-foreground">
                           {client.diagnosis}
                         </div>
@@ -669,11 +683,17 @@ const Clients = () => {
 
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <div className="text-muted-foreground text-xs">Sessions</div>
-                        <div className="font-medium">{client.sessionsCount}</div>
+                        <div className="text-muted-foreground text-xs">
+                          Sessions
+                        </div>
+                        <div className="font-medium">
+                          {client.sessionsCount}
+                        </div>
                       </div>
                       <div>
-                        <div className="text-muted-foreground text-xs">Last Session</div>
+                        <div className="text-muted-foreground text-xs">
+                          Last Session
+                        </div>
                         <div className="font-medium">
                           {formatDate(client.lastSession)}
                         </div>
@@ -682,7 +702,10 @@ const Clients = () => {
 
                     <div className="flex items-center justify-between pt-2 border-t">
                       <div className="text-xs text-muted-foreground">
-                        Next: {formatDate(client.nextSession) === "None" ? "Not scheduled" : formatDate(client.nextSession)}
+                        Next:{" "}
+                        {formatDate(client.nextSession) === "None"
+                          ? "Not scheduled"
+                          : formatDate(client.nextSession)}
                       </div>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -730,11 +753,19 @@ const Clients = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Client</TableHead>
-                    <TableHead className="hidden md:table-cell">Contact</TableHead>
+                    <TableHead className="hidden md:table-cell">
+                      Contact
+                    </TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="hidden lg:table-cell">Sessions</TableHead>
-                    <TableHead className="hidden lg:table-cell">Last Session</TableHead>
-                    <TableHead className="hidden xl:table-cell">Next Session</TableHead>
+                    <TableHead className="hidden lg:table-cell">
+                      Sessions
+                    </TableHead>
+                    <TableHead className="hidden lg:table-cell">
+                      Last Session
+                    </TableHead>
+                    <TableHead className="hidden xl:table-cell">
+                      Next Session
+                    </TableHead>
                     <TableHead className="w-[50px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -756,7 +787,9 @@ const Clients = () => {
                         <div className="space-y-1">
                           <div className="flex items-center gap-1 text-sm">
                             <Mail className="h-3 w-3" />
-                            <span className="truncate max-w-[150px]">{client.email}</span>
+                            <span className="truncate max-w-[150px]">
+                              {client.email}
+                            </span>
                           </div>
                           <div className="flex items-center gap-1 text-sm text-muted-foreground">
                             <Phone className="h-3 w-3" />
@@ -790,7 +823,9 @@ const Clients = () => {
                       </TableCell>
                       <TableCell className="hidden xl:table-cell">
                         <div className="text-sm">
-                          {formatDate(client.nextSession) === "None" ? "Not scheduled" : formatDate(client.nextSession)}
+                          {formatDate(client.nextSession) === "None"
+                            ? "Not scheduled"
+                            : formatDate(client.nextSession)}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -838,9 +873,7 @@ const Clients = () => {
             {filteredClients.length === 0 && (
               <div className="text-center py-12">
                 <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  No clients found
-                </h3>
+                <h3 className="text-lg font-semibold mb-2">No clients found</h3>
                 <p className="text-muted-foreground mb-4">
                   {searchTerm
                     ? "Try adjusting your search or filters"

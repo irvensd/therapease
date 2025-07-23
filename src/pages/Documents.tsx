@@ -103,8 +103,8 @@ const Documents = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // State management
@@ -121,7 +121,9 @@ const Documents = () => {
   const [showConfidentialOnly, setShowConfidentialOnly] = useState(false);
   const [activeTab, setActiveTab] = useState("documents");
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [documentToDelete, setDocumentToDelete] = useState<DocumentFile | null>(null);
+  const [documentToDelete, setDocumentToDelete] = useState<DocumentFile | null>(
+    null,
+  );
   const [isMobile, setIsMobile] = useState(false);
 
   // Mock document data
@@ -956,14 +958,18 @@ const Documents = () => {
                             </Badge>
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-muted-foreground gap-2">
                               <span>{formatFileSize(document.size)}</span>
-                              <span className="text-xs">{formatDate(document.uploadDate)}</span>
+                              <span className="text-xs">
+                                {formatDate(document.uploadDate)}
+                              </span>
                             </div>
                             <div className="flex items-center justify-between mt-3">
                               <div className="flex items-center gap-1">
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleDocumentAction("view", document)}
+                                  onClick={() =>
+                                    handleDocumentAction("view", document)
+                                  }
                                   className="h-8 w-8 p-0"
                                 >
                                   <Eye className="h-3 w-3" />
@@ -971,7 +977,9 @@ const Documents = () => {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleDocumentAction("download", document)}
+                                  onClick={() =>
+                                    handleDocumentAction("download", document)
+                                  }
                                   className="h-8 w-8 p-0"
                                 >
                                   <Download className="h-3 w-3" />
@@ -979,7 +987,9 @@ const Documents = () => {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleDocumentAction("star", document)}
+                                  onClick={() =>
+                                    handleDocumentAction("star", document)
+                                  }
                                   className="h-8 w-8 p-0"
                                 >
                                   {document.isStarred ? (
@@ -991,7 +1001,9 @@ const Documents = () => {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleDocumentAction("delete", document)}
+                                  onClick={() =>
+                                    handleDocumentAction("delete", document)
+                                  }
                                   className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                                 >
                                   <Trash2 className="h-3 w-3" />
@@ -1339,7 +1351,9 @@ const Documents = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-red-600">Confirm Delete</h2>
+                <h2 className="text-lg font-semibold text-red-600">
+                  Confirm Delete
+                </h2>
                 <button
                   onClick={handleCancelDelete}
                   className="text-gray-500 hover:text-gray-700"

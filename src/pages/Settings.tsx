@@ -75,8 +75,8 @@ const Settings = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const [settings, setSettings] = useState<UserSettings>({
@@ -156,7 +156,7 @@ const Settings = () => {
   // Sync settings with user context changes
   useEffect(() => {
     if (user) {
-      setSettings(prev => ({
+      setSettings((prev) => ({
         ...prev,
         name: user.name,
         title: user.title,
@@ -459,7 +459,11 @@ const Settings = () => {
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             {hasUnsavedChanges && (
-              <Button variant="outline" onClick={discardChanges} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={discardChanges}
+                className="w-full sm:w-auto"
+              >
                 Discard Changes
               </Button>
             )}
@@ -480,7 +484,10 @@ const Settings = () => {
 
         <Tabs defaultValue="profile" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-            <TabsTrigger value="profile" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <TabsTrigger
+              value="profile"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+            >
               <User className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Profile</span>
               <span className="sm:hidden">Profile</span>
@@ -493,12 +500,18 @@ const Settings = () => {
               <span className="hidden sm:inline">Notifications</span>
               <span className="sm:hidden">Alerts</span>
             </TabsTrigger>
-            <TabsTrigger value="practice" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <TabsTrigger
+              value="practice"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+            >
               <Briefcase className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Practice</span>
               <span className="sm:hidden">Practice</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <TabsTrigger
+              value="security"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+            >
               <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Security</span>
               <span className="sm:hidden">Security</span>

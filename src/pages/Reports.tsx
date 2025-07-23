@@ -114,8 +114,8 @@ const Reports = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // State management
@@ -507,10 +507,18 @@ const Reports = () => {
         {/* Main Analytics Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
-            <TabsTrigger value="financial" className="text-xs sm:text-sm">Financial</TabsTrigger>
-            <TabsTrigger value="clinical" className="text-xs sm:text-sm">Clinical</TabsTrigger>
-            <TabsTrigger value="outcomes" className="text-xs sm:text-sm">Outcomes</TabsTrigger>
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="financial" className="text-xs sm:text-sm">
+              Financial
+            </TabsTrigger>
+            <TabsTrigger value="clinical" className="text-xs sm:text-sm">
+              Clinical
+            </TabsTrigger>
+            <TabsTrigger value="outcomes" className="text-xs sm:text-sm">
+              Outcomes
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -618,7 +626,9 @@ const Reports = () => {
                             {session.type}
                           </TableCell>
                           <TableCell>{session.count}</TableCell>
-                          <TableCell>{session.percentage.toFixed(1)}%</TableCell>
+                          <TableCell>
+                            {session.percentage.toFixed(1)}%
+                          </TableCell>
                           <TableCell>{session.averageDuration} min</TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
@@ -640,7 +650,9 @@ const Reports = () => {
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="font-medium">{session.type}</h4>
-                            <Badge variant="outline">{session.count} sessions</Badge>
+                            <Badge variant="outline">
+                              {session.count} sessions
+                            </Badge>
                           </div>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
@@ -654,7 +666,9 @@ const Reports = () => {
                             <div className="space-y-1">
                               <div className="flex justify-between">
                                 <span>Completion Rate:</span>
-                                <span>{session.completionRate.toFixed(1)}%</span>
+                                <span>
+                                  {session.completionRate.toFixed(1)}%
+                                </span>
                               </div>
                               <Progress value={session.completionRate} />
                             </div>
@@ -754,7 +768,10 @@ const Reports = () => {
                           <TableCell>${item.amount.toLocaleString()}</TableCell>
                           <TableCell>{item.percentage}%</TableCell>
                           <TableCell>
-                            <Progress value={item.percentage} className="w-20" />
+                            <Progress
+                              value={item.percentage}
+                              className="w-20"
+                            />
                           </TableCell>
                         </TableRow>
                       ))}
@@ -924,30 +941,48 @@ const Reports = () => {
                         <CardContent className="p-4">
                           <div className="flex items-start justify-between mb-3">
                             <div>
-                              <h4 className="font-medium">{outcome.clientName}</h4>
+                              <h4 className="font-medium">
+                                {outcome.clientName}
+                              </h4>
                               <p className="text-sm text-muted-foreground">
                                 {outcome.diagnosis}
                               </p>
                             </div>
-                            <Badge variant={getOutcomeStatusColor(outcome.status)}>
+                            <Badge
+                              variant={getOutcomeStatusColor(outcome.status)}
+                            >
                               {outcome.status}
                             </Badge>
                           </div>
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
-                              <span className="text-muted-foreground">Sessions:</span>
-                              <p className="font-medium">{outcome.sessionsCompleted}</p>
+                              <span className="text-muted-foreground">
+                                Sessions:
+                              </span>
+                              <p className="font-medium">
+                                {outcome.sessionsCompleted}
+                              </p>
                             </div>
                             <div>
-                              <span className="text-muted-foreground">Initial Score:</span>
-                              <p className="font-medium">{outcome.initialScore}</p>
+                              <span className="text-muted-foreground">
+                                Initial Score:
+                              </span>
+                              <p className="font-medium">
+                                {outcome.initialScore}
+                              </p>
                             </div>
                             <div>
-                              <span className="text-muted-foreground">Current Score:</span>
-                              <p className="font-medium">{outcome.currentScore}</p>
+                              <span className="text-muted-foreground">
+                                Current Score:
+                              </span>
+                              <p className="font-medium">
+                                {outcome.currentScore}
+                              </p>
                             </div>
                             <div>
-                              <span className="text-muted-foreground">Improvement:</span>
+                              <span className="text-muted-foreground">
+                                Improvement:
+                              </span>
                               <div className="flex items-center gap-1">
                                 {getImprovementIcon(outcome.improvement)}
                                 <span className="font-medium">

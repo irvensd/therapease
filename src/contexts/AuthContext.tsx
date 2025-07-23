@@ -36,7 +36,9 @@ interface AuthContextType {
     title: string,
   ) => Promise<{ success: boolean; error?: string }>;
   signOut: () => void;
-  updateProfile: (updates: Partial<Pick<User, 'name' | 'title' | 'email'>>) => void;
+  updateProfile: (
+    updates: Partial<Pick<User, "name" | "title" | "email">>,
+  ) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -199,7 +201,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Clear other app data if needed
   };
 
-  const updateProfile = (updates: Partial<Pick<User, 'name' | 'title' | 'email'>>) => {
+  const updateProfile = (
+    updates: Partial<Pick<User, "name" | "title" | "email">>,
+  ) => {
     if (!user) return;
 
     const updatedUser = { ...user, ...updates };

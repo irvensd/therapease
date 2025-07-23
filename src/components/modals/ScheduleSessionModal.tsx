@@ -41,7 +41,12 @@ export function ScheduleSessionModal({
     e.preventDefault();
 
     // Validate required fields
-    if (!formData.client || !formData.sessionType || !formData.date || !formData.time) {
+    if (
+      !formData.client ||
+      !formData.sessionType ||
+      !formData.date ||
+      !formData.time
+    ) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
@@ -89,11 +94,11 @@ export function ScheduleSessionModal({
   if (!open) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
       onClick={handleOverlayClick}
     >
-      <div 
+      <div
         className="bg-white rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
@@ -101,9 +106,11 @@ export function ScheduleSessionModal({
         <div className="flex items-center justify-between p-6 border-b">
           <div>
             <h2 className="text-xl font-semibold">Schedule New Session</h2>
-            <p className="text-sm text-gray-600 mt-1">Schedule a therapy session with a client.</p>
+            <p className="text-sm text-gray-600 mt-1">
+              Schedule a therapy session with a client.
+            </p>
           </div>
-          <button 
+          <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
           >
@@ -136,7 +143,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="sessionType" className="text-right">
                 Session Type
@@ -159,7 +166,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="date" className="text-right">
                 Date
@@ -175,7 +182,7 @@ export function ScheduleSessionModal({
                 required
               />
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="time" className="text-right">
                 Time
@@ -191,7 +198,7 @@ export function ScheduleSessionModal({
                 required
               />
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="duration" className="text-right">
                 Duration
@@ -213,7 +220,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="location" className="text-right">
                 Location
@@ -234,7 +241,7 @@ export function ScheduleSessionModal({
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="notes" className="text-right">
                 Notes
@@ -251,14 +258,10 @@ export function ScheduleSessionModal({
               />
             </div>
           </div>
-          
+
           {/* Footer */}
           <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-            >
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit">Schedule Session</Button>

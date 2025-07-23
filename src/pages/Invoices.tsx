@@ -51,7 +51,6 @@ import {
   StarOff,
 } from "lucide-react";
 
-
 // Types for better type safety
 interface Invoice {
   id: number;
@@ -103,8 +102,8 @@ const Invoices = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // State management
@@ -616,14 +615,14 @@ const Invoices = () => {
 
   const handleEditInvoice = useCallback((invoice: Invoice) => {
     setEditingInvoice(invoice);
-    const client = mockClients.find(c => c.name === invoice.clientName);
+    const client = mockClients.find((c) => c.name === invoice.clientName);
     setInvoiceForm({
       clientId: client?.id || "",
       clientName: invoice.clientName,
       clientEmail: invoice.clientEmail,
       amount: invoice.amount.toString(),
       dueDate: invoice.dueDate,
-      services: invoice.services.map(s => s.description).join(", "),
+      services: invoice.services.map((s) => s.description).join(", "),
       notes: invoice.notes || "",
     });
     setCreateInvoiceModalOpen(true);
@@ -651,8 +650,8 @@ const Invoices = () => {
 
     if (editingInvoice) {
       // Update existing invoice
-      setInvoices(prev =>
-        prev.map(invoice =>
+      setInvoices((prev) =>
+        prev.map((invoice) =>
           invoice.id === editingInvoice.id
             ? {
                 ...invoice,
@@ -661,17 +660,21 @@ const Invoices = () => {
                 amount,
                 totalAmount: amount,
                 dueDate: invoiceForm.dueDate,
-                services: invoiceForm.services ? [{
-                  description: invoiceForm.services,
-                  quantity: 1,
-                  rate: amount,
-                  total: amount,
-                  date: new Date().toISOString().split('T')[0],
-                }] : invoice.services,
+                services: invoiceForm.services
+                  ? [
+                      {
+                        description: invoiceForm.services,
+                        quantity: 1,
+                        rate: amount,
+                        total: amount,
+                        date: new Date().toISOString().split("T")[0],
+                      },
+                    ]
+                  : invoice.services,
                 notes: invoiceForm.notes,
               }
-            : invoice
-        )
+            : invoice,
+        ),
       );
 
       toast({
@@ -682,27 +685,31 @@ const Invoices = () => {
       // Create new invoice
       const newInvoice: Invoice = {
         id: Date.now(),
-        invoiceNumber: `INV-2024-${String(invoices.length + 1).padStart(3, '0')}`,
+        invoiceNumber: `INV-2024-${String(invoices.length + 1).padStart(3, "0")}`,
         clientName: invoiceForm.clientName,
         clientEmail: invoiceForm.clientEmail,
         amount,
         status: "Draft",
-        issueDate: new Date().toISOString().split('T')[0],
+        issueDate: new Date().toISOString().split("T")[0],
         dueDate: invoiceForm.dueDate,
-        services: invoiceForm.services ? [{
-          description: invoiceForm.services,
-          quantity: 1,
-          rate: amount,
-          total: amount,
-          date: new Date().toISOString().split('T')[0],
-        }] : [],
+        services: invoiceForm.services
+          ? [
+              {
+                description: invoiceForm.services,
+                quantity: 1,
+                rate: amount,
+                total: amount,
+                date: new Date().toISOString().split("T")[0],
+              },
+            ]
+          : [],
         notes: invoiceForm.notes,
         isStarred: false,
         taxAmount: 0,
         totalAmount: amount,
       };
 
-      setInvoices(prev => [newInvoice, ...prev]);
+      setInvoices((prev) => [newInvoice, ...prev]);
 
       toast({
         title: "Invoice Created",
@@ -711,12 +718,18 @@ const Invoices = () => {
     }
 
     handleInvoiceModalClose();
-  }, [invoiceForm, editingInvoice, invoices.length, toast, handleInvoiceModalClose]);
+  }, [
+    invoiceForm,
+    editingInvoice,
+    invoices.length,
+    toast,
+    handleInvoiceModalClose,
+  ]);
 
   const handleClientSelect = useCallback((clientId: string) => {
-    const selectedClient = mockClients.find(c => c.id === clientId);
+    const selectedClient = mockClients.find((c) => c.id === clientId);
     if (selectedClient) {
-      setInvoiceForm(prev => ({
+      setInvoiceForm((prev) => ({
         ...prev,
         clientId: clientId,
         clientName: selectedClient.name,
@@ -928,187 +941,189 @@ const Invoices = () => {
               <div className="rounded-md border overflow-hidden">
                 <div className="overflow-x-auto">
                   <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="min-w-[150px]">
-                        Invoice & Client
-                      </TableHead>
-                      <TableHead className="min-w-[120px] hidden sm:table-cell">
-                        Dates
-                      </TableHead>
-                      <TableHead className="min-w-[100px]">
-                        Amount & Status
-                      </TableHead>
-                      <TableHead className="min-w-[120px] hidden md:table-cell">
-                        Services
-                      </TableHead>
-                      <TableHead className="min-w-[100px] hidden lg:table-cell">
-                        Payment Info
-                      </TableHead>
-                      <TableHead className="w-[140px]">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredInvoices.map((invoice) => (
-                      <TableRow
-                        key={invoice.id}
-                        className="hover:bg-muted/50 transition-colors"
-                      >
-                        <TableCell>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="font-medium">
-                                {invoice.invoiceNumber}
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="min-w-[150px]">
+                          Invoice & Client
+                        </TableHead>
+                        <TableHead className="min-w-[120px] hidden sm:table-cell">
+                          Dates
+                        </TableHead>
+                        <TableHead className="min-w-[100px]">
+                          Amount & Status
+                        </TableHead>
+                        <TableHead className="min-w-[120px] hidden md:table-cell">
+                          Services
+                        </TableHead>
+                        <TableHead className="min-w-[100px] hidden lg:table-cell">
+                          Payment Info
+                        </TableHead>
+                        <TableHead className="w-[140px]">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredInvoices.map((invoice) => (
+                        <TableRow
+                          key={invoice.id}
+                          className="hover:bg-muted/50 transition-colors"
+                        >
+                          <TableCell>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <div className="font-medium">
+                                  {invoice.invoiceNumber}
+                                </div>
+                                {invoice.isStarred && (
+                                  <Star className="h-3 w-3 text-yellow-500 fill-current flex-shrink-0" />
+                                )}
                               </div>
-                              {invoice.isStarred && (
-                                <Star className="h-3 w-3 text-yellow-500 fill-current flex-shrink-0" />
-                              )}
+                              <div className="text-sm text-muted-foreground">
+                                {invoice.clientName}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {invoice.clientEmail}
+                              </div>
+                              {/* Mobile-only dates */}
+                              <div className="sm:hidden mt-1 text-xs text-muted-foreground">
+                                Due:{" "}
+                                {new Date(invoice.dueDate).toLocaleDateString()}
+                              </div>
                             </div>
-                            <div className="text-sm text-muted-foreground">
-                              {invoice.clientName}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {invoice.clientEmail}
-                            </div>
-                            {/* Mobile-only dates */}
-                            <div className="sm:hidden mt-1 text-xs text-muted-foreground">
-                              Due:{" "}
-                              {new Date(invoice.dueDate).toLocaleDateString()}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <div className="text-sm">
-                            <div className="font-medium">
-                              Issue:{" "}
-                              {new Date(invoice.issueDate).toLocaleDateString()}
-                            </div>
-                            <div className="text-muted-foreground">
-                              Due:{" "}
-                              {new Date(invoice.dueDate).toLocaleDateString()}
-                            </div>
-                            {invoice.paidDate && (
-                              <div className="text-green-600 text-xs">
-                                Paid:{" "}
+                          </TableCell>
+                          <TableCell className="hidden sm:table-cell">
+                            <div className="text-sm">
+                              <div className="font-medium">
+                                Issue:{" "}
                                 {new Date(
-                                  invoice.paidDate,
+                                  invoice.issueDate,
                                 ).toLocaleDateString()}
                               </div>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-1">
-                            <div className="font-bold">
-                              ${invoice.totalAmount.toLocaleString()}
-                            </div>
-                            <Badge
-                              className={getStatusColor(invoice.status)}
-                              variant="outline"
-                            >
-                              <span className="flex items-center gap-1">
-                                {getStatusIcon(invoice.status)}
-                                {invoice.status}
-                              </span>
-                            </Badge>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          <div className="text-sm">
-                            <div className="font-medium">
-                              {invoice.services.length} service(s)
-                            </div>
-                            <div className="text-muted-foreground">
-                              {invoice.services.reduce(
-                                (sum, s) => sum + s.quantity,
-                                0,
-                              )}{" "}
-                              sessions
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden lg:table-cell">
-                          <div className="text-sm">
-                            {invoice.paymentMethod && (
-                              <div className="font-medium">
-                                {invoice.paymentMethod}
+                              <div className="text-muted-foreground">
+                                Due:{" "}
+                                {new Date(invoice.dueDate).toLocaleDateString()}
                               </div>
-                            )}
-                            {invoice.lateFee && (
-                              <div className="text-red-600 text-xs">
-                                Late fee: ${invoice.lateFee}
-                              </div>
-                            )}
-                            {invoice.discountAmount && (
-                              <div className="text-green-600 text-xs">
-                                Discount: -${invoice.discountAmount}
-                              </div>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleToggleStar(invoice.id)}
-                            >
-                              {invoice.isStarred ? (
-                                <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                              ) : (
-                                <StarOff className="h-4 w-4" />
+                              {invoice.paidDate && (
+                                <div className="text-green-600 text-xs">
+                                  Paid:{" "}
+                                  {new Date(
+                                    invoice.paidDate,
+                                  ).toLocaleDateString()}
+                                </div>
                               )}
-                            </Button>
-                            {invoice.status !== "Paid" && (
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="space-y-1">
+                              <div className="font-bold">
+                                ${invoice.totalAmount.toLocaleString()}
+                              </div>
+                              <Badge
+                                className={getStatusColor(invoice.status)}
+                                variant="outline"
+                              >
+                                <span className="flex items-center gap-1">
+                                  {getStatusIcon(invoice.status)}
+                                  {invoice.status}
+                                </span>
+                              </Badge>
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            <div className="text-sm">
+                              <div className="font-medium">
+                                {invoice.services.length} service(s)
+                              </div>
+                              <div className="text-muted-foreground">
+                                {invoice.services.reduce(
+                                  (sum, s) => sum + s.quantity,
+                                  0,
+                                )}{" "}
+                                sessions
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell">
+                            <div className="text-sm">
+                              {invoice.paymentMethod && (
+                                <div className="font-medium">
+                                  {invoice.paymentMethod}
+                                </div>
+                              )}
+                              {invoice.lateFee && (
+                                <div className="text-red-600 text-xs">
+                                  Late fee: ${invoice.lateFee}
+                                </div>
+                              )}
+                              {invoice.discountAmount && (
+                                <div className="text-green-600 text-xs">
+                                  Discount: -${invoice.discountAmount}
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-1">
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => handleMarkAsPaid(invoice)}
-                                className="text-green-600 hover:text-green-700"
+                                onClick={() => handleToggleStar(invoice.id)}
                               >
-                                <CreditCard className="h-4 w-4" />
+                                {invoice.isStarred ? (
+                                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                                ) : (
+                                  <StarOff className="h-4 w-4" />
+                                )}
                               </Button>
-                            )}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleViewInvoice(invoice)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditInvoice(invoice)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleSendInvoice(invoice)}
-                              className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
-                            >
-                              <Send className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleDeleteInvoice(invoice)}
-                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                              {invoice.status !== "Paid" && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleMarkAsPaid(invoice)}
+                                  className="text-green-600 hover:text-green-700"
+                                >
+                                  <CreditCard className="h-4 w-4" />
+                                </Button>
+                              )}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleViewInvoice(invoice)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditInvoice(invoice)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleSendInvoice(invoice)}
+                                className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
+                              >
+                                <Send className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteInvoice(invoice)}
+                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
-            </div>
             ) : (
               <div className="space-y-4">
                 {filteredInvoices.map((invoice) => (
@@ -1117,7 +1132,9 @@ const Invoices = () => {
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-medium text-sm">{invoice.invoiceNumber}</h4>
+                            <h4 className="font-medium text-sm">
+                              {invoice.invoiceNumber}
+                            </h4>
                             {invoice.isStarred && (
                               <Star className="h-3 w-3 text-yellow-500 fill-current" />
                             )}
@@ -1148,16 +1165,22 @@ const Invoices = () => {
                       <div className="space-y-2 text-xs text-muted-foreground">
                         <div className="flex justify-between">
                           <span>Issue Date:</span>
-                          <span>{new Date(invoice.issueDate).toLocaleDateString()}</span>
+                          <span>
+                            {new Date(invoice.issueDate).toLocaleDateString()}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Due Date:</span>
-                          <span>{new Date(invoice.dueDate).toLocaleDateString()}</span>
+                          <span>
+                            {new Date(invoice.dueDate).toLocaleDateString()}
+                          </span>
                         </div>
                         {invoice.paidDate && (
                           <div className="flex justify-between text-green-600">
                             <span>Paid Date:</span>
-                            <span>{new Date(invoice.paidDate).toLocaleDateString()}</span>
+                            <span>
+                              {new Date(invoice.paidDate).toLocaleDateString()}
+                            </span>
                           </div>
                         )}
                         <div className="flex justify-between">
@@ -1304,7 +1327,9 @@ const Invoices = () => {
                         <SelectItem key={client.id} value={client.id}>
                           <div className="flex flex-col">
                             <span className="font-medium">{client.name}</span>
-                            <span className="text-xs text-muted-foreground">{client.email}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {client.email}
+                            </span>
                           </div>
                         </SelectItem>
                       ))}
@@ -1319,13 +1344,18 @@ const Invoices = () => {
                     placeholder="Auto-filled when client selected"
                     value={invoiceForm.clientEmail}
                     onChange={(e) =>
-                      setInvoiceForm(prev => ({ ...prev, clientEmail: e.target.value }))
+                      setInvoiceForm((prev) => ({
+                        ...prev,
+                        clientEmail: e.target.value,
+                      }))
                     }
                     className="bg-gray-50"
                     readOnly={!!invoiceForm.clientId}
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    {invoiceForm.clientId ? "Auto-filled from client selection" : "Will be auto-filled when you select a client"}
+                    {invoiceForm.clientId
+                      ? "Auto-filled from client selection"
+                      : "Will be auto-filled when you select a client"}
                   </p>
                 </div>
               </div>
@@ -1338,7 +1368,10 @@ const Invoices = () => {
                     placeholder="0.00"
                     value={invoiceForm.amount}
                     onChange={(e) =>
-                      setInvoiceForm(prev => ({ ...prev, amount: e.target.value }))
+                      setInvoiceForm((prev) => ({
+                        ...prev,
+                        amount: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -1349,7 +1382,10 @@ const Invoices = () => {
                     type="date"
                     value={invoiceForm.dueDate}
                     onChange={(e) =>
-                      setInvoiceForm(prev => ({ ...prev, dueDate: e.target.value }))
+                      setInvoiceForm((prev) => ({
+                        ...prev,
+                        dueDate: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -1361,7 +1397,10 @@ const Invoices = () => {
                   placeholder="Describe the services provided..."
                   value={invoiceForm.services}
                   onChange={(e) =>
-                    setInvoiceForm(prev => ({ ...prev, services: e.target.value }))
+                    setInvoiceForm((prev) => ({
+                      ...prev,
+                      services: e.target.value,
+                    }))
                   }
                   rows={3}
                 />
@@ -1373,7 +1412,10 @@ const Invoices = () => {
                   placeholder="Additional notes or payment terms..."
                   value={invoiceForm.notes}
                   onChange={(e) =>
-                    setInvoiceForm(prev => ({ ...prev, notes: e.target.value }))
+                    setInvoiceForm((prev) => ({
+                      ...prev,
+                      notes: e.target.value,
+                    }))
                   }
                   rows={2}
                 />
@@ -1415,13 +1457,20 @@ const Invoices = () => {
             <div className="space-y-4">
               <div className="p-4 bg-gray-50 rounded-lg">
                 <h3 className="font-medium">{invoiceToSend.invoiceNumber}</h3>
-                <p className="text-sm text-gray-600">{invoiceToSend.clientName}</p>
-                <p className="text-sm text-gray-600">{invoiceToSend.clientEmail}</p>
-                <p className="font-medium">${invoiceToSend.totalAmount.toLocaleString()}</p>
+                <p className="text-sm text-gray-600">
+                  {invoiceToSend.clientName}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {invoiceToSend.clientEmail}
+                </p>
+                <p className="font-medium">
+                  ${invoiceToSend.totalAmount.toLocaleString()}
+                </p>
               </div>
 
               <p className="text-sm text-gray-600">
-                This will send the invoice to {invoiceToSend.clientEmail} and mark it as "Sent".
+                This will send the invoice to {invoiceToSend.clientEmail} and
+                mark it as "Sent".
               </p>
             </div>
 

@@ -149,8 +149,8 @@ const Progress = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // State management
@@ -548,13 +548,16 @@ const Progress = () => {
     }
 
     const interventionsArray = goalForm.interventions
-      ? goalForm.interventions.split(",").map(i => i.trim()).filter(i => i)
+      ? goalForm.interventions
+          .split(",")
+          .map((i) => i.trim())
+          .filter((i) => i)
       : [];
 
     if (selectedGoal) {
       // Update existing goal
-      setTreatmentGoals(prev =>
-        prev.map(goal =>
+      setTreatmentGoals((prev) =>
+        prev.map((goal) =>
           goal.id === selectedGoal.id
             ? {
                 ...goal,
@@ -566,8 +569,8 @@ const Progress = () => {
                 measurableOutcome: goalForm.measurableOutcome,
                 interventions: interventionsArray,
               }
-            : goal
-        )
+            : goal,
+        ),
       );
 
       toast({
@@ -576,8 +579,12 @@ const Progress = () => {
       });
     } else {
       // Create new goal
-      const clientName = goalForm.clientId === "c1" ? "Emma Thompson" :
-                        goalForm.clientId === "c2" ? "Michael Chen" : "Unknown Client";
+      const clientName =
+        goalForm.clientId === "c1"
+          ? "Emma Thompson"
+          : goalForm.clientId === "c2"
+            ? "Michael Chen"
+            : "Unknown Client";
 
       const newGoal: TreatmentGoal = {
         id: `g-${Date.now()}`,
@@ -589,14 +596,14 @@ const Progress = () => {
         priority: goalForm.priority,
         status: "Active",
         targetDate: goalForm.targetDate,
-        createdDate: new Date().toISOString().split('T')[0],
+        createdDate: new Date().toISOString().split("T")[0],
         currentProgress: 0,
         measurableOutcome: goalForm.measurableOutcome,
         interventions: interventionsArray,
         milestones: [],
       };
 
-      setTreatmentGoals(prev => [newGoal, ...prev]);
+      setTreatmentGoals((prev) => [newGoal, ...prev]);
 
       toast({
         title: "Goal Created",
@@ -607,34 +614,48 @@ const Progress = () => {
     handleCloseGoalModal();
   }, [goalForm, selectedGoal, toast, handleCloseGoalModal]);
 
-  const handleStartProgressEdit = useCallback((goalId: string, currentProgress: number) => {
-    setEditingProgress(goalId);
-    setProgressValue(currentProgress.toString());
-  }, []);
+  const handleStartProgressEdit = useCallback(
+    (goalId: string, currentProgress: number) => {
+      setEditingProgress(goalId);
+      setProgressValue(currentProgress.toString());
+    },
+    [],
+  );
 
-  const handleSaveProgress = useCallback((goalId: string) => {
-    const newProgress = Math.min(100, Math.max(0, parseInt(progressValue) || 0));
+  const handleSaveProgress = useCallback(
+    (goalId: string) => {
+      const newProgress = Math.min(
+        100,
+        Math.max(0, parseInt(progressValue) || 0),
+      );
 
-    setTreatmentGoals(prev =>
-      prev.map(goal =>
-        goal.id === goalId
-          ? {
-              ...goal,
-              currentProgress: newProgress,
-              status: newProgress >= 100 ? "Completed" : goal.status === "Completed" ? "Active" : goal.status,
-            }
-          : goal
-      )
-    );
+      setTreatmentGoals((prev) =>
+        prev.map((goal) =>
+          goal.id === goalId
+            ? {
+                ...goal,
+                currentProgress: newProgress,
+                status:
+                  newProgress >= 100
+                    ? "Completed"
+                    : goal.status === "Completed"
+                      ? "Active"
+                      : goal.status,
+              }
+            : goal,
+        ),
+      );
 
-    setEditingProgress(null);
-    setProgressValue("");
+      setEditingProgress(null);
+      setProgressValue("");
 
-    toast({
-      title: "Progress Updated",
-      description: `Goal progress updated to ${newProgress}%.`,
-    });
-  }, [progressValue, toast]);
+      toast({
+        title: "Progress Updated",
+        description: `Goal progress updated to ${newProgress}%.`,
+      });
+    },
+    [progressValue, toast],
+  );
 
   const handleCancelProgressEdit = useCallback(() => {
     setEditingProgress(null);
@@ -856,10 +877,18 @@ const Progress = () => {
         {/* Main Content Tabs */}
         <Tabs defaultValue="goals" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-            <TabsTrigger value="goals" className="text-xs sm:text-sm">Goals</TabsTrigger>
-            <TabsTrigger value="progress" className="text-xs sm:text-sm">Progress</TabsTrigger>
-            <TabsTrigger value="assessments" className="text-xs sm:text-sm">Assessments</TabsTrigger>
-            <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
+            <TabsTrigger value="goals" className="text-xs sm:text-sm">
+              Goals
+            </TabsTrigger>
+            <TabsTrigger value="progress" className="text-xs sm:text-sm">
+              Progress
+            </TabsTrigger>
+            <TabsTrigger value="assessments" className="text-xs sm:text-sm">
+              Assessments
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm">
+              Analytics
+            </TabsTrigger>
           </TabsList>
 
           {/* Treatment Goals Tab */}
@@ -1017,7 +1046,12 @@ const Progress = () => {
                               {goal.currentProgress}%
                             </span>
                             <button
-                              onClick={() => handleStartProgressEdit(goal.id, goal.currentProgress)}
+                              onClick={() =>
+                                handleStartProgressEdit(
+                                  goal.id,
+                                  goal.currentProgress,
+                                )
+                              }
                               className="text-xs text-blue-600 hover:text-blue-800"
                             >
                               Edit
@@ -1035,10 +1069,12 @@ const Progress = () => {
                                 max="100"
                                 step="5"
                                 value={progressValue}
-                                onChange={(e) => setProgressValue(e.target.value)}
+                                onChange={(e) =>
+                                  setProgressValue(e.target.value)
+                                }
                                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                                 style={{
-                                  background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${progressValue}%, #e5e7eb ${progressValue}%, #e5e7eb 100%)`
+                                  background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${progressValue}%, #e5e7eb ${progressValue}%, #e5e7eb 100%)`,
                                 }}
                               />
                               <span className="text-xs w-12">100%</span>
@@ -1133,7 +1169,11 @@ const Progress = () => {
                           </Label>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {goal.interventions.map((intervention, index) => (
-                              <Badge key={index} variant="secondary" className="text-xs">
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-xs"
+                              >
                                 {intervention}
                               </Badge>
                             ))}
@@ -1417,7 +1457,9 @@ const Progress = () => {
                         <CardContent className="p-4">
                           <div className="flex items-start justify-between mb-3">
                             <div>
-                              <h4 className="font-medium">{assessment.clientName}</h4>
+                              <h4 className="font-medium">
+                                {assessment.clientName}
+                              </h4>
                               <p className="text-sm text-muted-foreground">
                                 {assessment.assessmentType}
                               </p>
@@ -1443,12 +1485,18 @@ const Progress = () => {
                               </span>
                             </div>
                             <ProgressBar
-                              value={(assessment.score / assessment.maxScore) * 100}
+                              value={
+                                (assessment.score / assessment.maxScore) * 100
+                              }
                             />
                             <p className="text-xs text-muted-foreground">
                               {assessment.dateAdministered}
                             </p>
-                            <Button variant="ghost" size="sm" className="w-full">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="w-full"
+                            >
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </Button>
@@ -1646,7 +1694,7 @@ const Progress = () => {
                     <Select
                       value={goalForm.clientId}
                       onValueChange={(value) =>
-                        setGoalForm(prev => ({ ...prev, clientId: value }))
+                        setGoalForm((prev) => ({ ...prev, clientId: value }))
                       }
                     >
                       <SelectTrigger>
@@ -1664,7 +1712,10 @@ const Progress = () => {
                     <Select
                       value={goalForm.category}
                       onValueChange={(value) =>
-                        setGoalForm(prev => ({ ...prev, category: value as TreatmentGoal["category"] }))
+                        setGoalForm((prev) => ({
+                          ...prev,
+                          category: value as TreatmentGoal["category"],
+                        }))
                       }
                     >
                       <SelectTrigger>
@@ -1687,7 +1738,10 @@ const Progress = () => {
                     placeholder="Enter goal title..."
                     value={goalForm.title}
                     onChange={(e) =>
-                      setGoalForm(prev => ({ ...prev, title: e.target.value }))
+                      setGoalForm((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -1698,7 +1752,10 @@ const Progress = () => {
                     placeholder="Describe the treatment goal..."
                     value={goalForm.description}
                     onChange={(e) =>
-                      setGoalForm(prev => ({ ...prev, description: e.target.value }))
+                      setGoalForm((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
                     }
                     rows={3}
                   />
@@ -1710,7 +1767,10 @@ const Progress = () => {
                     <Select
                       value={goalForm.priority}
                       onValueChange={(value) =>
-                        setGoalForm(prev => ({ ...prev, priority: value as TreatmentGoal["priority"] }))
+                        setGoalForm((prev) => ({
+                          ...prev,
+                          priority: value as TreatmentGoal["priority"],
+                        }))
                       }
                     >
                       <SelectTrigger>
@@ -1730,7 +1790,10 @@ const Progress = () => {
                       type="date"
                       value={goalForm.targetDate}
                       onChange={(e) =>
-                        setGoalForm(prev => ({ ...prev, targetDate: e.target.value }))
+                        setGoalForm((prev) => ({
+                          ...prev,
+                          targetDate: e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -1742,7 +1805,10 @@ const Progress = () => {
                     placeholder="How will success be measured?"
                     value={goalForm.measurableOutcome}
                     onChange={(e) =>
-                      setGoalForm(prev => ({ ...prev, measurableOutcome: e.target.value }))
+                      setGoalForm((prev) => ({
+                        ...prev,
+                        measurableOutcome: e.target.value,
+                      }))
                     }
                     rows={2}
                   />
@@ -1754,7 +1820,10 @@ const Progress = () => {
                     placeholder="Enter interventions separated by commas..."
                     value={goalForm.interventions}
                     onChange={(e) =>
-                      setGoalForm(prev => ({ ...prev, interventions: e.target.value }))
+                      setGoalForm((prev) => ({
+                        ...prev,
+                        interventions: e.target.value,
+                      }))
                     }
                   />
                   <p className="text-xs text-muted-foreground mt-1">

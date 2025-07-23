@@ -49,7 +49,6 @@ import {
   StarOff,
 } from "lucide-react";
 
-
 // Types for better type safety
 interface Reminder {
   id: number;
@@ -94,8 +93,8 @@ const Reminders = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // State management
@@ -583,8 +582,8 @@ const Reminders = () => {
 
     if (editingReminder) {
       // Update existing reminder
-      setReminders(prev =>
-        prev.map(reminder =>
+      setReminders((prev) =>
+        prev.map((reminder) =>
           reminder.id === editingReminder.id
             ? {
                 ...reminder,
@@ -598,8 +597,8 @@ const Reminders = () => {
                 notes: reminderForm.notes,
                 recurringType: reminderForm.recurringType,
               }
-            : reminder
-        )
+            : reminder,
+        ),
       );
 
       toast({
@@ -624,7 +623,7 @@ const Reminders = () => {
         recurringType: reminderForm.recurringType,
       };
 
-      setReminders(prev => [newReminder, ...prev]);
+      setReminders((prev) => [newReminder, ...prev]);
 
       toast({
         title: "Reminder Created",
@@ -891,7 +890,9 @@ const Reminders = () => {
                           <TableCell className="hidden sm:table-cell">
                             <div className="text-sm">
                               <div className="font-medium">
-                                {new Date(reminder.dueDate).toLocaleDateString()}
+                                {new Date(
+                                  reminder.dueDate,
+                                ).toLocaleDateString()}
                               </div>
                               {reminder.dueTime && (
                                 <div className="text-muted-foreground">
@@ -958,36 +959,38 @@ const Reminders = () => {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleCompleteReminder(reminder)}
+                                  onClick={() =>
+                                    handleCompleteReminder(reminder)
+                                  }
                                   className="text-green-600 hover:text-green-700"
                                 >
                                   <CheckCircle className="h-4 w-4" />
                                 </Button>
                               )}
                               <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleViewReminder(reminder)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditReminder(reminder)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleDeleteReminder(reminder)}
-                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleViewReminder(reminder)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditReminder(reminder)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteReminder(reminder)}
+                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -1004,7 +1007,9 @@ const Reminders = () => {
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-medium text-sm">{reminder.title}</h4>
+                            <h4 className="font-medium text-sm">
+                              {reminder.title}
+                            </h4>
                             {reminder.isStarred && (
                               <Star className="h-3 w-3 text-yellow-500 fill-current" />
                             )}
@@ -1043,7 +1048,9 @@ const Reminders = () => {
                         {reminder.clientName && (
                           <div className="flex justify-between">
                             <span>Client:</span>
-                            <span className="font-medium">{reminder.clientName}</span>
+                            <span className="font-medium">
+                              {reminder.clientName}
+                            </span>
                           </div>
                         )}
                         {reminder.notes && (
@@ -1171,7 +1178,10 @@ const Reminders = () => {
                     placeholder="Follow up with client..."
                     value={reminderForm.title}
                     onChange={(e) =>
-                      setReminderForm(prev => ({ ...prev, title: e.target.value }))
+                      setReminderForm((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -1181,16 +1191,25 @@ const Reminders = () => {
                   <Select
                     value={reminderForm.category}
                     onValueChange={(value) =>
-                      setReminderForm(prev => ({ ...prev, category: value as Reminder["category"] }))
+                      setReminderForm((prev) => ({
+                        ...prev,
+                        category: value as Reminder["category"],
+                      }))
                     }
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Client Follow-up">Client Follow-up</SelectItem>
-                      <SelectItem value="Documentation">Documentation</SelectItem>
-                      <SelectItem value="Administrative">Administrative</SelectItem>
+                      <SelectItem value="Client Follow-up">
+                        Client Follow-up
+                      </SelectItem>
+                      <SelectItem value="Documentation">
+                        Documentation
+                      </SelectItem>
+                      <SelectItem value="Administrative">
+                        Administrative
+                      </SelectItem>
                       <SelectItem value="Professional">Professional</SelectItem>
                       <SelectItem value="Personal">Personal</SelectItem>
                     </SelectContent>
@@ -1204,7 +1223,10 @@ const Reminders = () => {
                   placeholder="Additional details about this reminder..."
                   value={reminderForm.description}
                   onChange={(e) =>
-                    setReminderForm(prev => ({ ...prev, description: e.target.value }))
+                    setReminderForm((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
                   }
                   rows={3}
                 />
@@ -1216,7 +1238,10 @@ const Reminders = () => {
                   <Select
                     value={reminderForm.priority}
                     onValueChange={(value) =>
-                      setReminderForm(prev => ({ ...prev, priority: value as Reminder["priority"] }))
+                      setReminderForm((prev) => ({
+                        ...prev,
+                        priority: value as Reminder["priority"],
+                      }))
                     }
                   >
                     <SelectTrigger>
@@ -1236,7 +1261,10 @@ const Reminders = () => {
                   <Select
                     value={reminderForm.recurringType}
                     onValueChange={(value) =>
-                      setReminderForm(prev => ({ ...prev, recurringType: value as Reminder["recurringType"] }))
+                      setReminderForm((prev) => ({
+                        ...prev,
+                        recurringType: value as Reminder["recurringType"],
+                      }))
                     }
                   >
                     <SelectTrigger>
@@ -1259,7 +1287,10 @@ const Reminders = () => {
                     type="date"
                     value={reminderForm.dueDate}
                     onChange={(e) =>
-                      setReminderForm(prev => ({ ...prev, dueDate: e.target.value }))
+                      setReminderForm((prev) => ({
+                        ...prev,
+                        dueDate: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -1270,7 +1301,10 @@ const Reminders = () => {
                     type="time"
                     value={reminderForm.dueTime}
                     onChange={(e) =>
-                      setReminderForm(prev => ({ ...prev, dueTime: e.target.value }))
+                      setReminderForm((prev) => ({
+                        ...prev,
+                        dueTime: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -1282,7 +1316,10 @@ const Reminders = () => {
                   placeholder="Client name..."
                   value={reminderForm.clientName}
                   onChange={(e) =>
-                    setReminderForm(prev => ({ ...prev, clientName: e.target.value }))
+                    setReminderForm((prev) => ({
+                      ...prev,
+                      clientName: e.target.value,
+                    }))
                   }
                 />
               </div>
@@ -1293,7 +1330,10 @@ const Reminders = () => {
                   placeholder="Additional notes or context..."
                   value={reminderForm.notes}
                   onChange={(e) =>
-                    setReminderForm(prev => ({ ...prev, notes: e.target.value }))
+                    setReminderForm((prev) => ({
+                      ...prev,
+                      notes: e.target.value,
+                    }))
                   }
                   rows={2}
                 />

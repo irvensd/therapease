@@ -99,6 +99,7 @@ The styling system supports dark mode through CSS variables and media queries.
 **For new modals, use the simple div-based approach** demonstrated in `src/components/modals/SessionDetailsModal.tsx` instead of the shadcn Dialog component.
 
 **Working Pattern**:
+
 ```tsx
 // Simple div-based modal - NO FREEZING ISSUES
 <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
@@ -109,6 +110,7 @@ The styling system supports dark mode through CSS variables and media queries.
 ```
 
 **Avoid**:
+
 ```tsx
 // This causes freezing issues - DO NOT USE
 import { Dialog, DialogContent } from "@/components/ui/dialog";

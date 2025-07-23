@@ -401,69 +401,87 @@ const Calendar = () => {
   );
 
   // Handle adding new session to calendar
-  const handleScheduleSession = useCallback((sessionData: any) => {
-    try {
-      // Map client values to names
-      const clientNames: { [key: string]: string } = {
-        emma: "Emma Thompson",
-        michael: "Michael Chen",
-        sarah: "Sarah Johnson",
-        david: "David Wilson",
-        lisa: "Lisa Rodriguez"
-      };
+  const handleScheduleSession = useCallback(
+    (sessionData: any) => {
+      try {
+        // Map client values to names
+        const clientNames: { [key: string]: string } = {
+          emma: "Emma Thompson",
+          michael: "Michael Chen",
+          sarah: "Sarah Johnson",
+          david: "David Wilson",
+          lisa: "Lisa Rodriguez",
+        };
 
-      // Map session type values to display names
-      const sessionTypeNames: { [key: string]: string } = {
-        individual: "Individual",
-        couples: "Couples",
-        family: "Family",
-        group: "Group",
-        assessment: "Individual"
-      };
+        // Map session type values to display names
+        const sessionTypeNames: { [key: string]: string } = {
+          individual: "Individual",
+          couples: "Couples",
+          family: "Family",
+          group: "Group",
+          assessment: "Individual",
+        };
 
-      const clientName = clientNames[sessionData.client] || sessionData.client;
-      const sessionTypeName = sessionTypeNames[sessionData.sessionType] || sessionData.sessionType;
+        const clientName =
+          clientNames[sessionData.client] || sessionData.client;
+        const sessionTypeName =
+          sessionTypeNames[sessionData.sessionType] || sessionData.sessionType;
 
-      // Generate a unique ID for the new event
-      const newEventId = `session-${Date.now()}`;
+        // Generate a unique ID for the new event
+        const newEventId = `session-${Date.now()}`;
 
-      // Create the new calendar event
-      const newEvent: CalendarEvent = {
-        id: newEventId,
-        title: `${clientName} - ${sessionTypeName} Therapy`,
-        start: new Date(`${sessionData.date}T${sessionData.time}`),
-        end: new Date(new Date(`${sessionData.date}T${sessionData.time}`).getTime() + parseInt(sessionData.duration) * 60000),
-        resource: {
-          clientId: sessionData.client,
-          clientName: clientName,
-          clientEmail: `${sessionData.client}@email.com`,
-          sessionType: sessionTypeName as "Individual" | "Couples" | "Family" | "Group",
-          format: sessionData.location === "telehealth" ? "Telehealth" : sessionData.location === "office" ? "In-Person" : "Phone",
-          status: "Confirmed" as const,
-          diagnosis: "To be determined",
-          notes: sessionData.notes || "",
-          sessionNumber: 1,
-          duration: parseInt(sessionData.duration),
-          rate: 120, // Default rate
-        }
-      };
+        // Create the new calendar event
+        const newEvent: CalendarEvent = {
+          id: newEventId,
+          title: `${clientName} - ${sessionTypeName} Therapy`,
+          start: new Date(`${sessionData.date}T${sessionData.time}`),
+          end: new Date(
+            new Date(`${sessionData.date}T${sessionData.time}`).getTime() +
+              parseInt(sessionData.duration) * 60000,
+          ),
+          resource: {
+            clientId: sessionData.client,
+            clientName: clientName,
+            clientEmail: `${sessionData.client}@email.com`,
+            sessionType: sessionTypeName as
+              | "Individual"
+              | "Couples"
+              | "Family"
+              | "Group",
+            format:
+              sessionData.location === "telehealth"
+                ? "Telehealth"
+                : sessionData.location === "office"
+                  ? "In-Person"
+                  : "Phone",
+            status: "Confirmed" as const,
+            diagnosis: "To be determined",
+            notes: sessionData.notes || "",
+            sessionNumber: 1,
+            duration: parseInt(sessionData.duration),
+            rate: 120, // Default rate
+          },
+        };
 
-      // Add the event to the calendar
-      setEvents(prev => [...prev, newEvent]);
+        // Add the event to the calendar
+        setEvents((prev) => [...prev, newEvent]);
 
-      toast({
-        title: "Session Scheduled",
-        description: `${sessionData.client}'s session has been added to the calendar.`,
-      });
-    } catch (error) {
-      console.error("Error scheduling session:", error);
-      toast({
-        title: "Scheduling Failed",
-        description: "There was an error scheduling the session. Please try again.",
-        variant: "destructive",
-      });
-    }
-  }, [toast]);
+        toast({
+          title: "Session Scheduled",
+          description: `${sessionData.client}'s session has been added to the calendar.`,
+        });
+      } catch (error) {
+        console.error("Error scheduling session:", error);
+        toast({
+          title: "Scheduling Failed",
+          description:
+            "There was an error scheduling the session. Please try again.",
+          variant: "destructive",
+        });
+      }
+    },
+    [toast],
+  );
 
   // Handle event actions
   const handleEventAction = useCallback(
@@ -577,7 +595,8 @@ const Calendar = () => {
       if (filteredEvents.length === 0) {
         toast({
           title: "No Data to Export",
-          description: "There are no calendar events to export. Try adjusting your filters.",
+          description:
+            "There are no calendar events to export. Try adjusting your filters.",
           variant: "destructive",
         });
         return;
@@ -598,7 +617,9 @@ const Calendar = () => {
 
       const csvData = filteredEvents.map((event) => [
         moment(event.start).format("YYYY-MM-DD"),
-        moment(event.start).format("HH:mm") + " - " + moment(event.end).format("HH:mm"),
+        moment(event.start).format("HH:mm") +
+          " - " +
+          moment(event.end).format("HH:mm"),
         event.resource.clientName || "",
         event.resource.sessionType || "",
         event.resource.format || "",
@@ -632,7 +653,8 @@ const Calendar = () => {
       console.error("Export error:", error);
       toast({
         title: "Export Failed",
-        description: "There was an error exporting the calendar. Please try again.",
+        description:
+          "There was an error exporting the calendar. Please try again.",
         variant: "destructive",
       });
     }
@@ -707,8 +729,6 @@ const Calendar = () => {
     );
   };
 
-
-
   if (isLoading) {
     return (
       <Layout>
@@ -745,9 +765,14 @@ const Calendar = () => {
               className="text-xs sm:text-sm"
             >
               <Download className="h-4 w-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Export </span>({filteredEvents.length})
+              <span className="hidden sm:inline">Export </span>(
+              {filteredEvents.length})
             </Button>
-            <Button onClick={() => setScheduleModalOpen(true)} size="sm" className="text-xs sm:text-sm">
+            <Button
+              onClick={() => setScheduleModalOpen(true)}
+              size="sm"
+              className="text-xs sm:text-sm"
+            >
               <Plus className="h-4 w-4 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Schedule </span>Session
             </Button>

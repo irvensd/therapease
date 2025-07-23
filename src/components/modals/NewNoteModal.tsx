@@ -79,7 +79,12 @@ export function NewNoteModal({
     e.preventDefault();
 
     // Validate required fields
-    if (!formData.clientName || !formData.title || !formData.type || !formData.content) {
+    if (
+      !formData.clientName ||
+      !formData.title ||
+      !formData.type ||
+      !formData.content
+    ) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
@@ -131,11 +136,11 @@ export function NewNoteModal({
   if (!open) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
       onClick={handleOverlayClick}
     >
-      <div 
+      <div
         className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
@@ -146,10 +151,12 @@ export function NewNoteModal({
               {editingNote ? "Edit Clinical Note" : "New Clinical Note"}
             </h2>
             <p className="text-sm text-gray-600 mt-1">
-              {editingNote ? "Update the clinical note details" : "Create a new clinical note for documentation"}
+              {editingNote
+                ? "Update the clinical note details"
+                : "Create a new clinical note for documentation"}
             </p>
           </div>
-          <button 
+          <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
           >
@@ -182,7 +189,7 @@ export function NewNoteModal({
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="title">Note Title *</Label>
                 <Input
@@ -218,7 +225,7 @@ export function NewNoteModal({
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="diagnosis">Diagnosis</Label>
                 <Input
@@ -276,14 +283,10 @@ export function NewNoteModal({
               />
             </div>
           </div>
-          
+
           {/* Footer */}
           <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-            >
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit">

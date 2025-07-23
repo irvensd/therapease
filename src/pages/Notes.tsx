@@ -263,64 +263,69 @@ const Notes = () => {
   }, [notes, searchTerm, statusFilter, selectedPeriod]);
 
   // Handle creating/updating notes
-  const handleCreateNote = useCallback((noteData: any) => {
-    try {
-      if (noteData.isEditing) {
-        // Update existing note
-        setNotes(prev => prev.map(note =>
-          note.id === noteData.editingId
-            ? {
-                ...note,
-                clientName: noteData.clientName,
-                title: noteData.title,
-                type: noteData.type as "SOAP" | "DAP" | "BIRP" | "Progress",
-                content: noteData.content,
-                goals: noteData.goals,
-                followUp: noteData.followUp,
-                diagnosis: noteData.diagnosis,
-                wordCount: noteData.content.split(' ').length,
-                date: new Date().toISOString().split('T')[0], // Update date
-              }
-            : note
-        ));
+  const handleCreateNote = useCallback(
+    (noteData: any) => {
+      try {
+        if (noteData.isEditing) {
+          // Update existing note
+          setNotes((prev) =>
+            prev.map((note) =>
+              note.id === noteData.editingId
+                ? {
+                    ...note,
+                    clientName: noteData.clientName,
+                    title: noteData.title,
+                    type: noteData.type as "SOAP" | "DAP" | "BIRP" | "Progress",
+                    content: noteData.content,
+                    goals: noteData.goals,
+                    followUp: noteData.followUp,
+                    diagnosis: noteData.diagnosis,
+                    wordCount: noteData.content.split(" ").length,
+                    date: new Date().toISOString().split("T")[0], // Update date
+                  }
+                : note,
+            ),
+          );
 
+          toast({
+            title: "Note Updated",
+            description: `"${noteData.title}" has been updated successfully.`,
+          });
+        } else {
+          // Create new note
+          const newNote: Note = {
+            id: Date.now(), // Simple ID generation
+            clientName: noteData.clientName,
+            title: noteData.title,
+            date: new Date().toISOString().split("T")[0],
+            type: noteData.type as "SOAP" | "DAP" | "BIRP" | "Progress",
+            status: "Draft",
+            wordCount: noteData.content.split(" ").length,
+            isStarred: false,
+            diagnosis: noteData.diagnosis || "To be determined",
+            content: noteData.content,
+            goals: noteData.goals || "",
+            followUp: noteData.followUp || "",
+          };
+
+          setNotes((prev) => [newNote, ...prev]); // Add to beginning
+
+          toast({
+            title: "Note Created",
+            description: `"${noteData.title}" has been created successfully.`,
+          });
+        }
+      } catch (error) {
+        console.error("Error creating/updating note:", error);
         toast({
-          title: "Note Updated",
-          description: `"${noteData.title}" has been updated successfully.`,
-        });
-      } else {
-        // Create new note
-        const newNote: Note = {
-          id: Date.now(), // Simple ID generation
-          clientName: noteData.clientName,
-          title: noteData.title,
-          date: new Date().toISOString().split('T')[0],
-          type: noteData.type as "SOAP" | "DAP" | "BIRP" | "Progress",
-          status: "Draft",
-          wordCount: noteData.content.split(' ').length,
-          isStarred: false,
-          diagnosis: noteData.diagnosis || "To be determined",
-          content: noteData.content,
-          goals: noteData.goals || "",
-          followUp: noteData.followUp || "",
-        };
-
-        setNotes(prev => [newNote, ...prev]); // Add to beginning
-
-        toast({
-          title: "Note Created",
-          description: `"${noteData.title}" has been created successfully.`,
+          title: "Error",
+          description: "There was an error saving the note. Please try again.",
+          variant: "destructive",
         });
       }
-    } catch (error) {
-      console.error("Error creating/updating note:", error);
-      toast({
-        title: "Error",
-        description: "There was an error saving the note. Please try again.",
-        variant: "destructive",
-      });
-    }
-  }, [toast]);
+    },
+    [toast],
+  );
 
   // Handle note actions
   const handleEditNote = useCallback((note: Note) => {
@@ -384,7 +389,8 @@ const Notes = () => {
       if (filteredNotes.length === 0) {
         toast({
           title: "No Data to Export",
-          description: "There are no notes to export. Try adjusting your filters.",
+          description:
+            "There are no notes to export. Try adjusting your filters.",
           variant: "destructive",
         });
         return;
@@ -493,7 +499,9 @@ const Notes = () => {
           <div className="text-center space-y-4 max-w-md">
             <AlertCircle className="h-12 w-12 mx-auto text-destructive" />
             <div>
-              <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Something went wrong
+              </h3>
               <p className="text-muted-foreground text-sm">{error}</p>
             </div>
             <div className="flex gap-2 justify-center">
@@ -552,9 +560,14 @@ const Notes = () => {
               className="text-xs sm:text-sm"
             >
               <Download className="h-4 w-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Export </span>({filteredNotes.length})
+              <span className="hidden sm:inline">Export </span>(
+              {filteredNotes.length})
             </Button>
-            <Button onClick={() => setNewNoteModalOpen(true)} size="sm" className="text-xs sm:text-sm">
+            <Button
+              onClick={() => setNewNoteModalOpen(true)}
+              size="sm"
+              className="text-xs sm:text-sm"
+            >
               <Plus className="h-4 w-4 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">New </span>Note
             </Button>
@@ -665,7 +678,9 @@ const Notes = () => {
         {/* Notes Table */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Clinical Notes ({filteredNotes.length})</CardTitle>
+            <CardTitle className="text-lg">
+              Clinical Notes ({filteredNotes.length})
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {/* Mobile Card View */}
@@ -704,11 +719,17 @@ const Notes = () => {
 
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <div className="text-muted-foreground text-xs">Date</div>
-                        <div className="font-medium">{new Date(note.date).toLocaleDateString()}</div>
+                        <div className="text-muted-foreground text-xs">
+                          Date
+                        </div>
+                        <div className="font-medium">
+                          {new Date(note.date).toLocaleDateString()}
+                        </div>
                       </div>
                       <div>
-                        <div className="text-muted-foreground text-xs">Word Count</div>
+                        <div className="text-muted-foreground text-xs">
+                          Word Count
+                        </div>
                         <div className="font-medium">{note.wordCount}</div>
                       </div>
                     </div>
@@ -759,7 +780,9 @@ const Notes = () => {
                     <TableHead className="hidden md:table-cell">Date</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="hidden lg:table-cell">Words</TableHead>
+                    <TableHead className="hidden lg:table-cell">
+                      Words
+                    </TableHead>
                     <TableHead className="w-[120px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
