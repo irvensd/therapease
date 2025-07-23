@@ -1011,11 +1011,47 @@ const Progress = () => {
                       <div>
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium">Progress</span>
-                          <span className="text-sm">
-                            {goal.currentProgress}%
-                          </span>
+                          {editingProgress === goal.id ? (
+                            <div className="flex items-center gap-2">
+                              <Input
+                                type="number"
+                                min="0"
+                                max="100"
+                                value={progressValue}
+                                onChange={(e) => setProgressValue(e.target.value)}
+                                className="w-16 h-6 text-xs"
+                                placeholder="0-100"
+                              />
+                              <span className="text-xs">%</span>
+                              <Button
+                                size="sm"
+                                onClick={() => handleSaveProgress(goal.id)}
+                                className="h-6 px-2 text-xs"
+                              >
+                                ✓
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={handleCancelProgressEdit}
+                                className="h-6 px-2 text-xs"
+                              >
+                                ✕
+                              </Button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleStartProgressEdit(goal.id, goal.currentProgress)}
+                              className="text-sm hover:text-blue-600 cursor-pointer"
+                            >
+                              {goal.currentProgress}% (click to edit)
+                            </button>
+                          )}
                         </div>
-                        <ProgressBar value={goal.currentProgress} />
+                        <ProgressBar
+                          value={goal.currentProgress}
+                          className={editingProgress === goal.id ? "opacity-50" : ""}
+                        />
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
