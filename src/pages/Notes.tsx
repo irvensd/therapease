@@ -566,20 +566,103 @@ const Notes = () => {
 
         {/* Notes Table */}
         <Card>
-          <CardHeader>
-            <CardTitle>Clinical Notes ({filteredNotes.length})</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Clinical Notes ({filteredNotes.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            {/* Mobile Card View */}
+            <div className="block sm:hidden space-y-4">
+              {filteredNotes.map((note) => (
+                <Card key={note.id} className="p-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1 flex-1">
+                        <div className="font-medium text-base flex items-center gap-2">
+                          {note.isStarred && (
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          )}
+                          {note.clientName}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {note.title}
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          <Badge variant="outline" className="text-xs">
+                            {note.diagnosis}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {note.type}
+                          </Badge>
+                        </div>
+                      </div>
+                      <Badge
+                        variant={getStatusColor(note.status)}
+                        className="flex items-center gap-1"
+                      >
+                        {getStatusIcon(note.status)}
+                        {note.status}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <div className="text-muted-foreground text-xs">Date</div>
+                        <div className="font-medium">{new Date(note.date).toLocaleDateString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground text-xs">Word Count</div>
+                        <div className="font-medium">{note.wordCount}</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t">
+                      <div className="text-xs text-muted-foreground">
+                        {note.type} Note
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleToggleStar(note.id)}
+                        >
+                          {note.isStarred ? (
+                            <StarOff className="h-4 w-4" />
+                          ) : (
+                            <Star className="h-4 w-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditNote(note)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteNote(note)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Client & Title</TableHead>
-                    <TableHead>Date</TableHead>
+                    <TableHead className="hidden md:table-cell">Date</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Words</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead className="hidden lg:table-cell">Words</TableHead>
+                    <TableHead className="w-[120px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -601,7 +684,7 @@ const Notes = () => {
                           </Badge>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <div className="text-sm">
                           {new Date(note.date).toLocaleDateString()}
                         </div>
@@ -618,7 +701,7 @@ const Notes = () => {
                           {note.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div className="text-sm">{note.wordCount}</div>
                       </TableCell>
                       <TableCell>
@@ -654,23 +737,23 @@ const Notes = () => {
                   ))}
                 </TableBody>
               </Table>
-
-              {filteredNotes.length === 0 && (
-                <div className="text-center py-12">
-                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No notes found</h3>
-                  <p className="text-muted-foreground mb-4">
-                    {searchTerm
-                      ? "Try adjusting your search or filters"
-                      : "Create your first clinical note to get started"}
-                  </p>
-                  <Button onClick={() => setNewNoteModalOpen(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Note
-                  </Button>
-                </div>
-              )}
             </div>
+
+            {filteredNotes.length === 0 && (
+              <div className="text-center py-12">
+                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No notes found</h3>
+                <p className="text-muted-foreground mb-4">
+                  {searchTerm
+                    ? "Try adjusting your search or filters"
+                    : "Create your first clinical note to get started"}
+                </p>
+                <Button onClick={() => setNewNoteModalOpen(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Note
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
