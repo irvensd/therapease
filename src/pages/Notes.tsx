@@ -514,11 +514,11 @@ const Notes = () => {
 
         {/* Filters and Search */}
         <Card>
-          <CardHeader>
-            <CardTitle>Note Management</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Note Management</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-col lg:flex-row gap-4">
+          <CardContent className="space-y-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -527,13 +527,14 @@ const Notes = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
+                    aria-label="Search notes"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2">
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-[150px]">
+                  <SelectTrigger className="w-full sm:w-[150px]">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -548,7 +549,7 @@ const Notes = () => {
                   value={selectedPeriod}
                   onValueChange={setSelectedPeriod}
                 >
-                  <SelectTrigger className="w-[150px]">
+                  <SelectTrigger className="w-full sm:w-[150px]">
                     <SelectValue placeholder="Period" />
                   </SelectTrigger>
                   <SelectContent>
