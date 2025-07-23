@@ -60,6 +60,7 @@ import { ScheduleSessionModal } from "@/components/modals/ScheduleSessionModal";
 import { SessionCalendarModal } from "@/components/modals/SessionCalendarModal";
 import { SessionWorkspaceModal } from "@/components/modals/SessionWorkspaceModal";
 import { SessionPrepModal } from "@/components/modals/SessionPrepModal";
+import { SessionDetailsModal } from "@/components/modals/SessionDetailsModal";
 
 // Types for better type safety
 interface Session {
