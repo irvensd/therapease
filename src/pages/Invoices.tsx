@@ -589,12 +589,115 @@ const Invoices = () => {
     }
   }, [filteredInvoices, toast]);
 
-  const handleInvoiceModalClose = useCallback((open: boolean) => {
-    setCreateInvoiceModalOpen(open);
-    if (!open) {
-      setEditingInvoice(null);
-    }
+  const handleInvoiceModalClose = useCallback(() => {
+    setCreateInvoiceModalOpen(false);
+    setEditingInvoice(null);
+    setInvoiceForm({
+      clientName: "",
+      clientEmail: "",
+      amount: "",
+      dueDate: "",
+      services: "",
+      notes: "",
+    });
   }, []);
+
+  const handleEditInvoice = useCallback((invoice: Invoice) => {
+    setEditingInvoice(invoice);
+    setInvoiceForm({
+      clientName: invoice.clientName,
+      clientEmail: invoice.clientEmail,
+      amount: invoice.amount.toString(),
+      dueDate: invoice.dueDate,
+      services: invoice.services.map(s => s.description).join(", "),
+      notes: invoice.notes || "",
+    });
+    setCreateInvoiceModalOpen(true);
+  }, []);
+
+  const handleSaveInvoice = useCallback(() => {
+    if (!invoiceForm.clientName || !invoiceForm.amount || !invoiceForm.dueDate) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in client name, amount, and due date.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const amount = parseFloat(invoiceForm.amount);
+    if (isNaN(amount) || amount <= 0) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid amount.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (editingInvoice) {
+      // Update existing invoice
+      setInvoices(prev =>
+        prev.map(invoice =>
+          invoice.id === editingInvoice.id
+            ? {
+                ...invoice,
+                clientName: invoiceForm.clientName,
+                clientEmail: invoiceForm.clientEmail,
+                amount,
+                totalAmount: amount,
+                dueDate: invoiceForm.dueDate,
+                services: invoiceForm.services ? [{
+                  description: invoiceForm.services,
+                  quantity: 1,
+                  rate: amount,
+                  total: amount,
+                  date: new Date().toISOString().split('T')[0],
+                }] : invoice.services,
+                notes: invoiceForm.notes,
+              }
+            : invoice
+        )
+      );
+
+      toast({
+        title: "Invoice Updated",
+        description: `Invoice for ${invoiceForm.clientName} has been updated.`,
+      });
+    } else {
+      // Create new invoice
+      const newInvoice: Invoice = {
+        id: Date.now(),
+        invoiceNumber: `INV-2024-${String(invoices.length + 1).padStart(3, '0')}`,
+        clientName: invoiceForm.clientName,
+        clientEmail: invoiceForm.clientEmail,
+        amount,
+        status: "Draft",
+        issueDate: new Date().toISOString().split('T')[0],
+        dueDate: invoiceForm.dueDate,
+        services: invoiceForm.services ? [{
+          description: invoiceForm.services,
+          quantity: 1,
+          rate: amount,
+          total: amount,
+          date: new Date().toISOString().split('T')[0],
+        }] : [],
+        notes: invoiceForm.notes,
+        isStarred: false,
+        taxAmount: 0,
+        totalAmount: amount,
+      };
+
+      setInvoices(prev => [newInvoice, ...prev]);
+
+      toast({
+        title: "Invoice Created",
+        description: `Invoice for ${invoiceForm.clientName} has been created.`,
+      });
+    }
+
+    handleInvoiceModalClose();
+  }, [invoiceForm, editingInvoice, invoices.length, toast, handleInvoiceModalClose]);
 
   // Loading state
   if (isLoading) {
