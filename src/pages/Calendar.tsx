@@ -556,39 +556,48 @@ const Calendar = () => {
   // Custom toolbar
   const CustomToolbar = ({ date, view, onNavigate, onView }: any) => {
     return (
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onNavigate("PREV")}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onNavigate("TODAY")}
-          >
-            Today
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onNavigate("NEXT")}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-          <div className="ml-4 text-lg font-semibold">
+      <div className="flex flex-col gap-3 mb-4">
+        {/* Date Navigation */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onNavigate("PREV")}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1">Prev</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onNavigate("TODAY")}
+              className="text-xs sm:text-sm"
+            >
+              Today
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onNavigate("NEXT")}
+            >
+              <span className="hidden sm:inline mr-1">Next</span>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="text-lg sm:text-xl font-semibold text-center">
             {moment(date).format("MMMM YYYY")}
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* View Buttons */}
+        <div className="flex items-center justify-center gap-1 sm:gap-2">
           <Button
             variant={view === "month" ? "default" : "outline"}
             size="sm"
             onClick={() => onView("month")}
+            className="text-xs sm:text-sm"
           >
             Month
           </Button>
@@ -596,6 +605,7 @@ const Calendar = () => {
             variant={view === "week" ? "default" : "outline"}
             size="sm"
             onClick={() => onView("week")}
+            className="text-xs sm:text-sm"
           >
             Week
           </Button>
@@ -603,6 +613,7 @@ const Calendar = () => {
             variant={view === "day" ? "default" : "outline"}
             size="sm"
             onClick={() => onView("day")}
+            className="text-xs sm:text-sm"
           >
             Day
           </Button>
