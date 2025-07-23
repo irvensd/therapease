@@ -46,6 +46,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ScheduleSessionModal } from "@/components/modals/ScheduleSessionModal";
+import { EventDetailsModal } from "@/components/modals/EventDetailsModal";
 
 // Setup the localizer for react-big-calendar
 const localizer = momentLocalizer(moment);
