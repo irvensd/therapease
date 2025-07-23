@@ -105,6 +105,7 @@ const Settings = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isMobile, setIsMobile] = useState(false);
 
   // Load settings from localStorage on component mount
   useEffect(() => {
