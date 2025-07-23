@@ -101,6 +101,20 @@ const Reminders = () => {
   const [statusFilter, setStatusFilter] = useState("active");
   const [showStarredOnly, setShowStarredOnly] = useState(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Reminder form state
+  const [reminderForm, setReminderForm] = useState({
+    title: "",
+    description: "",
+    category: "Client Follow-up" as Reminder["category"],
+    priority: "medium" as Reminder["priority"],
+    dueDate: "",
+    dueTime: "",
+    clientName: "",
+    notes: "",
+    recurringType: "none" as Reminder["recurringType"],
+  });
 
   // Mock reminders data - in real app would be fetched from API
   const mockReminders: Reminder[] = [
