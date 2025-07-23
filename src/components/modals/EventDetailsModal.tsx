@@ -244,8 +244,10 @@ export function EventDetailsModal({
                   size="sm"
                   onClick={() => {
                     onEventAction("edit", event);
+                    announce(`Editing appointment for ${event.resource.clientName}`);
                     handleClose();
                   }}
+                  aria-label={`Edit appointment for ${event.resource.clientName}`}
                 >
                   <Edit className="h-4 w-4 mr-2" />
                   Edit
