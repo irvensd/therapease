@@ -400,6 +400,50 @@ const Calendar = () => {
     [showModal, toast],
   );
 
+  // Handle adding new session to calendar
+  const handleScheduleSession = useCallback((sessionData: any) => {
+    try {
+      // Generate a unique ID for the new event
+      const newEventId = `session-${Date.now()}`;
+
+      // Create the new calendar event
+      const newEvent: CalendarEvent = {
+        id: newEventId,
+        title: `${sessionData.client} - ${sessionData.sessionType}`,
+        start: new Date(`${sessionData.date}T${sessionData.time}`),
+        end: new Date(new Date(`${sessionData.date}T${sessionData.time}`).getTime() + parseInt(sessionData.duration) * 60000),
+        resource: {
+          clientId: sessionData.client.toLowerCase().replace(' ', ''),
+          clientName: sessionData.client,
+          clientEmail: `${sessionData.client.toLowerCase().replace(' ', '.')}@email.com`,
+          sessionType: sessionData.sessionType as "Individual" | "Couples" | "Family" | "Group",
+          format: sessionData.location === "telehealth" ? "Telehealth" : sessionData.location === "office" ? "In-Person" : "Phone",
+          status: "Confirmed" as const,
+          diagnosis: "To be determined",
+          notes: sessionData.notes || "",
+          sessionNumber: 1,
+          duration: parseInt(sessionData.duration),
+          rate: 120, // Default rate
+        }
+      };
+
+      // Add the event to the calendar
+      setEvents(prev => [...prev, newEvent]);
+
+      toast({
+        title: "Session Scheduled",
+        description: `${sessionData.client}'s session has been added to the calendar.`,
+      });
+    } catch (error) {
+      console.error("Error scheduling session:", error);
+      toast({
+        title: "Scheduling Failed",
+        description: "There was an error scheduling the session. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
+
   // Handle event actions
   const handleEventAction = useCallback(
     (action: string, event: CalendarEvent) => {
