@@ -631,36 +631,7 @@ const Calendar = () => {
     );
   };
 
-  // Get status icon and color
-  const getStatusInfo = (status: string) => {
-    switch (status) {
-      case "Confirmed":
-        return { icon: CheckCircle, color: "text-green-600" };
-      case "Pending":
-        return { icon: Clock, color: "text-yellow-600" };
-      case "Completed":
-        return { icon: CheckCircle, color: "text-blue-600" };
-      case "Cancelled":
-        return { icon: XCircle, color: "text-red-600" };
-      case "No-Show":
-        return { icon: AlertCircle, color: "text-orange-600" };
-      default:
-        return { icon: Clock, color: "text-gray-600" };
-    }
-  };
 
-  const getFormatIcon = (format: string) => {
-    switch (format) {
-      case "In-Person":
-        return MapPin;
-      case "Telehealth":
-        return Video;
-      case "Phone":
-        return Phone;
-      default:
-        return MapPin;
-    }
-  };
 
   if (isLoading) {
     return (
