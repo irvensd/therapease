@@ -766,13 +766,7 @@ const Sessions = () => {
         />
         <SessionDetailsModal
           open={sessionDetailsModalOpen}
-          onOpenChange={(open) => {
-            setSessionDetailsModalOpen(open);
-            if (!open) {
-              // Clear selected session when modal closes
-              setSelectedSession(null);
-            }
-          }}
+          onOpenChange={setSessionDetailsModalOpen}
           session={selectedSession}
           onEdit={(session) => {
             setSelectedSession(session);
