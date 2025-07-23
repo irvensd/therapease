@@ -36,6 +36,7 @@ interface AuthContextType {
     title: string,
   ) => Promise<{ success: boolean; error?: string }>;
   signOut: () => void;
+  updateProfile: (updates: Partial<Pick<User, 'name' | 'title' | 'email'>>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
