@@ -51,7 +51,7 @@ import {
   Star,
   StarOff,
 } from "lucide-react";
-import { AddReminderModal } from "@/components/modals/AddReminderModal";
+
 
 // Types for better type safety
 interface Reminder {
