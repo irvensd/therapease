@@ -225,7 +225,7 @@ const Sessions = () => {
   const [calendarModalOpen, setCalendarModalOpen] = useState(false);
   const [workspaceModalOpen, setWorkspaceModalOpen] = useState(false);
   const [prepModalOpen, setPrepModalOpen] = useState(false);
-  const [sessionDetailsModalOpen, setSessionDetailsModalOpen] = useState(false);
+  // const [sessionDetailsModalOpen, setSessionDetailsModalOpen] = useState(false);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
   // Simulate loading
