@@ -790,8 +790,8 @@ const Calendar = () => {
 
         {/* Calendar */}
         <Card>
-          <CardContent className="p-6">
-            <div style={{ height: 600 }}>
+          <CardContent className="p-3 sm:p-6">
+            <div style={{ height: window.innerWidth < 640 ? 400 : 600 }}>
               <BigCalendar
                 localizer={localizer}
                 events={filteredEvents}
