@@ -1,3 +1,7 @@
+// WARNING: DO NOT replace this simple div-based modal with shadcn Dialog component
+// The shadcn Dialog component causes app freezing issues when closing modals
+// This simple implementation works reliably - keep it as is!
+
 interface Session {
   id: number;
   clientName: string;
