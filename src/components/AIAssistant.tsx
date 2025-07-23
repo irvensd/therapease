@@ -219,7 +219,9 @@ export function AIAssistant({
         </Button>
 
         {/* Custom AI Assistant Modal */}
-        {isOpen && (console.log("Modal should be rendering now", isOpen) || (
+        {isOpen && (() => {
+          console.log("Modal should be rendering now", isOpen);
+          return (
           <div
             className="fixed inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center z-50"
             style={{ zIndex: 9999 }}
