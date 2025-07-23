@@ -21,6 +21,7 @@ export function ScheduleSessionModal({
   open,
   onOpenChange,
 }: ScheduleSessionModalProps) {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     client: "",
     sessionType: "",
@@ -35,6 +36,12 @@ export function ScheduleSessionModal({
     e.preventDefault();
     console.log("New session data:", formData);
 
+    // Show success toast instead of alert
+    toast({
+      title: "Session Scheduled",
+      description: "The therapy session has been scheduled successfully.",
+    });
+
     // Reset form and close modal
     setFormData({
       client: "",
@@ -46,8 +53,16 @@ export function ScheduleSessionModal({
       notes: "",
     });
     onOpenChange(false);
+  };
 
-    alert("Session scheduled successfully!");
+  const handleClose = () => {
+    onOpenChange(false);
+  };
+
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
   };
 
   return (
