@@ -403,20 +403,41 @@ const Calendar = () => {
   // Handle adding new session to calendar
   const handleScheduleSession = useCallback((sessionData: any) => {
     try {
+      // Map client values to names
+      const clientNames: { [key: string]: string } = {
+        emma: "Emma Thompson",
+        michael: "Michael Chen",
+        sarah: "Sarah Johnson",
+        david: "David Wilson",
+        lisa: "Lisa Rodriguez"
+      };
+
+      // Map session type values to display names
+      const sessionTypeNames: { [key: string]: string } = {
+        individual: "Individual",
+        couples: "Couples",
+        family: "Family",
+        group: "Group",
+        assessment: "Individual"
+      };
+
+      const clientName = clientNames[sessionData.client] || sessionData.client;
+      const sessionTypeName = sessionTypeNames[sessionData.sessionType] || sessionData.sessionType;
+
       // Generate a unique ID for the new event
       const newEventId = `session-${Date.now()}`;
 
       // Create the new calendar event
       const newEvent: CalendarEvent = {
         id: newEventId,
-        title: `${sessionData.client} - ${sessionData.sessionType}`,
+        title: `${clientName} - ${sessionTypeName} Therapy`,
         start: new Date(`${sessionData.date}T${sessionData.time}`),
         end: new Date(new Date(`${sessionData.date}T${sessionData.time}`).getTime() + parseInt(sessionData.duration) * 60000),
         resource: {
-          clientId: sessionData.client.toLowerCase().replace(' ', ''),
-          clientName: sessionData.client,
-          clientEmail: `${sessionData.client.toLowerCase().replace(' ', '.')}@email.com`,
-          sessionType: sessionData.sessionType as "Individual" | "Couples" | "Family" | "Group",
+          clientId: sessionData.client,
+          clientName: clientName,
+          clientEmail: `${sessionData.client}@email.com`,
+          sessionType: sessionTypeName as "Individual" | "Couples" | "Family" | "Group",
           format: sessionData.location === "telehealth" ? "Telehealth" : sessionData.location === "office" ? "In-Person" : "Phone",
           status: "Confirmed" as const,
           diagnosis: "To be determined",
