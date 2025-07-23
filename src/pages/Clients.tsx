@@ -451,13 +451,13 @@ const Clients = () => {
     <Layout>
       <div className="p-4 sm:p-6 space-y-6">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Users className="h-8 w-8" />
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+              <Users className="h-6 w-6 sm:h-8 sm:w-8" />
               Clients
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Manage your client information and treatment progress
             </p>
           </div>
@@ -466,13 +466,15 @@ const Clients = () => {
               variant="outline"
               onClick={handleExportClients}
               disabled={filteredClients.length === 0}
+              size="sm"
+              className="text-xs sm:text-sm"
             >
-              <Download className="h-4 w-4 mr-2" />
-              Export ({filteredClients.length})
+              <Download className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Export </span>({filteredClients.length})
             </Button>
-            <Button onClick={() => setNewClientModalOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Client
+            <Button onClick={() => setNewClientModalOpen(true)} size="sm" className="text-xs sm:text-sm">
+              <Plus className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Add </span>Client
             </Button>
           </div>
         </div>
