@@ -238,7 +238,9 @@ export function AIAssistant({
                   <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
                     <Bot className="h-4 w-4 text-white" />
                   </div>
-                  <h2 className="text-lg font-semibold">TherapEase AI Assistant</h2>
+                  <h2 className="text-lg font-semibold">
+                    TherapEase AI Assistant
+                  </h2>
                   <Badge variant="secondary" className="ml-auto">
                     <Sparkles className="h-3 w-3 mr-1" />
                     Active
@@ -543,7 +545,9 @@ export function AIAssistant({
             size="sm"
             className="w-full"
             onClick={() => {
-              console.log("AI Assistant button clicked, setting isOpen to true");
+              console.log(
+                "AI Assistant button clicked, setting isOpen to true",
+              );
               setIsOpen(true);
             }}
           >
@@ -572,7 +576,9 @@ export function AIAssistant({
                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
                   <Bot className="h-4 w-4 text-white" />
                 </div>
-                <h2 className="text-lg font-semibold">TherapEase AI Assistant</h2>
+                <h2 className="text-lg font-semibold">
+                  TherapEase AI Assistant
+                </h2>
                 <Badge variant="secondary" className="ml-auto">
                   <Sparkles className="h-3 w-3 mr-1" />
                   Active

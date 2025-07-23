@@ -237,7 +237,10 @@ const Dashboard = () => {
     <Layout>
       <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
         {/* Welcome section */}
-        <div className="therapease-gradient rounded-xl p-4 sm:p-6" role="banner">
+        <div
+          className="therapease-gradient rounded-xl p-4 sm:p-6"
+          role="banner"
+        >
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
             Welcome back, {userName}
           </h1>
@@ -252,7 +255,10 @@ const Dashboard = () => {
           role="region"
           aria-label="Practice overview statistics"
         >
-          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/clients", "client management")}>
+          <Card
+            className="therapease-card cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => handleNavigation("/clients", "client management")}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Active Clients
@@ -275,7 +281,10 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/sessions", "session management")}>
+          <Card
+            className="therapease-card cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => handleNavigation("/sessions", "session management")}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">This Week</CardTitle>
               <Calendar
@@ -296,7 +305,12 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/invoices", "billing and invoices")}>
+          <Card
+            className="therapease-card cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() =>
+              handleNavigation("/invoices", "billing and invoices")
+            }
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Revenue</CardTitle>
               <DollarSign
@@ -311,11 +325,18 @@ const Dashboard = () => {
               >
                 ${dashboardData.stats.monthlyRevenue.toLocaleString()}
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground">this month</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                this month
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="therapease-card cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleNavigation("/reports", "reports and analytics")}>
+          <Card
+            className="therapease-card cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() =>
+              handleNavigation("/reports", "reports and analytics")
+            }
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Completion Rate
@@ -379,20 +400,23 @@ const Dashboard = () => {
               case "emergency-contact":
                 toast({
                   title: "Emergency Resources",
-                  description: "National Suicide Prevention Lifeline: 988 | Crisis Text Line: Text HOME to 741741 | Emergency Services: 911",
+                  description:
+                    "National Suicide Prevention Lifeline: 988 | Crisis Text Line: Text HOME to 741741 | Emergency Services: 911",
                   variant: "destructive",
                 });
                 break;
               case "backup-data":
                 toast({
                   title: "Data Export",
-                  description: "Practice data exported successfully! Download will start automatically.",
+                  description:
+                    "Practice data exported successfully! Download will start automatically.",
                 });
                 break;
               case "quick-search":
                 toast({
                   title: "Quick Search",
-                  description: "Global search activated! Use the search bar to find anything.",
+                  description:
+                    "Global search activated! Use the search bar to find anything.",
                 });
                 break;
               case "video-call":
@@ -448,14 +472,18 @@ const Dashboard = () => {
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-8 bg-primary rounded-full" />
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm sm:text-base">{session.client}</p>
+                        <p className="font-medium text-sm sm:text-base">
+                          {session.client}
+                        </p>
                         <p className="text-xs sm:text-sm text-muted-foreground">
                           {session.type}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center justify-between sm:flex-col sm:text-right">
-                      <p className="font-medium text-sm sm:text-base">{session.time}</p>
+                      <p className="font-medium text-sm sm:text-base">
+                        {session.time}
+                      </p>
                       <Badge
                         variant={
                           session.status === "confirmed" ? "default" : "outline"

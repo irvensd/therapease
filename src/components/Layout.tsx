@@ -65,18 +65,18 @@ export default function Layout({ children }: LayoutProps) {
       if (!event.ctrlKey && !event.metaKey) return;
 
       const activeElement = document.activeElement;
-      const isInputFocused = activeElement && (
-        activeElement.tagName === 'INPUT' ||
-        activeElement.tagName === 'TEXTAREA' ||
-        activeElement.tagName === 'SELECT' ||
-        activeElement.getAttribute('contenteditable') === 'true'
-      );
+      const isInputFocused =
+        activeElement &&
+        (activeElement.tagName === "INPUT" ||
+          activeElement.tagName === "TEXTAREA" ||
+          activeElement.tagName === "SELECT" ||
+          activeElement.getAttribute("contenteditable") === "true");
 
       // Don't trigger shortcuts when typing in input fields
       if (isInputFocused) return;
 
       switch (event.key.toLowerCase()) {
-        case 'n':
+        case "n":
           event.preventDefault();
           // Trigger new client action - we'll need to communicate with Dashboard
           toast({
@@ -84,44 +84,47 @@ export default function Layout({ children }: LayoutProps) {
             description: "Opening new client form...",
           });
           // Navigate to clients page for now, could open modal if we had global state
-          navigate('/clients');
+          navigate("/clients");
           break;
 
-        case 's':
+        case "s":
           event.preventDefault();
           toast({
             title: "Keyboard Shortcut",
             description: "Opening session scheduler...",
           });
-          navigate('/sessions');
+          navigate("/sessions");
           break;
 
-        case 't':
+        case "t":
           event.preventDefault();
           toast({
             title: "Keyboard Shortcut",
             description: "Opening note editor...",
           });
-          navigate('/notes');
+          navigate("/notes");
           break;
 
-        case 'i':
+        case "i":
           event.preventDefault();
           toast({
             title: "Keyboard Shortcut",
             description: "Opening invoice creator...",
           });
-          navigate('/invoices');
+          navigate("/invoices");
           break;
 
-        case 'k':
+        case "k":
           event.preventDefault();
           toast({
             title: "Quick Search",
-            description: "Search feature would open here! Use the search bar in the navigation.",
+            description:
+              "Search feature would open here! Use the search bar in the navigation.",
           });
           // Focus search input if available
-          const searchInput = document.querySelector('input[placeholder*="search"], input[placeholder*="Search"]') as HTMLInputElement;
+          const searchInput = document.querySelector(
+            'input[placeholder*="search"], input[placeholder*="Search"]',
+          ) as HTMLInputElement;
           if (searchInput) {
             searchInput.focus();
           }
@@ -133,11 +136,11 @@ export default function Layout({ children }: LayoutProps) {
     };
 
     // Add event listener
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     // Cleanup
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [navigate, toast]);
 
