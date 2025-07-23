@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -5,6 +6,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Phone,
+  Video,
+  User,
+  FileText,
+  Target,
+  Activity,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  Edit,
+  Trash2,
+} from "lucide-react";
 
 interface Session {
   id: number;
@@ -32,48 +51,239 @@ interface SessionDetailsModalProps {
   onDelete?: (session: Session) => void;
 }
 
-export function SessionDetailsModal({
+// Move static functions outside component to prevent recreation
+const getStatusColor = (status: Session["status"]) => {
+  switch (status) {
+    case "confirmed":
+      return "default";
+    case "completed":
+      return "secondary";
+    case "pending":
+      return "outline";
+    case "cancelled":
+      return "destructive";
+    case "no-show":
+      return "destructive";
+    default:
+      return "secondary";
+  }
+};
+
+const getStatusIcon = (status: Session["status"]) => {
+  switch (status) {
+    case "confirmed":
+      return <CheckCircle className="h-3 w-3" />;
+    case "completed":
+      return <CheckCircle className="h-3 w-3" />;
+    case "pending":
+      return <Clock className="h-3 w-3" />;
+    case "cancelled":
+      return <XCircle className="h-3 w-3" />;
+    case "no-show":
+      return <AlertCircle className="h-3 w-3" />;
+    default:
+      return <Clock className="h-3 w-3" />;
+  }
+};
+
+const getFormatIcon = (format: Session["format"]) => {
+  switch (format) {
+    case "In-Person":
+      return <MapPin className="h-4 w-4" />;
+    case "Telehealth":
+      return <Video className="h-4 w-4" />;
+    case "Phone Call":
+      return <Phone className="h-4 w-4" />;
+    default:
+      return <MapPin className="h-4 w-4" />;
+  }
+};
+
+const formatDate = (dateString: string) => {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch (error) {
+    return dateString;
+  }
+};
+
+export const SessionDetailsModal = React.memo(({
   open,
   onOpenChange,
   session,
   onEdit,
   onDelete,
-}: SessionDetailsModalProps) {
+}: SessionDetailsModalProps) => {
+  // Early return if no session
   if (!session) return null;
+
+  // Memoize expensive computations
+  const statusBadge = useMemo(() => (
+    <Badge
+      variant={getStatusColor(session.status)}
+      className="flex items-center gap-1"
+    >
+      {getStatusIcon(session.status)}
+      {session.status.charAt(0).toUpperCase() + session.status.slice(1)}
+    </Badge>
+  ), [session.status]);
+
+  const formattedDate = useMemo(() => formatDate(session.date), [session.date]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Session Details - {session.clientName}</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <User className="h-5 w-5" />
+            Session Details - {session.clientName}
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 p-4">
-          <div>
-            <h3 className="font-semibold">Basic Information</h3>
-            <p>Client: {session.clientName}</p>
-            <p>Date: {session.date}</p>
-            <p>Time: {session.time}</p>
-            <p>Duration: {session.duration} minutes</p>
-            <p>Type: {session.type}</p>
-            <p>Format: {session.format}</p>
-            <p>Status: {session.status}</p>
-          </div>
+        <div className="space-y-4">
+          {/* Session Overview */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center justify-between">
+                Session Overview
+                {statusBadge}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{formattedDate}</div>
+                      <div className="text-sm text-muted-foreground">Session Date</div>
+                    </div>
+                  </div>
 
-          <div>
-            <h3 className="font-semibold">Treatment Details</h3>
-            <p>Session Number: {session.sessionNumber}</p>
-            <p>Treatment Focus: {session.treatmentFocus}</p>
-            {session.notes && <p>Notes: {session.notes}</p>}
-          </div>
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{session.time}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {session.duration} minutes
+                      </div>
+                    </div>
+                  </div>
 
-          <div className="flex justify-end gap-2 pt-4">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Close
-            </Button>
+                  <div className="flex items-center gap-3">
+                    {getFormatIcon(session.format)}
+                    <div>
+                      <div className="font-medium">{session.format}</div>
+                      <div className="text-sm text-muted-foreground">Session Format</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Activity className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{session.type}</div>
+                      <div className="text-sm text-muted-foreground">
+                        Session #{session.sessionNumber}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{session.treatmentFocus}</div>
+                      <div className="text-sm text-muted-foreground">Treatment Focus</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Client Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <User className="h-5 w-5" />
+                Client Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="font-medium text-lg">{session.clientName}</div>
+                <div className="text-sm text-muted-foreground">
+                  Client ID: {session.clientId}
+                </div>
+                {session.diagnosis && (
+                  <Badge variant="outline" className="text-xs">
+                    {session.diagnosis}
+                  </Badge>
+                )}
+                {session.location && (
+                  <div className="flex items-center gap-3 mt-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{session.location}</div>
+                      <div className="text-sm text-muted-foreground">Location</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Session Notes */}
+          {session.notes && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Session Notes
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-muted/50 p-3 rounded-lg">
+                  <p className="text-sm leading-relaxed">{session.notes}</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Actions */}
+          <div className="flex justify-between items-center pt-4 border-t">
+            <div className="text-sm text-muted-foreground">
+              Session ID: {session.id}
+            </div>
+            <div className="flex gap-2">
+              {onEdit && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    onEdit(session);
+                    onOpenChange(false);
+                  }}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+              )}
+              <Button onClick={() => onOpenChange(false)}>
+                Close
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+});
+
+SessionDetailsModal.displayName = "SessionDetailsModal";
