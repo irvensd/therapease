@@ -331,6 +331,15 @@ const Clients = () => {
 
   const handleExportClients = useCallback(() => {
     try {
+      if (filteredClients.length === 0) {
+        toast({
+          title: "No Data to Export",
+          description: "There are no clients to export. Add some clients first.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const csvHeaders = [
         "Name",
         "Email",
@@ -349,13 +358,13 @@ const Clients = () => {
       ];
 
       const csvData = filteredClients.map((client) => [
-        client.name,
-        client.email,
-        client.phone,
-        client.status,
-        client.diagnosis,
-        client.insurance,
-        client.sessionsCount.toString(),
+        client.name || "",
+        client.email || "",
+        client.phone || "",
+        client.status || "",
+        client.diagnosis || "",
+        client.insurance || "",
+        client.sessionsCount?.toString() || "0",
         client.lastSession || "",
         client.nextSession || "",
         client.dateOfBirth || "",
@@ -369,11 +378,12 @@ const Clients = () => {
         .map((row) => row.join(","))
         .join("\n");
 
-      const blob = new Blob([csvContent], { type: "text/csv" });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = `clients-${new Date().toISOString().split("T")[0]}.csv`;
+      link.setAttribute("aria-label", "Download client data as CSV file");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -384,6 +394,7 @@ const Clients = () => {
         description: `${filteredClients.length} clients exported successfully.`,
       });
     } catch (error) {
+      console.error("Export error:", error);
       toast({
         title: "Export Failed",
         description: "There was an error exporting clients. Please try again.",
