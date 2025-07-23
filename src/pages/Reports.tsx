@@ -735,30 +735,54 @@ const Reports = () => {
                 <CardTitle>Revenue Breakdown</CardTitle>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Percentage</TableHead>
-                      <TableHead>Share</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {analyticsData.financialBreakdown.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">
-                          {item.category}
-                        </TableCell>
-                        <TableCell>${item.amount.toLocaleString()}</TableCell>
-                        <TableCell>{item.percentage}%</TableCell>
-                        <TableCell>
-                          <Progress value={item.percentage} className="w-20" />
-                        </TableCell>
+                {!isMobile ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Percentage</TableHead>
+                        <TableHead>Share</TableHead>
                       </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {analyticsData.financialBreakdown.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">
+                            {item.category}
+                          </TableCell>
+                          <TableCell>${item.amount.toLocaleString()}</TableCell>
+                          <TableCell>{item.percentage}%</TableCell>
+                          <TableCell>
+                            <Progress value={item.percentage} className="w-20" />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="space-y-4">
+                    {analyticsData.financialBreakdown.map((item, index) => (
+                      <Card key={index}>
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="font-medium">{item.category}</h4>
+                            <span className="text-lg font-bold">
+                              ${item.amount.toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Percentage:</span>
+                              <span>{item.percentage}%</span>
+                            </div>
+                            <Progress value={item.percentage} />
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
-                  </TableBody>
-                </Table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
