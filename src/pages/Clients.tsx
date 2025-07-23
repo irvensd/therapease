@@ -431,6 +431,21 @@ const Clients = () => {
     }
   };
 
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "None";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch (error) {
+      console.warn("Invalid date format:", dateString);
+      return "Invalid date";
+    }
+  };
+
   if (isLoading) {
     return (
       <Layout>
