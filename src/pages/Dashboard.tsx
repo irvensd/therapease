@@ -79,13 +79,24 @@ const Dashboard = () => {
   // Mock user data - in real app would come from auth context
   const userName = "Dr. Wilson";
 
+  // Check if this is a new user (for demo purposes, check if they've seen the dashboard before)
+  const [isNewUser, setIsNewUser] = useState(false);
+
+  useEffect(() => {
+    const hasVisitedDashboard = localStorage.getItem("therapease_dashboard_visited");
+    if (!hasVisitedDashboard) {
+      setIsNewUser(true);
+      localStorage.setItem("therapease_dashboard_visited", "true");
+    }
+  }, []);
+
   // Mock dashboard data - in real app would be fetched from API
   const [dashboardData] = useState({
     stats: {
-      activeClients: 48,
-      weeklySessionsScheduled: 28,
-      monthlyRevenue: 12450,
-      completionRate: 94,
+      activeClients: isNewUser ? 0 : 48,
+      weeklySessionsScheduled: isNewUser ? 0 : 28,
+      monthlyRevenue: isNewUser ? 0 : 12450,
+      completionRate: isNewUser ? 0 : 94,
     } as DashboardStats,
     todaySessions: [
       {
