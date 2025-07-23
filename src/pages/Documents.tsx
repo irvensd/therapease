@@ -96,6 +96,17 @@ interface ClientFolder {
 const Documents = () => {
   const { toast } = useToast();
 
+  // Mobile detection
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // State management
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [selectedClient, setSelectedClient] = useState<string>("all");
