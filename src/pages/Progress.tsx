@@ -463,6 +463,16 @@ const Progress = () => {
 
   const handleEditGoal = useCallback((goal: TreatmentGoal) => {
     setSelectedGoal(goal);
+    setGoalForm({
+      title: goal.title,
+      description: goal.description,
+      category: goal.category,
+      priority: goal.priority,
+      targetDate: goal.targetDate,
+      measurableOutcome: goal.measurableOutcome,
+      interventions: goal.interventions.join(", "),
+      clientId: goal.clientId,
+    });
     setGoalModalOpen(true);
   }, []);
 
