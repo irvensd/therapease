@@ -286,21 +286,28 @@ export function AIAssistant({
           <Bot className="h-6 w-6 text-white" />
         </Button>
 
-        {/* Floating AI Assistant Modal */}
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="sm:max-w-[600px] max-h-[700px] p-0">
-            <DialogHeader className="p-6 pb-0">
-              <DialogTitle className="flex items-center gap-2">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
-                  <Bot className="h-4 w-4 text-white" />
+        {/* Custom AI Assistant Modal */}
+        {isOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg w-full max-w-[600px] max-h-[700px] mx-4 overflow-hidden">
+              <div className="p-6 pb-0 border-b">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
+                    <Bot className="h-4 w-4 text-white" />
+                  </div>
+                  <h2 className="text-lg font-semibold">TherapEase AI Assistant</h2>
+                  <Badge variant="secondary" className="ml-auto">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Active
+                  </Badge>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-gray-500 hover:text-gray-700 ml-2"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
-                TherapEase AI Assistant
-                <Badge variant="secondary" className="ml-auto">
-                  <Sparkles className="h-3 w-3 mr-1" />
-                  Active
-                </Badge>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
 
             <div className="px-6">
               {/* Tabs */}
