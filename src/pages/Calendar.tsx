@@ -872,37 +872,69 @@ const Calendar = () => {
         {/* Calendar */}
         <Card>
           <CardContent className="p-3 sm:p-6">
-            <div className="h-[400px] sm:h-[600px]">
-              <BigCalendar
-                localizer={localizer}
-                events={filteredEvents}
-                startAccessor="start"
-                endAccessor="end"
-                view={currentView}
-                onView={setCurrentView}
-                date={currentDate}
-                onNavigate={setCurrentDate}
-                onSelectEvent={handleSelectEvent}
-                onSelectSlot={handleSelectSlot}
-                onEventDrop={handleEventDrop}
-                eventPropGetter={eventStyleGetter}
-                selectable
-                resizable
-                dragFromOutsideItem={false}
-                components={{
-                  toolbar: CustomToolbar,
-                }}
-                step={15}
-                timeslots={4}
-                min={new Date(2024, 0, 1, 7, 0)} // 7:00 AM
-                max={new Date(2024, 0, 1, 20, 0)} // 8:00 PM
-                formats={{
-                  timeGutterFormat: "h:mm A",
-                  eventTimeRangeFormat: ({ start, end }) =>
-                    `${moment(start).format("h:mm A")} - ${moment(end).format("h:mm A")}`,
-                }}
-              />
-            </div>
+            {filteredEvents.length === 0 ? (
+              // Empty State
+              <div className="h-[400px] sm:h-[600px] flex flex-col items-center justify-center text-center">
+                <div className="p-6 bg-muted/50 rounded-full mb-6">
+                  <CalendarIcon className="h-12 w-12 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">No appointments scheduled</h3>
+                <p className="text-muted-foreground mb-6 max-w-sm">
+                  {filters.client !== "all" || filters.type !== "all"
+                    ? "No appointments match your current filters. Try adjusting your search criteria."
+                    : "Get started by scheduling your first session or appointment."
+                  }
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button onClick={() => setScheduleModalOpen(true)} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Schedule Session
+                  </Button>
+                  {(filters.client !== "all" || filters.type !== "all") && (
+                    <Button
+                      variant="outline"
+                      onClick={() => setFilters({ client: "all", type: "all" })}
+                      className="gap-2"
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                      Clear Filters
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="h-[400px] sm:h-[600px]">
+                <BigCalendar
+                  localizer={localizer}
+                  events={filteredEvents}
+                  startAccessor="start"
+                  endAccessor="end"
+                  view={currentView}
+                  onView={setCurrentView}
+                  date={currentDate}
+                  onNavigate={setCurrentDate}
+                  onSelectEvent={handleSelectEvent}
+                  onSelectSlot={handleSelectSlot}
+                  onEventDrop={handleEventDrop}
+                  eventPropGetter={eventStyleGetter}
+                  selectable
+                  resizable
+                  dragFromOutsideItem={false}
+                  components={{
+                    toolbar: CustomToolbar,
+                  }}
+                  step={15}
+                  timeslots={4}
+                  min={new Date(2024, 0, 1, 7, 0)} // 7:00 AM
+                  max={new Date(2024, 0, 1, 20, 0)} // 8:00 PM
+                  formats={{
+                    timeGutterFormat: "h:mm A",
+                    eventTimeRangeFormat: ({ start, end }) =>
+                      `${moment(start).format("h:mm A")} - ${moment(end).format("h:mm A")}`,
+                  }}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
 
