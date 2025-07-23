@@ -1291,26 +1291,42 @@ const Invoices = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="clientName">Client Name *</Label>
-                  <Input
-                    placeholder="Client name..."
-                    value={invoiceForm.clientName}
-                    onChange={(e) =>
-                      setInvoiceForm(prev => ({ ...prev, clientName: e.target.value }))
-                    }
-                  />
+                  <Label htmlFor="clientId">Select Client *</Label>
+                  <Select
+                    value={invoiceForm.clientId}
+                    onValueChange={handleClientSelect}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a client" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {mockClients.map((client) => (
+                        <SelectItem key={client.id} value={client.id}>
+                          <div className="flex flex-col">
+                            <span className="font-medium">{client.name}</span>
+                            <span className="text-xs text-muted-foreground">{client.email}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
                   <Label htmlFor="clientEmail">Client Email</Label>
                   <Input
                     type="email"
-                    placeholder="client@email.com"
+                    placeholder="Auto-filled when client selected"
                     value={invoiceForm.clientEmail}
                     onChange={(e) =>
                       setInvoiceForm(prev => ({ ...prev, clientEmail: e.target.value }))
                     }
+                    className="bg-gray-50"
+                    readOnly={!!invoiceForm.clientId}
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {invoiceForm.clientId ? "Auto-filled from client selection" : "Will be auto-filled when you select a client"}
+                  </p>
                 </div>
               </div>
 
