@@ -199,6 +199,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Clear other app data if needed
   };
 
+  const updateProfile = (updates: Partial<Pick<User, 'name' | 'title' | 'email'>>) => {
+    if (!user) return;
+
+    const updatedUser = { ...user, ...updates };
+    setUser(updatedUser);
+    localStorage.setItem("therapease_user", JSON.stringify(updatedUser));
+  };
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
