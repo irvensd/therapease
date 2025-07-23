@@ -519,6 +519,91 @@ const Progress = () => {
     [toast],
   );
 
+  const handleCloseGoalModal = useCallback(() => {
+    setGoalModalOpen(false);
+    setSelectedGoal(null);
+    setGoalForm({
+      title: "",
+      description: "",
+      category: "Symptom",
+      priority: "Medium",
+      targetDate: "",
+      measurableOutcome: "",
+      interventions: "",
+      clientId: "",
+    });
+  }, []);
+
+  const handleSaveGoal = useCallback(() => {
+    if (!goalForm.title || !goalForm.clientId) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const interventionsArray = goalForm.interventions
+      ? goalForm.interventions.split(",").map(i => i.trim()).filter(i => i)
+      : [];
+
+    if (selectedGoal) {
+      // Update existing goal
+      setTreatmentGoals(prev =>
+        prev.map(goal =>
+          goal.id === selectedGoal.id
+            ? {
+                ...goal,
+                title: goalForm.title,
+                description: goalForm.description,
+                category: goalForm.category,
+                priority: goalForm.priority,
+                targetDate: goalForm.targetDate,
+                measurableOutcome: goalForm.measurableOutcome,
+                interventions: interventionsArray,
+              }
+            : goal
+        )
+      );
+
+      toast({
+        title: "Goal Updated",
+        description: `"${goalForm.title}" has been updated.`,
+      });
+    } else {
+      // Create new goal
+      const clientName = goalForm.clientId === "c1" ? "Emma Thompson" :
+                        goalForm.clientId === "c2" ? "Michael Chen" : "Unknown Client";
+
+      const newGoal: TreatmentGoal = {
+        id: `g-${Date.now()}`,
+        clientId: goalForm.clientId,
+        clientName,
+        title: goalForm.title,
+        description: goalForm.description,
+        category: goalForm.category,
+        priority: goalForm.priority,
+        status: "Active",
+        targetDate: goalForm.targetDate,
+        createdDate: new Date().toISOString().split('T')[0],
+        currentProgress: 0,
+        measurableOutcome: goalForm.measurableOutcome,
+        interventions: interventionsArray,
+        milestones: [],
+      };
+
+      setTreatmentGoals(prev => [newGoal, ...prev]);
+
+      toast({
+        title: "Goal Created",
+        description: `"${goalForm.title}" has been created.`,
+      });
+    }
+
+    handleCloseGoalModal();
+  }, [goalForm, selectedGoal, toast, handleCloseGoalModal]);
+
   // Get priority color
   const getPriorityColor = (priority: string) => {
     switch (priority) {
