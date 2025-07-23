@@ -327,7 +327,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div
-                className="text-xl sm:text-2xl font-bold"
+                className="text-lg sm:text-xl lg:text-2xl font-bold"
                 aria-label={`${dashboardData.stats.completionRate}% completion rate`}
               >
                 {dashboardData.stats.completionRate}%
