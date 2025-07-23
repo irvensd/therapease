@@ -1092,70 +1092,119 @@ const Progress = () => {
                 </Button>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Client</TableHead>
-                      <TableHead>Assessment</TableHead>
-                      <TableHead>Score</TableHead>
-                      <TableHead>Severity</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {assessments.map((assessment) => (
-                      <TableRow key={assessment.id}>
-                        <TableCell className="font-medium">
-                          {assessment.clientName}
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <div className="font-medium">
-                              {assessment.assessmentType}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              {assessment.scale}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <span>
-                              {assessment.score}/{assessment.maxScore}
-                            </span>
-                            <ProgressBar
-                              value={
-                                (assessment.score / assessment.maxScore) * 100
-                              }
-                              className="w-16"
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              assessment.severity === "Minimal" ||
-                              assessment.severity === "Mild"
-                                ? "default"
-                                : assessment.severity === "Moderate"
-                                  ? "secondary"
-                                  : "destructive"
-                            }
-                          >
-                            {assessment.severity}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{assessment.dateAdministered}</TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
+                {!isMobile ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Client</TableHead>
+                        <TableHead>Assessment</TableHead>
+                        <TableHead>Score</TableHead>
+                        <TableHead>Severity</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Actions</TableHead>
                       </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {assessments.map((assessment) => (
+                        <TableRow key={assessment.id}>
+                          <TableCell className="font-medium">
+                            {assessment.clientName}
+                          </TableCell>
+                          <TableCell>
+                            <div>
+                              <div className="font-medium">
+                                {assessment.assessmentType}
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                {assessment.scale}
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <span>
+                                {assessment.score}/{assessment.maxScore}
+                              </span>
+                              <ProgressBar
+                                value={
+                                  (assessment.score / assessment.maxScore) * 100
+                                }
+                                className="w-16"
+                              />
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                assessment.severity === "Minimal" ||
+                                assessment.severity === "Mild"
+                                  ? "default"
+                                  : assessment.severity === "Moderate"
+                                    ? "secondary"
+                                    : "destructive"
+                              }
+                            >
+                              {assessment.severity}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{assessment.dateAdministered}</TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="space-y-4">
+                    {assessments.map((assessment) => (
+                      <Card key={assessment.id}>
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <h4 className="font-medium">{assessment.clientName}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {assessment.assessmentType}
+                              </p>
+                            </div>
+                            <Badge
+                              variant={
+                                assessment.severity === "Minimal" ||
+                                assessment.severity === "Mild"
+                                  ? "default"
+                                  : assessment.severity === "Moderate"
+                                    ? "secondary"
+                                    : "destructive"
+                              }
+                            >
+                              {assessment.severity}
+                            </Badge>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm">Score:</span>
+                              <span className="text-sm font-medium">
+                                {assessment.score}/{assessment.maxScore}
+                              </span>
+                            </div>
+                            <ProgressBar
+                              value={(assessment.score / assessment.maxScore) * 100}
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              {assessment.dateAdministered}
+                            </p>
+                            <Button variant="ghost" size="sm" className="w-full">
+                              <Eye className="h-4 w-4 mr-2" />
+                              View Details
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
-                  </TableBody>
-                </Table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
