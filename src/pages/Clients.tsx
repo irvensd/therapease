@@ -785,9 +785,7 @@ const Clients = () => {
                       </TableCell>
                       <TableCell className="hidden lg:table-cell">
                         <div className="text-sm">
-                          {client.lastSession
-                            ? new Date(client.lastSession).toLocaleDateString()
-                            : "None"}
+                          {formatDate(client.lastSession)}
                         </div>
                       </TableCell>
                       <TableCell className="hidden xl:table-cell">
