@@ -764,7 +764,7 @@ const Sessions = () => {
           onOpenChange={setPrepModalOpen}
           session={selectedSession}
         />
-        <SessionDetailsModal
+{/* <SessionDetailsModal
           open={sessionDetailsModalOpen}
           onOpenChange={setSessionDetailsModalOpen}
           session={selectedSession}
@@ -788,7 +788,7 @@ const Sessions = () => {
               },
             });
           }}
-        />
+        /> */}
         <ModalComponent />
       </div>
     </Layout>
