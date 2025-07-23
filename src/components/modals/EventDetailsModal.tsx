@@ -120,7 +120,7 @@ export function EventDetailsModal({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
+          <h2 id="modal-title" className="text-xl font-semibold flex items-center gap-2">
             <User className="h-5 w-5" />
             {event.resource.clientName}
           </h2>
