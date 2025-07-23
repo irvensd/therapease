@@ -221,12 +221,7 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-            <p className="text-muted-foreground">Loading dashboard...</p>
-          </div>
-        </div>
+        <DashboardSkeleton />
       </Layout>
     );
   }
