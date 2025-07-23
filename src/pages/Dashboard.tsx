@@ -285,12 +285,12 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div
-                className="text-xl sm:text-2xl font-bold"
+                className="text-lg sm:text-xl lg:text-2xl font-bold"
                 aria-label={`${dashboardData.stats.weeklySessionsScheduled} sessions this week`}
               >
                 {dashboardData.stats.weeklySessionsScheduled}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 sessions scheduled
               </p>
             </CardContent>
