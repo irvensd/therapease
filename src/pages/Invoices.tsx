@@ -616,7 +616,9 @@ const Invoices = () => {
 
   const handleEditInvoice = useCallback((invoice: Invoice) => {
     setEditingInvoice(invoice);
+    const client = mockClients.find(c => c.name === invoice.clientName);
     setInvoiceForm({
+      clientId: client?.id || "",
       clientName: invoice.clientName,
       clientEmail: invoice.clientEmail,
       amount: invoice.amount.toString(),
