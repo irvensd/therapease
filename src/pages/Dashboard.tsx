@@ -468,8 +468,15 @@ const Dashboard = () => {
                 {dashboardData.reminders.map((reminder) => (
                   <div
                     key={reminder.id}
-                    className="p-3 rounded-lg border bg-card"
+                    className="p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
                     role="listitem"
+                    onClick={() => {
+                      handleNavigation("/reminders", "reminder management");
+                      toast({
+                        title: "Reminder Details",
+                        description: `Viewing reminder: ${reminder.title}`,
+                      });
+                    }}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-medium text-sm">{reminder.title}</h4>
