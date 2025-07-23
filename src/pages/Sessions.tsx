@@ -300,8 +300,8 @@ const Sessions = () => {
 
       switch (action) {
         case "view":
-          // Open session details modal directly
-          setSessionDetailsModalOpen(true);
+          // Temporarily use alert instead of modal
+          alert(`Session Details: ${session.clientName} on ${session.date} at ${session.time}`);
           break;
 
         case "edit":
