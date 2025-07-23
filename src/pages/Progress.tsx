@@ -1316,7 +1316,7 @@ const Progress = () => {
                 <CardTitle>Treatment Outcomes Summary</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center p-4 border rounded">
                     <div className="text-3xl font-bold text-green-600">
                       {Math.round(
