@@ -799,7 +799,7 @@ const Documents = () => {
                 <CardTitle>Documents ({filteredDocuments.length})</CardTitle>
               </CardHeader>
               <CardContent>
-                {viewMode === "list" ? (
+                {viewMode === "list" && !isMobile ? (
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
