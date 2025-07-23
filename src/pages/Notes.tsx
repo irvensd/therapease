@@ -860,6 +860,7 @@ const Notes = () => {
           open={newNoteModalOpen}
           onOpenChange={setNewNoteModalOpen}
           editingNote={editingNote}
+          onCreateNote={handleCreateNote}
         />
         <ModalComponent />
       </div>
