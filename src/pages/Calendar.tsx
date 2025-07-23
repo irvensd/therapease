@@ -899,6 +899,7 @@ const Calendar = () => {
         <ScheduleSessionModal
           open={scheduleModalOpen}
           onOpenChange={setScheduleModalOpen}
+          onScheduleSession={handleScheduleSession}
         />
 
         <ModalComponent />
