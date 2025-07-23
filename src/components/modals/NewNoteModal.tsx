@@ -1,14 +1,8 @@
+// WARNING: Using div-based modal to avoid shadcn Dialog freezing issues
+// DO NOT replace with shadcn Dialog component
+
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -19,21 +13,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EditingNote {
   id: number;
   clientName: string;
   title: string;
-  date: string;
-  type: string;
-  status: string;
-  wordCount: number;
-  isStarred: boolean;
-  diagnosis: string;
   content: string;
   goals: string;
   followUp: string;
+  type: "SOAP" | "DAP" | "BIRP" | "Progress";
+  diagnosis: string;
 }
 
 interface NewNoteModalProps {
@@ -47,387 +37,249 @@ export function NewNoteModal({
   onOpenChange,
   editingNote,
 }: NewNoteModalProps) {
-  const { showModal, ModalComponent } = useConfirmationModal();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
-    client: editingNote?.clientName || "",
-    sessionDate: editingNote?.date || "",
-    sessionType: "Individual Therapy",
-    duration: "50",
-    noteType: editingNote?.type || "",
-    content: `Sample content for ${editingNote?.title || "new note"}...`,
+    clientName: "",
+    title: "",
+    type: "",
+    content: "",
     goals: "",
     followUp: "",
+    diagnosis: "",
   });
-  const [aiAssistanceEnabled, setAiAssistanceEnabled] = useState(true);
-  const [isGeneratingNote, setIsGeneratingNote] = useState(false);
 
-  // Update form data when editing note changes
+  // Populate form when editing
   useEffect(() => {
     if (editingNote) {
       setFormData({
-        client: editingNote.clientName,
-        sessionDate: editingNote.date,
-        sessionType: "Individual Therapy",
-        duration: "50",
-        noteType: editingNote.type.toLowerCase(),
+        clientName: editingNote.clientName,
+        title: editingNote.title,
+        type: editingNote.type,
         content: editingNote.content,
         goals: editingNote.goals,
         followUp: editingNote.followUp,
+        diagnosis: editingNote.diagnosis,
       });
     } else {
-      // Reset form for new note
       setFormData({
-        client: "",
-        sessionDate: "",
-        sessionType: "",
-        duration: "",
-        noteType: "",
+        clientName: "",
+        title: "",
+        type: "",
         content: "",
         goals: "",
         followUp: "",
+        diagnosis: "",
       });
     }
-  }, [editingNote]);
-
-  const generateAINote = async () => {
-    if (!formData.client || !formData.sessionType) {
-      alert("Please select a client and session type first.");
-      return;
-    }
-
-    setIsGeneratingNote(true);
-
-    // Simulate AI note generation with realistic delay
-    setTimeout(() => {
-      const aiGeneratedContent = generateNoteContent(
-        formData.client,
-        formData.sessionType,
-        formData.noteType,
-      );
-
-      setFormData((prev) => ({
-        ...prev,
-        content: aiGeneratedContent.content,
-        goals: aiGeneratedContent.goals,
-        followUp: aiGeneratedContent.followUp,
-      }));
-
-      setIsGeneratingNote(false);
-
-      // Show success message
-      const clientName =
-        formData.client === "emma"
-          ? "Emma Thompson"
-          : formData.client === "michael"
-            ? "Michael Chen"
-            : formData.client === "sarah"
-              ? "Sarah Johnson"
-              : formData.client === "david"
-                ? "David Wilson"
-                : "the selected client";
-
-      showModal({
-        type: "success",
-        title: "AI Note Generated Successfully! ✨",
-        message: `Your AI Assistant has generated a professional ${formData.noteType?.toUpperCase() || "progress"} note for ${clientName}. The note follows clinical best practices and includes all required sections. Please review and edit as needed before saving.`,
-        confirmLabel: "Perfect, let me review it",
-        autoClose: 6000,
-      });
-    }, 2000);
-  };
-
-  const generateNoteContent = (
-    client: string,
-    sessionType: string,
-    noteType: string,
-  ) => {
-    const clientName =
-      client === "emma"
-        ? "Emma Thompson"
-        : client === "michael"
-          ? "Michael Chen"
-          : client === "sarah"
-            ? "Sarah Johnson"
-            : client === "david"
-              ? "David Wilson"
-              : "the client";
-
-    if (noteType === "soap") {
-      return {
-        content: `SUBJECTIVE: ${clientName} reported feeling anxious about upcoming work presentations. Client states anxiety level at 6/10, down from 8/10 last week. Reports using breathing techniques learned in previous session with moderate success. Sleep has improved slightly - averaging 6 hours per night versus 4-5 hours previously.
-
-OBJECTIVE: Client appeared alert and engaged throughout session. Maintained good eye contact. Speech was clear and goal-directed. No signs of psychomotor agitation observed today. Client demonstrated breathing technique correctly when prompted.
-
-ASSESSMENT: Client is showing gradual improvement in anxiety management skills. Continued progress toward treatment goals of reducing anxiety symptoms and improving coping strategies. No immediate safety concerns noted.
-
-PLAN: Continue weekly individual therapy sessions. Review and practice additional CBT techniques for anxiety management. Assign homework: daily breathing exercises and thought record completion. Schedule follow-up in one week.`,
-        goals:
-          "1. Reduce anxiety symptoms from 8/10 to 4/10 within 6 weeks\n2. Implement daily coping strategies\n3. Improve sleep quality to 7+ hours nightly",
-        followUp:
-          "• Practice breathing exercises 2x daily\n• Complete thought record worksheet\n• Schedule relaxation time before presentations\n• Continue anxiety tracking journal",
-      };
-    }
-
-    if (noteType === "dap") {
-      return {
-        content: `DATA: ${clientName} attended 60-minute ${sessionType.toLowerCase()} session. Client reported anxiety level 6/10 (improved from 8/10). Discussed work-related stress and presentation anxiety. Client demonstrated learned breathing techniques.
-
-ASSESSMENT: Client shows continued progress in anxiety management. Improvement noted in sleep patterns and use of coping skills. Engaged well in session and motivated for treatment.
-
-PLAN: Continue weekly therapy. Practice CBT techniques, complete homework assignments, follow up on anxiety tracking.`,
-        goals:
-          "Reduce anxiety symptoms and improve work-related stress management",
-        followUp:
-          "Breathing exercises daily, thought record completion, anxiety tracking",
-      };
-    }
-
-    // Default progress note
-    return {
-      content: `${clientName} attended ${formData.duration}-minute ${sessionType.toLowerCase()} session. Session focused on anxiety management and coping skill development. Client reported decreased anxiety levels and improved sleep. Discussed strategies for managing work-related stress. Client demonstrated good understanding of therapeutic concepts and appeared motivated for continued treatment.`,
-      goals:
-        "Continue progress toward anxiety reduction and improved coping skills",
-      followUp:
-        "Practice assigned coping strategies and complete homework exercises",
-    };
-  };
+  }, [editingNote, open]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("New note data:", formData);
+    
+    // Validate required fields
+    if (!formData.clientName || !formData.title || !formData.type || !formData.content) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
 
+    console.log("Note data:", formData);
+
+    toast({
+      title: editingNote ? "Note Updated" : "Note Created",
+      description: `Clinical note has been ${editingNote ? "updated" : "created"} successfully.`,
+    });
+
+    // Reset form and close modal
     setFormData({
-      client: "",
-      sessionDate: "",
-      sessionType: "",
-      duration: "",
-      noteType: "",
+      clientName: "",
+      title: "",
+      type: "",
       content: "",
       goals: "",
       followUp: "",
+      diagnosis: "",
     });
     onOpenChange(false);
-
-    alert("Session note created successfully!");
   };
 
+  const handleClose = () => {
+    onOpenChange(false);
+  };
+
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
+
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <DialogTitle>
-                {editingNote
-                  ? `Edit Session Note: ${editingNote.title}`
-                  : "Create Session Note"}
-              </DialogTitle>
-              <DialogDescription>
-                {editingNote
-                  ? `Edit the session note for ${editingNote.clientName} with HIPAA-compliant documentation.`
-                  : "Document your therapy session with HIPAA-compliant notes."}
-              </DialogDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs">
-                <span className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse" />
-                AI Assistant Active
-              </Badge>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={generateAINote}
-                disabled={
-                  isGeneratingNote || !formData.client || !formData.sessionType
-                }
-                className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200"
-              >
-                {isGeneratingNote ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin mr-2" />
-                    Generating...
-                  </>
-                ) : (
-                  <>✨ AI Generate Note</>
-                )}
-              </Button>
-            </div>
+    <div 
+      className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+      onClick={handleOverlayClick}
+    >
+      <div 
+        className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b">
+          <div>
+            <h2 className="text-xl font-semibold">
+              {editingNote ? "Edit Clinical Note" : "New Clinical Note"}
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              {editingNote ? "Update the clinical note details" : "Create a new clinical note for documentation"}
+            </p>
           </div>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="client" className="text-right">
-                Client
-              </Label>
-              <Select
-                value={formData.client}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, client: value })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select client" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="emma">Emma Thompson</SelectItem>
-                  <SelectItem value="michael">Michael Chen</SelectItem>
-                  <SelectItem value="sarah">Sarah Johnson</SelectItem>
-                  <SelectItem value="david">David Wilson</SelectItem>
-                  <SelectItem value="lisa">Lisa Rodriguez</SelectItem>
-                </SelectContent>
-              </Select>
+          <button 
+            onClick={handleClose}
+            className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6">
+          <div className="grid gap-4">
+            {/* Row 1: Client and Title */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="clientName">Client Name *</Label>
+                <Select
+                  value={formData.clientName}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, clientName: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a client" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Emma Thompson">Emma Thompson</SelectItem>
+                    <SelectItem value="Michael Chen">Michael Chen</SelectItem>
+                    <SelectItem value="Sarah Johnson">Sarah Johnson</SelectItem>
+                    <SelectItem value="David Wilson">David Wilson</SelectItem>
+                    <SelectItem value="Lisa Park">Lisa Park</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="title">Note Title *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  placeholder="e.g., Session 5 - Progress Review"
+                  required
+                />
+              </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="sessionDate" className="text-right">
-                Session Date
-              </Label>
-              <Input
-                id="sessionDate"
-                type="datetime-local"
-                value={formData.sessionDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, sessionDate: e.target.value })
-                }
-                className="col-span-3"
-                required
-              />
+            {/* Row 2: Type and Diagnosis */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="type">Note Type *</Label>
+                <Select
+                  value={formData.type}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, type: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select note type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="SOAP">SOAP Note</SelectItem>
+                    <SelectItem value="DAP">DAP Note</SelectItem>
+                    <SelectItem value="BIRP">BIRP Note</SelectItem>
+                    <SelectItem value="Progress">Progress Note</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="diagnosis">Diagnosis</Label>
+                <Input
+                  id="diagnosis"
+                  value={formData.diagnosis}
+                  onChange={(e) =>
+                    setFormData({ ...formData, diagnosis: e.target.value })
+                  }
+                  placeholder="e.g., Generalized Anxiety Disorder"
+                />
+              </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="sessionType" className="text-right">
-                Session Type
-              </Label>
-              <Select
-                value={formData.sessionType}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, sessionType: value })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select session type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="individual">Individual Therapy</SelectItem>
-                  <SelectItem value="couples">Couples Therapy</SelectItem>
-                  <SelectItem value="family">Family Therapy</SelectItem>
-                  <SelectItem value="group">Group Therapy</SelectItem>
-                  <SelectItem value="assessment">Assessment</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="duration" className="text-right">
-                Duration
-              </Label>
-              <Select
-                value={formData.duration}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, duration: value })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Session duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="30">30 minutes</SelectItem>
-                  <SelectItem value="45">45 minutes</SelectItem>
-                  <SelectItem value="60">60 minutes</SelectItem>
-                  <SelectItem value="90">90 minutes</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="noteType" className="text-right">
-                Note Type
-              </Label>
-              <Select
-                value={formData.noteType}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, noteType: value })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select note template" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="soap">SOAP Note</SelectItem>
-                  <SelectItem value="dap">DAP Note</SelectItem>
-                  <SelectItem value="birp">BIRP Note</SelectItem>
-                  <SelectItem value="progress">Progress Note</SelectItem>
-                  <SelectItem value="assessment">Assessment Note</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="content" className="text-right mt-2">
-                Session Notes
-              </Label>
+            {/* Content */}
+            <div className="space-y-2">
+              <Label htmlFor="content">Note Content *</Label>
               <Textarea
                 id="content"
                 value={formData.content}
                 onChange={(e) =>
                   setFormData({ ...formData, content: e.target.value })
                 }
-                className="col-span-3"
-                placeholder="Document the session content, client progress, interventions used, and observations..."
-                rows={6}
+                placeholder="Enter session notes, observations, interventions..."
+                rows={8}
+                className="min-h-[200px]"
                 required
               />
             </div>
 
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="goals" className="text-right mt-2">
-                Goals & Objectives
-              </Label>
+            {/* Goals */}
+            <div className="space-y-2">
+              <Label htmlFor="goals">Treatment Goals</Label>
               <Textarea
                 id="goals"
                 value={formData.goals}
                 onChange={(e) =>
                   setFormData({ ...formData, goals: e.target.value })
                 }
-                className="col-span-3"
-                placeholder="Treatment goals addressed in this session and progress made..."
+                placeholder="List treatment goals and objectives..."
                 rows={3}
               />
             </div>
 
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="followUp" className="text-right mt-2">
-                Follow-up Actions
-              </Label>
+            {/* Follow Up */}
+            <div className="space-y-2">
+              <Label htmlFor="followUp">Follow-up Actions</Label>
               <Textarea
                 id="followUp"
                 value={formData.followUp}
                 onChange={(e) =>
                   setFormData({ ...formData, followUp: e.target.value })
                 }
-                className="col-span-3"
-                placeholder="Homework assignments, referrals, next session focus..."
+                placeholder="Next steps, homework assignments, follow-up tasks..."
                 rows={3}
               />
             </div>
           </div>
-          <DialogFooter>
+          
+          {/* Footer */}
+          <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
             <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={handleClose}
             >
               Cancel
             </Button>
             <Button type="submit">
-              {editingNote ? "Update Note" : "Save Note"}
+              {editingNote ? "Update Note" : "Create Note"}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
-        <ModalComponent />
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }
