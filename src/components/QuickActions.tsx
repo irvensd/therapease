@@ -160,14 +160,6 @@ export function QuickActions({
       urgent: true,
       action: () => {
         handleAction("emergency-contact");
-        alert(`Emergency Resources:
-
-National Suicide Prevention Lifeline: 988
-Crisis Text Line: Text HOME to 741741
-National Sexual Assault Hotline: 1-800-656-4673
-National Domestic Violence Hotline: 1-800-799-7233
-
-Local Emergency Services: 911`);
       },
     },
     {
