@@ -682,9 +682,7 @@ const Clients = () => {
 
                     <div className="flex items-center justify-between pt-2 border-t">
                       <div className="text-xs text-muted-foreground">
-                        Next: {client.nextSession
-                          ? new Date(client.nextSession).toLocaleDateString()
-                          : "Not scheduled"}
+                        Next: {formatDate(client.nextSession) === "None" ? "Not scheduled" : formatDate(client.nextSession)}
                       </div>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
