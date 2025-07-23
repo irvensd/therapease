@@ -111,6 +111,7 @@ const Reports = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPeriod, setSelectedPeriod] = useState("3months");
   const [selectedMetric, setSelectedMetric] = useState("revenue");
+  const [isMobile, setIsMobile] = useState(false);
 
   // Mock analytics data
   const [analyticsData] = useState({
