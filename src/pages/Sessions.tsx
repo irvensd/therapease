@@ -210,6 +210,7 @@ const mockSessions: Session[] = [
 
 const Sessions = () => {
   const navigate = useNavigate();
+  const { id: sessionId } = useParams();
   const { toast } = useToast();
   const { showModal, ModalComponent } = useConfirmationModal();
 
