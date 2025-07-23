@@ -235,20 +235,20 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="p-6 space-y-6">
+      <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
         {/* Welcome section */}
-        <div className="therapease-gradient rounded-xl p-6" role="banner">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+        <div className="therapease-gradient rounded-xl p-4 sm:p-6" role="banner">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
             Welcome back, {userName}
           </h1>
-          <p className="text-muted-foreground text-base sm:text-lg">
+          <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
             Here's what's happening in your practice today
           </p>
         </div>
 
         {/* Quick stats */}
         <div
-          className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4"
+          className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
           role="region"
           aria-label="Practice overview statistics"
         >
