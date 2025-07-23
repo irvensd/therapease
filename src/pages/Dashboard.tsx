@@ -264,12 +264,12 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div
-                className="text-xl sm:text-2xl font-bold"
+                className="text-lg sm:text-xl lg:text-2xl font-bold"
                 aria-label={`${dashboardData.stats.activeClients} active clients`}
               >
                 {dashboardData.stats.activeClients}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 +3 from last month
               </p>
             </CardContent>
