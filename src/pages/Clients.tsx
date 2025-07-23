@@ -222,13 +222,15 @@ const Clients = () => {
         setIsLoading(true);
         setError(null);
 
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        // Simulate API call with random delay between 300-1000ms
+        const delay = Math.random() * 700 + 300;
+        await new Promise((resolve) => setTimeout(resolve, delay));
 
         setClients(mockClients);
-        setIsLoading(false);
       } catch (err) {
-        setError("Failed to load clients. Please try again.");
+        console.error("Failed to load clients:", err);
+        setError("Failed to load clients. Please check your connection and try again.");
+      } finally {
         setIsLoading(false);
       }
     };
