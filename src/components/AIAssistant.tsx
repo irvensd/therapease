@@ -490,66 +490,334 @@ export function AIAssistant({
 
   // Embedded version for dashboard/pages
   return (
-    <Card className="therapease-card">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
-            <Bot className="h-3 w-3 text-white" />
-          </div>
-          AI Clinical Assistant
-          <Badge variant="secondary" className="ml-auto">
-            <Sparkles className="h-3 w-3 mr-1" />
-            {insights.length} insights
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {insights.slice(0, 3).map((insight) => {
-          const IconComponent = insight.icon;
-          return (
-            <div
-              key={insight.id}
-              className="flex items-start gap-3 p-3 rounded-lg bg-muted/30"
-            >
+    <>
+      <Card className="therapease-card">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
+              <Bot className="h-3 w-3 text-white" />
+            </div>
+            AI Clinical Assistant
+            <Badge variant="secondary" className="ml-auto">
+              <Sparkles className="h-3 w-3 mr-1" />
+              {insights.length} insights
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {insights.slice(0, 3).map((insight) => {
+            const IconComponent = insight.icon;
+            return (
               <div
-                className={cn(
-                  "p-1.5 rounded border",
-                  getPriorityColor(insight.priority),
-                )}
+                key={insight.id}
+                className="flex items-start gap-3 p-3 rounded-lg bg-muted/30"
               >
-                <IconComponent className="h-3 w-3" />
+                <div
+                  className={cn(
+                    "p-1.5 rounded border",
+                    getPriorityColor(insight.priority),
+                  )}
+                >
+                  <IconComponent className="h-3 w-3" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h5 className="font-medium text-xs">{insight.title}</h5>
+                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                    {insight.content}
+                  </p>
+                  {insight.action && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-6 px-2 text-xs mt-2"
+                    >
+                      {insight.action}
+                    </Button>
+                  )}
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <h5 className="font-medium text-xs">{insight.title}</h5>
-                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                  {insight.content}
-                </p>
-                {insight.action && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-6 px-2 text-xs mt-2"
-                  >
-                    {insight.action}
-                  </Button>
+            );
+          })}
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full"
+            onClick={() => {
+              console.log("AI Assistant button clicked, setting isOpen to true");
+              setIsOpen(true);
+            }}
+          >
+            <MessageSquare className="h-3 w-3 mr-1" />
+            Open AI Assistant
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Modal for embedded version */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center"
+          style={{ zIndex: 9999 }}
+          onClick={(e) => {
+            console.log("Modal backdrop clicked");
+            if (e.target === e.currentTarget) {
+              setIsOpen(false);
+            }
+          }}
+        >
+          <div className="bg-white rounded-lg w-full max-w-[600px] max-h-[700px] mx-4 overflow-hidden">
+            {/* Header */}
+            <div className="p-6 pb-4 border-b">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600">
+                  <Bot className="h-4 w-4 text-white" />
+                </div>
+                <h2 className="text-lg font-semibold">TherapEase AI Assistant</h2>
+                <Badge variant="secondary" className="ml-auto">
+                  <Sparkles className="h-3 w-3 mr-1" />
+                  Active
+                </Badge>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-500 hover:text-gray-700 ml-2"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Tabs */}
+            <div className="px-6 pt-4">
+              <div className="flex gap-1 mb-4">
+                <Button
+                  variant={activeTab === "insights" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setActiveTab("insights")}
+                >
+                  <Brain className="h-4 w-4 mr-1" />
+                  Insights
+                </Button>
+                <Button
+                  variant={activeTab === "chat" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setActiveTab("chat")}
+                >
+                  <MessageSquare className="h-4 w-4 mr-1" />
+                  Chat
+                </Button>
+                <Button
+                  variant={activeTab === "prep" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setActiveTab("prep")}
+                >
+                  <FileText className="h-4 w-4 mr-1" />
+                  Session Prep
+                </Button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="px-6 pb-6">
+              <div className="h-[400px]">
+                {activeTab === "insights" && (
+                  <div className="h-full overflow-y-auto">
+                    <div className="space-y-3 pr-4">
+                      {insights.map((insight) => {
+                        const IconComponent = insight.icon;
+                        return (
+                          <Card
+                            key={insight.id}
+                            className="border-l-4 border-l-primary"
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start gap-3">
+                                <div
+                                  className={cn(
+                                    "p-2 rounded-lg border",
+                                    getPriorityColor(insight.priority),
+                                  )}
+                                >
+                                  <IconComponent className="h-4 w-4" />
+                                </div>
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h4 className="font-medium text-sm">
+                                      {insight.title}
+                                    </h4>
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      {insight.priority}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-sm text-muted-foreground mb-2">
+                                    {insight.content}
+                                  </p>
+                                  {insight.action && (
+                                    <Button size="sm" variant="outline">
+                                      {insight.action}
+                                    </Button>
+                                  )}
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "chat" && (
+                  <div className="flex flex-col h-full">
+                    <div className="flex-1 overflow-y-auto pr-4">
+                      <div className="space-y-3">
+                        {chatMessages.length === 0 && (
+                          <div className="text-center py-8">
+                            <Bot className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                            <p className="text-muted-foreground">
+                              Ask me anything about clinical practice,
+                              documentation, or treatment planning!
+                            </p>
+                          </div>
+                        )}
+                        {chatMessages.map((message) => (
+                          <div
+                            key={message.id}
+                            className={cn(
+                              "flex",
+                              message.type === "user"
+                                ? "justify-end"
+                                : "justify-start",
+                            )}
+                          >
+                            <div
+                              className={cn(
+                                "max-w-[80%] rounded-lg p-3 text-sm whitespace-pre-line",
+                                message.type === "user"
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-muted",
+                              )}
+                            >
+                              {message.content}
+                            </div>
+                          </div>
+                        ))}
+                        {isTyping && (
+                          <div className="flex justify-start">
+                            <div className="bg-muted rounded-lg p-3 text-sm">
+                              <div className="flex gap-1">
+                                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
+                                <div
+                                  className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                                  style={{ animationDelay: "0.1s" }}
+                                />
+                                <div
+                                  className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                                  style={{ animationDelay: "0.2s" }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-4">
+                      <Textarea
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        placeholder="Ask about treatment plans, documentation, risk assessment..."
+                        className="resize-none"
+                        rows={2}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            sendMessage();
+                          }
+                        }}
+                      />
+                      <Button
+                        onClick={sendMessage}
+                        size="sm"
+                        className="self-end"
+                      >
+                        <Send className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "prep" && (
+                  <div className="h-full overflow-y-auto">
+                    <div className="space-y-4 pr-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-sm">
+                            Next Session: Emma Thompson
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          <div>
+                            <h5 className="font-medium text-xs text-muted-foreground">
+                              Last Session Summary
+                            </h5>
+                            <p className="text-sm">
+                              Discussed anxiety management techniques. Client
+                              reported 6/10 anxiety levels, down from 8/10.
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="font-medium text-xs text-muted-foreground">
+                              AI Recommendations
+                            </h5>
+                            <ul className="text-sm space-y-1">
+                              <li>• Review CBT homework completion</li>
+                              <li>• Practice breathing exercises together</li>
+                              <li>• Assess sleep pattern improvements</li>
+                              <li>• Consider PHQ-9 reassessment</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-medium text-xs text-muted-foreground">
+                              Risk Factors
+                            </h5>
+                            <Badge variant="outline" className="text-xs">
+                              No current concerns
+                            </Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-sm">
+                            Treatment Goals Progress
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Reduce anxiety symptoms</span>
+                              <span className="text-green-600">75%</span>
+                            </div>
+                            <div className="w-full bg-secondary rounded-full h-2">
+                              <div
+                                className="bg-green-600 h-2 rounded-full"
+                                style={{ width: "75%" }}
+                              />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
-          );
-        })}
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full"
-          onClick={() => {
-            console.log("AI Assistant button clicked, setting isOpen to true");
-            setIsOpen(true);
-          }}
-        >
-          <MessageSquare className="h-3 w-3 mr-1" />
-          Open AI Assistant
-        </Button>
-      </CardContent>
-    </Card>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
