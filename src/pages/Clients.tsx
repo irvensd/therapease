@@ -674,9 +674,9 @@ const Clients = () => {
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => handleDeleteClient(client)}
-                              className="text-red-600"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
                             >
-                              <UserPlus className="h-4 w-4 mr-2" />
+                              <Trash2 className="h-4 w-4 mr-2" />
                               Delete Client
                             </DropdownMenuItem>
                           </DropdownMenuContent>
