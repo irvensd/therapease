@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "@/components/Layout";
 import { useConfirmationModal } from "@/components/modals/ConfirmationModal";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,6 +66,7 @@ interface UserSettings {
 const Settings = () => {
   const { toast } = useToast();
   const { showModal, ModalComponent } = useConfirmationModal();
+  const { user, updateProfile } = useAuth();
 
   // Mobile detection
   React.useEffect(() => {
@@ -79,9 +81,9 @@ const Settings = () => {
 
   const [settings, setSettings] = useState<UserSettings>({
     // Profile settings
-    name: "Dr. Sarah Wilson",
-    title: "Licensed Clinical Psychologist",
-    email: "sarah.wilson@therapease.com",
+    name: user?.name || "Dr. Sarah Wilson",
+    title: user?.title || "Licensed Clinical Psychologist",
+    email: user?.email || "sarah.wilson@therapease.com",
     phone: "(555) 123-4567",
     license: "PSY-12345",
     bio: "Experienced therapist specializing in anxiety, depression, and trauma therapy.",
@@ -128,8 +130,15 @@ const Settings = () => {
         const savedSettings = localStorage.getItem("therapease_settings");
         if (savedSettings) {
           const parsedSettings = JSON.parse(savedSettings);
-          setSettings(parsedSettings);
-          setOriginalSettings(parsedSettings);
+          // Sync with current user data from AuthContext
+          const syncedSettings = {
+            ...parsedSettings,
+            name: user?.name || parsedSettings.name,
+            title: user?.title || parsedSettings.title,
+            email: user?.email || parsedSettings.email,
+          };
+          setSettings(syncedSettings);
+          setOriginalSettings(syncedSettings);
         }
       } catch (error) {
         console.error("Error loading settings:", error);
@@ -261,6 +270,13 @@ const Settings = () => {
       // Save to localStorage
       localStorage.setItem("therapease_settings", JSON.stringify(settings));
 
+      // Update the global user profile in AuthContext
+      updateProfile({
+        name: settings.name,
+        title: settings.title,
+        email: settings.email,
+      });
+
       // Handle password change if provided
       if (newPassword && currentPassword) {
         // In real app, would make API call to change password
@@ -329,9 +345,9 @@ const Settings = () => {
       showCancel: true,
       onConfirm: () => {
         const defaultSettings: UserSettings = {
-          name: "Dr. Sarah Wilson",
-          title: "Licensed Clinical Psychologist",
-          email: "sarah.wilson@therapease.com",
+          name: user?.name || "Dr. Sarah Wilson",
+          title: user?.title || "Licensed Clinical Psychologist",
+          email: user?.email || "sarah.wilson@therapease.com",
           phone: "(555) 123-4567",
           license: "PSY-12345",
           bio: "Experienced therapist specializing in anxiety, depression, and trauma therapy.",
